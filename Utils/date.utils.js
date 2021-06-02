@@ -1,6 +1,22 @@
+const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+];
+
 export function incrementDate(date, n) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() + n);
 }
+
 export const getDateText = (dt) => {
     const today = incrementDate(new Date(), 0);
     const tomorrow = incrementDate(new Date(), 1);
@@ -25,7 +41,7 @@ export const getDateText = (dt) => {
     )
         return "Yesterday";
     else if (dt.getFullYear() === today.getFullYear())
-        return dt.getMonth()
+        return monthNames[dt.getMonth()] + " " + dt.getDate();
     return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
 };
 
