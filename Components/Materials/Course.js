@@ -1,12 +1,16 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 import { connect } from "react-redux";
-import { selectCourse } from "../../Redux/material/material.action";
+import {
+    selectCourse,
+    selectMaterial,
+} from "../../Redux/material/material.action";
 import Material from "./Material";
 
-function Course({ course, navigation, selectCourse }) {
+function Course({ course, navigation, selectCourse, selectMaterial }) {
     const addNewMaterial = () => {
         selectCourse(course);
+        selectMaterial(null, null);
         navigation.navigate("NewMaterial");
     };
     return (
@@ -28,6 +32,8 @@ function Course({ course, navigation, selectCourse }) {
 
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = (dispatch) => ({
+    selectMaterial: (course_id, material) =>
+        dispatch(selectMaterial(course_id, material)),
     selectCourse: (course) => dispatch(selectCourse(course)),
 });
 
