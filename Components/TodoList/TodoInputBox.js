@@ -111,7 +111,6 @@ const TodoInputBox = ({
                                 name="calendar"
                                 size={16}
                                 color="gray"
-                                onPress={addNewTodo}
                             />
                             <Text>{getDateText(todoDate)}</Text>
                         </TouchableOpacity>
@@ -124,7 +123,6 @@ const TodoInputBox = ({
                                 name="time"
                                 size={16}
                                 color="gray"
-                                onPress={addNewTodo}
                             />
                             <Text>{getTimeText(todoTime)}</Text>
                         </TouchableOpacity>

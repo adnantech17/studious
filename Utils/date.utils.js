@@ -55,3 +55,37 @@ export const getTimeText = (dt) => {
     minutes = minutes < 10 ? "0" + minutes : minutes;
     return hours + ":" + minutes + " " + ampm;
 };
+
+export const getDateTimeText = (dt) => {
+    const today = incrementDate(new Date(), 0);
+    const tomorrow = incrementDate(new Date(), 1);
+    const yesterday = incrementDate(new Date(), -1);
+    if (dt === null) return "No Date";
+    else if (
+        dt.getFullYear() === today.getFullYear() &&
+        dt.getMonth() === today.getMonth() &&
+        dt.getDate() == today.getDate()
+    )
+        return "Today at " + getTimeText(dt);
+    else if (
+        dt.getFullYear() === tomorrow.getFullYear() &&
+        dt.getMonth() === tomorrow.getMonth() &&
+        dt.getDate() == tomorrow.getDate()
+    )
+        return "Tomorrow at " + getTimeText(dt);
+    else if (
+        dt.getFullYear() === yesterday.getFullYear() &&
+        dt.getMonth() === yesterday.getMonth() &&
+        dt.getDate() == yesterday.getDate()
+    )
+        return "Yesterday at " + getTimeText(dt);
+    else if (dt.getFullYear() === today.getFullYear())
+        return (
+            monthNames[dt.getMonth()] +
+            " " +
+            dt.getDate() +
+            " at " +
+            getTimeText(dt)
+        );
+    return dt.getDate() + "/" + (dt.getMonth() + 1) + "/" + dt.getFullYear();
+};

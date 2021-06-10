@@ -2,6 +2,7 @@ import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import MaterialList from "../Screens/MaterialList";
+import NewMaterialScreen from "../Screens/NewMaterialScreen";
 const MaterialsStack = createStackNavigator();
 
 const MaterialsNav = () => {
@@ -11,6 +12,11 @@ const MaterialsNav = () => {
                 name="Materials"
                 component={MaterialList}
                 options={{ title: "Material List" }}
+            />
+            <MaterialsStack.Screen
+                name="NewMaterial"
+                component={NewMaterialScreen}
+                options={{ title: "Add Material" }}
             />
         </MaterialsStack.Navigator>
     );

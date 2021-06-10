@@ -9,6 +9,7 @@ import {
 } from "../../Redux/todo/todo.action";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
+import MenuButton from "../Buttons/MenuButton";
 
 const TodoMenu = ({
     menuBox,
@@ -26,55 +27,35 @@ const TodoMenu = ({
             style={styles.modal}
         >
             <View style={styles.container}>
-                <TouchableOpacity
-                    style={styles.buttons}
+                <MenuButton
+                    title="Edit"
+                    name="pencil"
                     onPress={() => {
                         toggleMenuBox();
                         toggleTodoInput();
                     }}
-                >
-                    <Ionicons
-                        style={styles.icon}
-                        name="pencil"
-                        size={16}
-                        color="gray"
-                    />
-                    <Text>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttons}
+                />
+                <MenuButton
+                    title={
+                        !selectedTodo.completed
+                            ? "Mark as Completed"
+                            : "Mark as Incomplete"
+                    }
+                    name="flag"
                     onPress={() => {
                         toggleCompletedTodo(selectedTodo);
                         toggleMenuBox();
                     }}
-                >
-                    <Ionicons
-                        style={styles.icon}
-                        name={"checkmark-done"}
-                        size={16}
-                        color="gray"
-                    />
-                    <Text>
-                        {!selectedTodo.completed
-                            ? "Mark as Completed"
-                            : "Mark as Incomplete"}
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttons}
+                />
+
+                <MenuButton
+                    title="Remove"
+                    name="trash-bin"
                     onPress={() => {
                         removeTodo(selectedTodo);
                         toggleMenuBox();
                     }}
-                >
-                    <Ionicons
-                        style={styles.icon}
-                        name="trash-bin"
-                        size={16}
-                        color="gray"
-                    />
-                    <Text>Remove</Text>
-                </TouchableOpacity>
+                />
             </View>
         </Modal>
     );
