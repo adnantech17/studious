@@ -8,7 +8,7 @@ An app that Can help a student managing his daily routine, his todo list and sto
 2. In the command line run:
 
 ```
-cd expo-todo-app
+cd studious
 npm install
 or yarn install
 expo start
