@@ -6,6 +6,7 @@ import {
     toggleMenuBox,
     toggleCompletedTodo,
     toggleTodoInput,
+    selectTodo
 } from "../../Redux/todo/todo.action";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +18,7 @@ const TodoMenu = ({
     removeTodo,
     toggleCompletedTodo,
     toggleTodoInput,
+    selectTodo
 }) => {
     return (
         <Modal
@@ -44,8 +46,9 @@ const TodoMenu = ({
                 <TouchableOpacity
                     style={styles.buttons}
                     onPress={() => {
-                        toggleCompletedTodo(selectedTodo);
                         toggleMenuBox();
+                        toggleCompletedTodo(selectedTodo);
+                        selectTodo(null);
                     }}
                 >
                     <Ionicons
@@ -63,8 +66,9 @@ const TodoMenu = ({
                 <TouchableOpacity
                     style={styles.buttons}
                     onPress={() => {
-                        removeTodo(selectedTodo);
                         toggleMenuBox();
+                        removeTodo(selectedTodo);
+                        selectTodo(null);
                     }}
                 >
                     <Ionicons
@@ -112,6 +116,7 @@ const mapDispatchToProps = (dispatch) => ({
     removeTodo: (todo) => dispatch(removeTodo(todo)),
     toggleCompletedTodo: (todo) => dispatch(toggleCompletedTodo(todo)),
     toggleTodoInput: () => dispatch(toggleTodoInput()),
+    selectTodo: (todo) => dispatch(selectTodo(todo)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoMenu);

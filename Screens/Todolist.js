@@ -13,7 +13,7 @@ import TodoInputBox from "../Components/TodoList/TodoInputBox";
 import { Ionicons } from "@expo/vector-icons";
 import TodoMenu from "../Components/TodoList/TodoMenu";
 
-const TodoList = ({ todos, toggleTodoInput, inputBox, menuBox }) => {
+const TodoList = ({ todos, toggleTodoInput, inputBox, menuBox, selectTodo }) => {
     const [showCompleted, setShowCompleted] = useState(true);
     return (
         <View style={styles.container}>
