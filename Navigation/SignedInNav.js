@@ -1,5 +1,4 @@
 import React from "react";
-import Profile from "../Screens/Profile";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import EventsNav from "./EventsNav";

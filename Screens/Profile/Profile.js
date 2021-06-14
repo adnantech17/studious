@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Text, View } from "react-native";
 import { connect } from "react-redux";
-import { auth } from "../Configs/firebase.config";
+import { auth } from "../../Configs/firebase.config";
 
-const Profile = ({ currentUser }) => {
+const Profile = ({ currentUser, navigation }) => {
     return (
         currentUser && (
             <View>
@@ -12,7 +12,11 @@ const Profile = ({ currentUser }) => {
                 <Text>Mobile: {currentUser.phone}</Text>
                 <Text>Gender {currentUser.gender}</Text>
                 <Button
-                    title="Logout"
+                    title="Details"
+                    onPress={ () => navigation.push("Details") }
+                />
+                <Button
+                    title="Log Out"
                     onPress={async () => {
                         await auth.signOut();
                     }}

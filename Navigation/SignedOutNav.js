@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SignIn from "../Screens/SignIn";
 import Register from "../Screens/Register";
-import Profile from "../Screens/Profile";
+import Profile from "../Screens/Profile/Profile";
 const AuthStack = createStackNavigator();
 
 const SignedOutNav = () => {
