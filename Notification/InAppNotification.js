@@ -1,7 +1,6 @@
 import * as Notifications from 'expo-notifications';
 
-const InAppNotification = 
-{
+const InAppNotification = {
     showInAppNotificationAsync : async (content) => {
         Notifications.setNotificationHandler({
             handleNotification: async () => ({

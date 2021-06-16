@@ -1,5 +1,5 @@
 import React from "react"
-import { Text, View, Button, FlatList } from "react-native"
+import { Text, View, Button, FlatList, ToastAndroid } from "react-native"
 
 import FieldItem from "../../Components/Profile/FieldItem"
 
@@ -27,8 +27,11 @@ const fields = [
 ]
 
 const renderField = ({item}) => {
+    const onCopyPress = () => {
+        ToastAndroid.show("Copied!",ToastAndroid.SHORT);
+    }
     return (
-        <FieldItem item = {item} />
+        <FieldItem item = {item} onButtonPress = {onCopyPress} />
     )
 }
 

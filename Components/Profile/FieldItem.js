@@ -1,8 +1,7 @@
 import React from "react"
 import { Text, View, Button, StyleSheet, Clipboard} from "react-native"
-import InAppNotification from "../../Notification/InAppNotification"
 
-const FieldItem = ({item}) => {
+const FieldItem = ({item, onButtonPress}) => {
     return(
         <View style = {styles.container}>
             <View style = {styles.fieldDetails}>
@@ -14,7 +13,7 @@ const FieldItem = ({item}) => {
                 style = {styles.copyButton}
                 onPress = { () => {
                         Clipboard.setString(item.value);
-                        InAppNotification.showInAppNotificationAsync({title: "Copied!"});
+                        onButtonPress();
                     }
                 }
             />
