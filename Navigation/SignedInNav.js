@@ -9,7 +9,11 @@ const Tab = createBottomTabNavigator();
 
 const SignedInNav = () => {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator
+            tabBarOptions={{
+                keyboardHidesTabBar: true
+            }}
+        >
             <Tab.Screen name="Events" component={EventsNav} />
             <Tab.Screen name="Todos" component={TodosNav} />
             <Tab.Screen name="Materials" component={MaterialsNav} />

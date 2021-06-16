@@ -7,22 +7,26 @@ const fields = [
     {
         id: "1",
         fieldName: "Name",
-        value: "Mridul"
+        value: "Mridul",
+        required: true,
     },
     {
         id: "2",
         fieldName: "Email",
-        value: "mridul.haque.mh@gmail.com"
+        value: "mridul.haque.mh@gmail.com",
+        required: true,
     },
     {
         id: "3",
         fieldName: "Sex",
-        value: "Male"
+        value: "Male",
+        required: false,
     },
     {
         id: "4",
         fieldName: "Date of Birth",
-        value: "20 Dec 1998"
+        value: "20 Dec 1998",
+        required: false,
     }
 ]
 
@@ -45,7 +49,7 @@ const Details = ({navigation}) => {
             />
             <Button
                 title = "Edit"
-                onPress = {() => navigation.navigate("EditScreen")}
+                onPress = {() => navigation.push("EditScreen")}
             />
         </View>
     )
