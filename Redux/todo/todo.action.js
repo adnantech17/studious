@@ -3,6 +3,11 @@ export const addTodo = (todo) => ({
     payload: todo,
 });
 
+export const setTodos = (todos) => ({
+    type: "SET_TODOS",
+    payload: todos,
+})
+
 export const removeTodo = (todo) => ({
     type: "REMOVE_TODO",
     payload: todo,

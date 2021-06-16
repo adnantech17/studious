@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     ScrollView,
     StyleSheet,
@@ -12,9 +12,14 @@ import { selectTodo, toggleTodoInput } from "../Redux/todo/todo.action";
 import TodoInputBox from "../Components/TodoList/TodoInputBox";
 import { Ionicons } from "@expo/vector-icons";
 import TodoMenu from "../Components/TodoList/TodoMenu";
+import { firebaseTodoUpload } from "../Utils/FirebaseUtils";
 
 const TodoList = ({ todos, toggleTodoInput, inputBox, menuBox, selectTodo }) => {
     const [showCompleted, setShowCompleted] = useState(true);
+
+    useEffect(() => {
+        firebaseTodoUpload(todos)
+    }, [todos])
     return (
         <View style={styles.container}>
             <View>

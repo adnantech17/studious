@@ -33,8 +33,8 @@ const Todo = ({ todo, toggleCompletedTodo, toggleMenuBox, selectTodo }) => {
                 </Text>
             </View>
             <View style={styles.date}>
-                {todo.date && <Text>{getDateText(todo.date)}</Text>}
-                {todo.time && <Text>{getTimeText(todo.time)}</Text>}
+                {todo.date && <Text>{getDateText(todo.date.toDate())}</Text>}
+                {todo.time && <Text>{getTimeText(todo.time.toDate())}</Text>}
             </View>
         </TouchableOpacity>
     );
