@@ -67,8 +67,9 @@ const TodoInputBox = ({
             setError(true);
             return;
         }
+        const dt = new Date()
         var todo = {
-            id: nextId(),
+            id: dt.getTime(),
             name: title,
             completed: false,
             date: todoDate,
