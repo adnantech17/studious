@@ -1,10 +1,10 @@
-import React from "react";
+import React, { forwardRef} from "react";
 import { TextInput } from "react-native";
 import { useFormikContext } from "formik";
 
 import FormikErrorMessage from "./FormikErrorMessage";
 
-function FormikFormField({ name, ...otherProps }) {
+const FormikFormField = ({ name, ...otherProps }, ref) => {
   const {
     setFieldTouched,
     setFieldValue,
@@ -16,6 +16,7 @@ function FormikFormField({ name, ...otherProps }) {
   return (
     <>
       <TextInput
+        ref = {ref}
         onBlur={() => setFieldTouched(name)}
         onFocus= {() => setFieldTouched(name,false)}
         onChangeText={(text) => setFieldValue(name, text)}
@@ -27,4 +28,4 @@ function FormikFormField({ name, ...otherProps }) {
   );
 }
 
-export default FormikFormField;
+export default forwardRef(FormikFormField);

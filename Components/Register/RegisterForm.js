@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet } from "react-native";
 
 import * as Yup from "yup";
@@ -32,10 +32,23 @@ const registerSchema = Yup.object().shape(
     }
 )
 
-const RegisterForm = ({handleSignUp}) => {
-    const [registrationFailed, setRegistrationFailed] = useState(false);
-    const [registrationFailError, setRegistrationFailError] = useState("");
+const inputFields = () => {
+    const firstName = useRef();
+    const lastName = useRef();
+    const email = useRef();
+    const password = useRef();
+    const confirmPassword = useRef();
 
+    return {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+    }
+}
+
+const RegisterForm = ({handleSignUp}) => {
     const handleSubmit = ({firstName, lastName, email, password}) => {
         handleSignUp(
             firstName,
@@ -46,6 +59,12 @@ const RegisterForm = ({handleSignUp}) => {
             setRegistrationFailError
         );
     }
+
+    const [registrationFailed, setRegistrationFailed] = useState(false);
+    const [registrationFailError, setRegistrationFailError] = useState("");
+
+
+    const fields = inputFields();
 
     return (
         <FormikForm
@@ -61,34 +80,43 @@ const RegisterForm = ({handleSignUp}) => {
         >
             <FormikErrorMessage error = {registrationFailError.toString()} visible = {registrationFailed}/>
             <FormikFormField
+                ref = {fields.firstName}
                 placeholder={"First Name"}
                 autoCapitalize="words"
                 autoCorrect={false}
                 keyboardType="default"
                 textContentType="givenName"
                 name = "firstName"
+                onSubmitEditing = {() => fields.lastName.current?.focus()}
             />
             <FormikFormField
+                ref = {fields.lastName}
                 placeholder={"Last Name"}
                 autoCapitalize="words"
                 autoCorrect={false}
                 keyboardType="default"
                 textContentType="familyName"
                 name = "lastName"
+                onSubmitEditing = {() => fields.email.current?.focus()}
             />
             <FormikFormField
+                ref = {fields.email}
                 placeholder={"Email"}
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="email-address"
                 textContentType="emailAddress"
                 name = "email"
+                onSubmitEditing = {() => fields.password.current?.focus()}
             />
             <FormikPasswordField
+                ref = {fields.password}
                 placeholder = "Password"
                 name = "password"
+                onSubmitEditing = {() => fields.confirmPassword.current?.focus()}
             />
             <FormikPasswordField
+                ref = {fields.confirmPassword}
                 placeholder={"Confrim Password"}
                 name = "confirmPassword"
             />

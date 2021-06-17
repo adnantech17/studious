@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { StyleSheet } from "react-native";
 
 import * as Yup from "yup";
@@ -21,13 +21,26 @@ const signInSchema = Yup.object().shape(
     }
 )
 
+const inputFields = () => {
+    const email = useRef();
+    const password = useRef();
+
+    return {
+        email,
+        password,
+    }
+}
+
 const SignInForm = ({handleSignIn}) => {
     const[loginFailed, setLoginFailed] = useState(false);
+
 
     const handleSubmit = ({email,password}) => {
         handleSignIn(email,password,setLoginFailed);
     }
 
+    const fields = inputFields();
+    
     return (
         <FormikForm
             initialValues = {{email: "", password: ""}}
@@ -36,14 +49,17 @@ const SignInForm = ({handleSignIn}) => {
         >
             <FormikErrorMessage error = "Incorrect email or password" visible = {loginFailed} />
             <FormikFormField
+                ref = {fields.email}
                 placeholder={"Email"}
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="email-address"
                 textContentType="emailAddress"
                 name = "email"
+                onSubmitEditing = {() => fields.password.current?.focus()}
             />
             <FormikPasswordField
+                ref = {fields.password}
                 placeholder={"Password"}
                 name = "password"
             />
