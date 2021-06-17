@@ -1,80 +1,118 @@
 import React, { useState } from "react";
 import { Text, StyleSheet, Button, View, TextInput } from "react-native";
 import { Picker } from "@react-native-community/picker";
+import * as Yup from "yup";
+
 import { auth, firestore } from "../Configs/firebase.config";
+import FormikForm from "../Components/Form/Formik/FormikForm";
+import FormikErrorMessage from "../Components/Form/Formik/FormikErrorMessage";
+import FormikSubmitButton from "../Components/Form/Formik/FormikSubmitButton";
+import FormikFormField from "../Components/Form/Formik/FormikFormField";
+import FormikPasswordField from "../Components/Form/Formik/FormikPasswordField";
+
+const registerSchema = Yup.object().shape(
+    {
+        firstName: Yup
+                .string()
+                .required("Required!"),
+        lastName: Yup
+                .string()
+                .required("Required!"),
+        email: Yup
+                .string()
+                .required("Please enter your email.")
+                .email("Invalid email address!"),
+        password: Yup
+                .string()
+                .required("Please enter your password.")
+                .min(6,"Too short!"),
+        confirmPassword: Yup
+                        .string()
+                        .required("Please confirm your Password")
+                        .oneOf([Yup.ref("password"), null], "Passwords must match!")
+    }
+)
 
 export const Register = ({ navigation }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [gender, setGender] = useState("male");
+    const [registrationFailed, setRegistrationFailed] = useState(false);
+    const [registrationFailError, setRegistrationFailError] = useState("");
 
-    const signUp = () => {
+    const signUp = ({firstName, lastName, email, password}) => {
         auth.createUserWithEmailAndPassword(email, password)
             .then((result) => {
                 firestore.collection("users").doc(auth.currentUser.uid).set({
-                    name,
+                    firstName,
+                    lastName,
                     email,
-                    phone,
-                    gender,
                 });
                 navigation.push("Profile");
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.log(err);
+                setRegistrationFailed(true);
+                setRegistrationFailError(err);
+            });
     };
 
     return (
         <View style={styles.container}>
-            <Text>Create Account Screen</Text>
-            <TextInput
-                placeholder={"Name"}
-                value={name}
-                onChangeText={(value) => setName(value)}
-            />
-
-            <TextInput
-                placeholder={"Email"}
-                value={email}
-                onChangeText={(value) => setEmail(value)}
-            />
-
-            <TextInput
-                placeholder={"Password"}
-                secureTextEntry={true}
-                value={password}
-                onChangeText={(value) => setPassword(value)}
-            />
-
-            <TextInput
-                placeholder={"Phone Number"}
-                value={phone}
-                onChangeText={setPhone}
-            />
-
-            <Picker
-                style={{
-                    width: "40%",
-                    height: 50,
+            <Text>Register</Text>
+            <FormikForm
+                initialValues = {{
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    password: "", 
+                    confirmPassword: "",
                 }}
-                selectedValue={gender}
-                onValueChange={(value) => setGender(value)}
+                validationSchema = {registerSchema}
+                onSubmit = {signUp}
             >
-                <Picker.Item label="Male" value="male" />
-                <Picker.Item label="Female" value="female" />
-            </Picker>
-
+                <FormikErrorMessage error = {registrationFailError.toString()} visible = {registrationFailed}/>
+                <FormikFormField
+                    placeholder={"First Name"}
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                    keyboardType="default"
+                    textContentType="givenName"
+                    name = "firstName"
+                />
+                <FormikFormField
+                    placeholder={"Last Name"}
+                    autoCapitalize="words"
+                    autoCorrect={false}
+                    keyboardType="default"
+                    textContentType="familyName"
+                    name = "lastName"
+                />
+                <FormikFormField
+                    placeholder={"Email"}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
+                    name = "email"
+                />
+                <FormikPasswordField
+                    placeholder = "Password"
+                    name = "password"
+                />
+                <FormikPasswordField
+                    placeholder={"Confrim Password"}
+                    name = "confirmPassword"
+                />
+                <FormikSubmitButton
+                    style={styles.button}
+                    title="Register"
+                />
+            </FormikForm>
+            <Text>Already have an account?</Text>
             <Button
                 style={styles.button}
-                title="Sign Up"
-                onPress={() => signUp()}
-            />
-            <Button
-                style={styles.button}
-                title="Login"
+                title="Log in"
                 onPress={() => {
                     navigation.replace("Sign In");
-                }}
+                }} 
             />
         </View>
     );
