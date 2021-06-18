@@ -7,14 +7,23 @@ import { Entypo } from "@expo/vector-icons";
 import colors from "../../../assets/colors";
 
 const FormikFormField = (
-  { name, leftIcon, rightIcon, rightIconOnPress, hidePassword, ...otherProps },
+  {
+    name,
+    style,
+    leftIcon,
+    rightIcon,
+    rightIconOnPress,
+    hidePassword,
+    forceSpace,
+    ...otherProps
+  },
   ref
 ) => {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.input}>
         <AntDesign
           style={styles.leftIcon}
@@ -38,7 +47,11 @@ const FormikFormField = (
           </TouchableOpacity>
         )}
       </View>
-      <FormikErrorMessage error={errors[name]} visible={touched[name]} />
+      <FormikErrorMessage
+        error={errors[name]}
+        forceSpace={forceSpace}
+        visible={touched[name]}
+      />
     </View>
   );
 };
@@ -47,7 +60,6 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 8,
     width: "80%",
-    elevation: 50,
   },
   input: {
     borderWidth: 1,
@@ -61,7 +73,7 @@ const styles = StyleSheet.create({
   },
   field: {
     marginLeft: 7,
-    width: "85%",
+    width: "83%",
   },
 });
 

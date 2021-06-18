@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import * as Yup from "yup";
 
@@ -20,7 +20,7 @@ const registerSchema = Yup.object().shape({
     .required("Please enter your password.")
     .min(6, "Too short!"),
   confirmPassword: Yup.string()
-    .required("Please confirm your Password")
+    .required("Please confirm your password")
     .oneOf([Yup.ref("password"), null], "Passwords must match!"),
 });
 
@@ -73,28 +73,35 @@ const RegisterForm = ({ handleSignUp }) => {
         error={registrationFailError.toString()}
         visible={registrationFailed}
       />
-      <FormikFormField
-        ref={fields.firstName}
-        placeholder={"First Name"}
-        autoCapitalize="words"
-        autoCorrect={false}
-        keyboardType="default"
-        textContentType="givenName"
-        name="firstName"
-        leftIcon="user"
-        onSubmitEditing={() => fields.lastName.current?.focus()}
-      />
-      <FormikFormField
-        ref={fields.lastName}
-        placeholder={"Last Name"}
-        autoCapitalize="words"
-        autoCorrect={false}
-        keyboardType="default"
-        textContentType="familyName"
-        name="lastName"
-        leftIcon="user"
-        onSubmitEditing={() => fields.email.current?.focus()}
-      />
+      <View style={styles.name}>
+        <View style={styles.nameChild}>
+          <FormikFormField
+            ref={fields.firstName}
+            placeholder={"First Name"}
+            autoCapitalize="words"
+            autoCorrect={false}
+            keyboardType="default"
+            textContentType="givenName"
+            name="firstName"
+            style={styles.nameField}
+            leftIcon="user"
+            // forceSpace={true}
+            onSubmitEditing={() => fields.lastName.current?.focus()}
+          />
+          <FormikFormField
+            ref={fields.lastName}
+            placeholder={"Last Name"}
+            autoCapitalize="words"
+            autoCorrect={false}
+            keyboardType="default"
+            textContentType="familyName"
+            name="lastName"
+            // forceSpace={true}
+            style={styles.nameField}
+            onSubmitEditing={() => fields.email.current?.focus()}
+          />
+        </View>
+      </View>
       <FormikFormField
         ref={fields.email}
         placeholder={"Email"}
@@ -127,6 +134,11 @@ const RegisterForm = ({ handleSignUp }) => {
 };
 
 const styles = StyleSheet.create({
+  name: {
+    alignContent: "center",
+    justifyContent: "center",
+    paddingHorizontal: "10%",
+  },
   appBtn: {
     backgroundColor: colors.backgroundColor,
     paddingVertical: 12,
@@ -135,12 +147,21 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 10,
   },
-
+  nameChild: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   appBtnTxt: {
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 2,
     color: colors.lightgray,
+  },
+  nameField: {
+    alignContent: "center",
+    justifyContent: "center",
+    width: "49%",
   },
 });
 
