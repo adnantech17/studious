@@ -2,13 +2,13 @@ import React from "react";
 import { useFormikContext } from "formik";
 import AppButton from "../../reusable/Appbutton";
 
-const FormikSubmitButton = ({ title, appBtn, appBtnTxt }) => {
+const FormikSubmitButton = ({ title, buttonStyle, textStyle }) => {
   const { handleSubmit } = useFormikContext();
 
   return (
     <AppButton
-      appBtn={appBtn}
-      appBtnTxt={appBtnTxt}
+      buttonStyle={buttonStyle}
+      textStyle={textStyle}
       title={title}
       onPress={handleSubmit}
     />

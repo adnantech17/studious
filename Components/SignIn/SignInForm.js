@@ -62,8 +62,8 @@ const SignInForm = ({ handleSignIn }) => {
       />
       <Text style={styles.forgetPass}>Forget Password?</Text>
       <FormikSubmitButton
-        appBtn={styles.appBtn}
-        appBtnTxt={styles.appBtnTxt}
+        buttonStyle={styles.buttonStyle}
+        textStyle={styles.buttonTextStyle}
         title="LOGIN"
       />
     </FormikForm>
@@ -71,7 +71,7 @@ const SignInForm = ({ handleSignIn }) => {
 };
 
 const styles = StyleSheet.create({
-  appBtn: {
+  buttonStyle: {
     backgroundColor: colors.backgroundColor,
     paddingVertical: 12,
     paddingHorizontal: "32%",
@@ -79,8 +79,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 10,
   },
-
-  appBtnTxt: {
+  buttonTextStyle: {
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 2,

@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 const EventList = () => {
     return (
         <View>
-            <Text>Material List</Text>
+            <Text>Event List</Text>
         </View>
     );
 };

@@ -125,8 +125,8 @@ const RegisterForm = ({ handleSignUp }) => {
         name="confirmPassword"
       />
       <FormikSubmitButton
-        appBtn={styles.appBtn}
-        appBtnTxt={styles.appBtnTxt}
+        buttonStyle={styles.buttonStyle}
+        textStyle={styles.buttonTextStyle}
         title="SIGN UP"
       />
     </FormikForm>
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: "10%",
   },
-  appBtn: {
+  buttonStyle: {
     backgroundColor: colors.backgroundColor,
     paddingVertical: 12,
     paddingHorizontal: "32%",
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  appBtnTxt: {
+  buttonTextStyle: {
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 2,
