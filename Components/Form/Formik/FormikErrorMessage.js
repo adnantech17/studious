@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, StyleSheet } from "react-native";
+import colors from "../../../assets/colors";
 
 const FormikErrorMessage = ({ error, visible, style, ...otherProps }) => {
   if (!visible || !error) return null;
@@ -12,7 +13,7 @@ const FormikErrorMessage = ({ error, visible, style, ...otherProps }) => {
 };
 
 const styles = StyleSheet.create({
-  error: { color: "red",width:'80%', paddingLeft:20, },
+  error: { color: colors.lightred, width: "80%", paddingLeft: 20 },
 });
 
 export default FormikErrorMessage;

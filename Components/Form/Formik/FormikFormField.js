@@ -4,6 +4,7 @@ import { useFormikContext } from "formik";
 import FormikErrorMessage from "./FormikErrorMessage";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import colors from "../../../assets/colors";
 
 const FormikFormField = (
   { name, leftIcon, rightIcon, rightIconOnPress, hidePassword, ...otherProps },
@@ -26,6 +27,7 @@ const FormikFormField = (
           onBlur={() => setFieldTouched(name)}
           onFocus={() => setFieldTouched(name, false)}
           onChangeText={(text) => setFieldValue(name, text)}
+          placeholderTextColor={colors.lightgray}
           value={values[name]}
           style={styles.field}
           {...otherProps}
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 8,
     width: "80%",
+    elevation: 50,
   },
   input: {
     borderWidth: 1,

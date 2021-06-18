@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet } from "react-native";
-
+import { StyleSheet, Text } from "react-native";
 import * as Yup from "yup";
-
 import FormikForm from "../Form/Formik/FormikForm";
 import FormikFormField from "../Form/Formik/FormikFormField";
 import FormikSubmitButton from "../Form/Formik/FormikSubmitButton";
@@ -53,7 +51,7 @@ const SignInForm = ({ handleSignIn }) => {
         autoCorrect={false}
         keyboardType="email-address"
         textContentType="emailAddress"
-        name="mail"
+        name="email"
         leftIcon="mail"
         onSubmitEditing={() => fields.password.current?.focus()}
       />
@@ -62,6 +60,7 @@ const SignInForm = ({ handleSignIn }) => {
         placeholder={"Password"}
         name="password"
       />
+      <Text style={styles.forgetPass}>Forget Password?</Text>
       <FormikSubmitButton
         appBtn={styles.appBtn}
         appBtnTxt={styles.appBtnTxt}
@@ -86,6 +85,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 2,
     color: colors.lightgray,
+  },
+  forgetPass: {
+    color: colors.lightgray,
+    alignSelf: "flex-end",
+    paddingRight:50,
   },
 });
 

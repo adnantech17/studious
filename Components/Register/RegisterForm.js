@@ -81,6 +81,7 @@ const RegisterForm = ({ handleSignUp }) => {
         keyboardType="default"
         textContentType="givenName"
         name="firstName"
+        leftIcon="user"
         onSubmitEditing={() => fields.lastName.current?.focus()}
       />
       <FormikFormField
@@ -91,6 +92,7 @@ const RegisterForm = ({ handleSignUp }) => {
         keyboardType="default"
         textContentType="familyName"
         name="lastName"
+        leftIcon="user"
         onSubmitEditing={() => fields.email.current?.focus()}
       />
       <FormikFormField
@@ -101,6 +103,7 @@ const RegisterForm = ({ handleSignUp }) => {
         keyboardType="email-address"
         textContentType="emailAddress"
         name="email"
+        leftIcon="mail"
         onSubmitEditing={() => fields.password.current?.focus()}
       />
       <FormikPasswordField
@@ -124,8 +127,19 @@ const RegisterForm = ({ handleSignUp }) => {
 };
 
 const styles = StyleSheet.create({
-  appBtn: {},
+  appBtn: {
+    backgroundColor: colors.backgroundColor,
+    paddingVertical: 12,
+    paddingHorizontal: "32%",
+    borderRadius: 100,
+    marginTop: 40,
+    marginBottom: 10,
+  },
+
   appBtnTxt: {
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 2,
     color: colors.lightgray,
   },
 });

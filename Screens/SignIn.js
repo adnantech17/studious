@@ -2,11 +2,11 @@ import React from "react";
 import {
   Text,
   StyleSheet,
-  Button,
   ToastAndroid,
   ImageBackground,
   Image,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 import colors from "../assets/colors";
@@ -30,11 +30,12 @@ const SignIn = ({ navigation, loadingState }) => {
 
   return (
     !loadingState && (
-      <KeyboardAvoidingView>
+      <>
         <ImageBackground
-          style={styles.container}
+          style={styles.backgroundView}
           source={require("../assets/pics/bg.png")}
-        >
+        />
+        <KeyboardAvoidingView style={styles.container}>
           <Image
             style={styles.logo}
             source={require("../assets/pics/logo.png")}
@@ -52,17 +53,25 @@ const SignIn = ({ navigation, loadingState }) => {
               Sign up
             </Text>
           </Text>
-          <Image
-            source={require("../assets/pics/login.png")}
-            style={styles.icon}
-          />
-        </ImageBackground>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+        <Image
+          source={require("../assets/pics/login.png")}
+          style={styles.icon}
+        />
+      </>
     )
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+    zIndex: 1,
+  },
   container: {
     flex: 1,
     width: "100%",
@@ -71,6 +80,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 3,
   },
 
   icon: {
@@ -79,6 +89,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: 150,
     width: 250,
+    zIndex: 2,
   },
   logo: {
     height: 120,

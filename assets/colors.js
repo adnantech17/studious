@@ -1,6 +1,7 @@
 const colors = {
-  backgroundColor: "#9DCFFF",
-  lightgray:"#202020"
+  backgroundColor: "#8DC7FF",
+  lightgray: "#202020",
+  lightred: "#FF7F7F",
 };
 
 export default colors;
