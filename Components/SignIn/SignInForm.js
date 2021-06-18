@@ -8,75 +8,85 @@ import FormikFormField from "../Form/Formik/FormikFormField";
 import FormikSubmitButton from "../Form/Formik/FormikSubmitButton";
 import FormikErrorMessage from "../Form/Formik/FormikErrorMessage";
 import FormikPasswordField from "../Form/Formik/FormikPasswordField";
+import colors from "../../assets/colors";
 
-const signInSchema = Yup.object().shape(
-    {
-        email: Yup
-            .string()
-            .required("Please enter your email.")
-            .email("Invalid email address!"),
-        password: Yup
-            .string()
-            .required("Please enter your password."),
-    }
-)
+const signInSchema = Yup.object().shape({
+  email: Yup.string()
+    .required("Please enter your email.")
+    .email("Invalid email address!"),
+  password: Yup.string().required("Please enter your password."),
+});
 
 const inputFields = () => {
-    const email = useRef();
-    const password = useRef();
+  const email = useRef();
+  const password = useRef();
 
-    return {
-        email,
-        password,
-    }
-}
+  return {
+    email,
+    password,
+  };
+};
 
-const SignInForm = ({handleSignIn}) => {
-    const[loginFailed, setLoginFailed] = useState(false);
+const SignInForm = ({ handleSignIn }) => {
+  const [loginFailed, setLoginFailed] = useState(false);
 
+  const handleSubmit = ({ email, password }) => {
+    handleSignIn(email, password, setLoginFailed);
+  };
 
-    const handleSubmit = ({email,password}) => {
-        handleSignIn(email,password,setLoginFailed);
-    }
+  const fields = inputFields();
 
-    const fields = inputFields();
-    
-    return (
-        <FormikForm
-            initialValues = {{email: "", password: ""}}
-            onSubmit = {handleSubmit}
-            validationSchema = {signInSchema}
-        >
-            <FormikErrorMessage error = "Incorrect email or password" visible = {loginFailed} />
-            <FormikFormField
-                ref = {fields.email}
-                placeholder={"Email"}
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                name = "email"
-                onSubmitEditing = {() => fields.password.current?.focus()}
-            />
-            <FormikPasswordField
-                ref = {fields.password}
-                placeholder={"Password"}
-                name = "password"
-            />
-            <FormikSubmitButton style={styles.button} title="Sign In"/>
-        </FormikForm>
-    )
-
-}
+  return (
+    <FormikForm
+      initialValues={{ email: "", password: "" }}
+      onSubmit={handleSubmit}
+      validationSchema={signInSchema}
+    >
+      <FormikErrorMessage
+        error="Incorrect email or password"
+        visible={loginFailed}
+      />
+      <FormikFormField
+        ref={fields.email}
+        placeholder={"Email"}
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="email-address"
+        textContentType="emailAddress"
+        name="mail"
+        leftIcon="mail"
+        onSubmitEditing={() => fields.password.current?.focus()}
+      />
+      <FormikPasswordField
+        ref={fields.password}
+        placeholder={"Password"}
+        name="password"
+      />
+      <FormikSubmitButton
+        appBtn={styles.appBtn}
+        appBtnTxt={styles.appBtnTxt}
+        title="LOGIN"
+      />
+    </FormikForm>
+  );
+};
 
 const styles = StyleSheet.create({
-    button: {
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        marginVertical: 10,
-        borderRadius: 5,
-    },
+  appBtn: {
+    backgroundColor: colors.backgroundColor,
+    paddingVertical: 12,
+    paddingHorizontal: "32%",
+    borderRadius: 100,
+    marginTop: 30,
+    marginBottom: 10,
+  },
+
+  appBtnTxt: {
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 2,
+    color: colors.lightgray,
+  },
 });
 
 export default SignInForm;
-

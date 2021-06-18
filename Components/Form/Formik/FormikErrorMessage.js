@@ -4,11 +4,15 @@ import { Text, StyleSheet } from "react-native";
 const FormikErrorMessage = ({ error, visible, style, ...otherProps }) => {
   if (!visible || !error) return null;
 
-  return (<Text style={[styles.error, style]} {...otherProps}>{error}</Text>)
-}
+  return (
+    <Text style={[styles.error, style]} {...otherProps}>
+      {error}
+    </Text>
+  );
+};
 
 const styles = StyleSheet.create({
-  error: { color: "red" },
+  error: { color: "red",width:'80%', paddingLeft:20, },
 });
 
 export default FormikErrorMessage;

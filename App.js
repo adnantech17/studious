@@ -4,7 +4,7 @@ import store from "./Redux/store";
 import { Provider } from "react-redux";
 import Index from "./Index";
 import { LogBox } from "react-native";
-LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
+// LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
 class App extends Component {
     unsubscribeFromAuth = null;

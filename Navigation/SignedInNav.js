@@ -9,14 +9,18 @@ import ProfilesNav from "./ProfilesNav";
 const Tab = createBottomTabNavigator();
 
 const SignedInNav = () => {
-    return (
-        <Tab.Navigator>
-            <Tab.Screen name="Events" component={EventsNav} />
-            <Tab.Screen name="Todos" component={TodosNav} />
-            <Tab.Screen name="Materials" component={MaterialsNav} />
-            <Tab.Screen name="Profile" component={ProfilesNav} />
-        </Tab.Navigator>
-    );
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tab.Screen name="Events" component={EventsNav} />
+      <Tab.Screen name="Todos" component={TodosNav} />
+      <Tab.Screen name="Materials" component={MaterialsNav} />
+      <Tab.Screen name="Profile" component={ProfilesNav} />
+    </Tab.Navigator>
+  );
 };
 
 export default SignedInNav;
