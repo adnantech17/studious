@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "studious",
+    "name": "Studious",
     "slug": "studious",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "An app that can help a student manage his daily routine, his to-do list, and store his study materials in an organized manner.",
+    "githubUrl": "https://github.com/adnantech17/studious"
   }
 }

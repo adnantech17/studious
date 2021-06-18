@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     display: "flex",
     flexDirection: "row",
-    borderColor: "black",
+    borderColor: colors.lightgray,
     borderRadius: 100,
     paddingHorizontal: 16,
     height: 50,
