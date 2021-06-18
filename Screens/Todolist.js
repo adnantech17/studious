@@ -12,6 +12,7 @@ import { selectTodo, toggleTodoInput } from "../Redux/todo/todo.action";
 import TodoInputBox from "../Components/TodoList/TodoInputBox";
 import { Ionicons } from "@expo/vector-icons";
 import TodoMenu from "../Components/TodoList/TodoMenu";
+import AddButton from "../Components/Buttons/AddButton";
 
 const TodoList = ({ todos, toggleTodoInput, inputBox, menuBox, selectTodo }) => {
     const [showCompleted, setShowCompleted] = useState(true);
@@ -56,15 +57,12 @@ const TodoList = ({ todos, toggleTodoInput, inputBox, menuBox, selectTodo }) => 
             {inputBox && <TodoInputBox />}
             {menuBox && <TodoMenu />}
             {!inputBox && (
-                <TouchableOpacity
-                    style={styles.addButton}
+                <AddButton
                     onPress={() => {
                         toggleTodoInput();
                         selectTodo(null);
                     }}
-                >
-                    <Text style={{ fontSize: 32 }}>+</Text>
-                </TouchableOpacity>
+                />
             )}
         </View>
     );
@@ -93,19 +91,6 @@ const styles = StyleSheet.create({
     },
     input: {
         justifyContent: "flex-end",
-    },
-    addButton: {
-        borderWidth: 1,
-        borderColor: "rgba(0,0,0,0.2)",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 48,
-        height: 48,
-        backgroundColor: "#fff",
-        borderRadius: 32,
-        position: "absolute",
-        bottom: 24,
-        right: 24,
     },
     completedHeadline: {
         backgroundColor: "#ccc",
