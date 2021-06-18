@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import nextId from "react-id-generator";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { connect } from "react-redux";
 import { Picker } from "@react-native-community/picker";
+import * as FileSystem from "expo-file-system";
 
 import { addMaterial, updateMaterial } from "../Redux/material/material.action";
 import TagInputBox from "../Components/Input/TagInputBox";
@@ -69,6 +77,20 @@ const NewMaterialScreen = ({
         });
       }
     );
+  };
+
+  const downloadDocument = () => {
+    FileSystem.downloadAsync(
+      "http://techslides.com/demos/sample-videos/small.mp4",
+      FileSystem.documentDirectory + "small.mp4"
+    )
+      .then(({ uri }) => {
+        Alert.alert("App", uri);
+      })
+      .catch((error) => {
+        Alert.alert("App", error);
+        console.error(error);
+      });
   };
 
   const performCheck = () => {

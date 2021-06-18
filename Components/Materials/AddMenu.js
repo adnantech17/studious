@@ -1,47 +1,50 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
+
 import Modal from "react-native-modal";
-import { Ionicons } from "@expo/vector-icons";
-import MenuButton from "../Buttons/MenuButton";
 import {
-  removeMaterial,
-  toggleMaterialMenu,
+  addMaterial,
+  selectCourse,
+  selectMaterial,
+  toggleCourseInput,
+  toggleMenuBox,
 } from "../../Redux/material/material.action";
+import MenuButton from "../Buttons/MenuButton";
 
 const MaterialMenu = ({
-  menuBox,
+  matMenuBox,
   toggleMenuBox,
-  selectedMaterial,
-  removeMaterial,
   navigation,
+  toggleCourseInput,
+  selectCourse,
+  selectMaterial,
 }) => {
-  console.log(selectedMaterial);
   return (
     <Modal
       onBackdropPress={toggleMenuBox}
       onBackButtonPress={toggleMenuBox}
-      isVisible={menuBox}
+      isVisible={matMenuBox}
       style={styles.modal}
     >
       <View style={styles.container}>
         <MenuButton
-          title="Edit"
-          name="pencil"
+          title="Add new Course"
+          name="book"
           onPress={() => {
             toggleMenuBox();
-            navigation.navigate("NewMaterial");
+            selectCourse(null);
+            toggleCourseInput();
           }}
         />
         <MenuButton
-          title="Remove"
-          name="trash-bin"
+          title="Add Course Material"
+          name="newspaper"
           onPress={() => {
-            removeMaterial(
-              selectedMaterial.course_id,
-              selectedMaterial.material
-            );
             toggleMenuBox();
+            selectCourse(null);
+            selectMaterial(null, null);
+            navigation.navigate("NewMaterial");
           }}
         />
       </View>
@@ -60,26 +63,20 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
   },
-  buttons: {
-    flexDirection: "row",
-    marginHorizontal: 16,
-    paddingVertical: 8,
-  },
-
-  icon: {
-    marginRight: 8,
-  },
 });
 
 const mapStateToProps = (state) => ({
-  menuBox: state.courses.materialMenuBox,
-  selectedMaterial: state.courses.selectedMaterial,
+  matMenuBox: state.courses.matMenuBox,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleMenuBox: () => dispatch(toggleMaterialMenu()),
-  removeMaterial: (course_id, material) =>
-    dispatch(removeMaterial(course_id, material)),
+  toggleMenuBox: () => dispatch(toggleMenuBox()),
+  toggleCourseInput: () => dispatch(toggleCourseInput()),
+  addMaterial: (course_id, material) =>
+    dispatch(addMaterial(course_id, material)),
+  selectCourse: (course) => dispatch(selectCourse(course)),
+  selectMaterial: (course_id, material) =>
+    dispatch(selectMaterial(course_id, material)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MaterialMenu);

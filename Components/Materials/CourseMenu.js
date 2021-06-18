@@ -1,22 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import Modal from "react-native-modal";
-import { Ionicons } from "@expo/vector-icons";
 import MenuButton from "../Buttons/MenuButton";
 import {
-  removeMaterial,
-  toggleMaterialMenu,
+  removeCourse,
+  toggleCourseInput,
+  toggleCourseMenu,
 } from "../../Redux/material/material.action";
 
-const MaterialMenu = ({
+const CourseMenu = ({
   menuBox,
   toggleMenuBox,
-  selectedMaterial,
-  removeMaterial,
-  navigation,
+  selectedCourse,
+  removeCourse,
+  toggleCourseInput,
 }) => {
-  console.log(selectedMaterial);
   return (
     <Modal
       onBackdropPress={toggleMenuBox}
@@ -30,17 +29,15 @@ const MaterialMenu = ({
           name="pencil"
           onPress={() => {
             toggleMenuBox();
-            navigation.navigate("NewMaterial");
+            toggleCourseInput();
           }}
         />
+
         <MenuButton
           title="Remove"
           name="trash-bin"
           onPress={() => {
-            removeMaterial(
-              selectedMaterial.course_id,
-              selectedMaterial.material
-            );
+            removeCourse(selectedCourse);
             toggleMenuBox();
           }}
         />
@@ -72,14 +69,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  menuBox: state.courses.materialMenuBox,
-  selectedMaterial: state.courses.selectedMaterial,
+  menuBox: state.courses.courseMenuBox,
+  selectedCourse: state.courses.selectedCourse,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleMenuBox: () => dispatch(toggleMaterialMenu()),
-  removeMaterial: (course_id, material) =>
-    dispatch(removeMaterial(course_id, material)),
+  toggleMenuBox: () => dispatch(toggleCourseMenu()),
+  removeCourse: (course) => dispatch(removeCourse(course)),
+  toggleCourseInput: () => dispatch(toggleCourseInput()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MaterialMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(CourseMenu);
