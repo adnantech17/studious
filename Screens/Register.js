@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, Button, ImageBackground, Image } from "react-native";
+import { Text, StyleSheet, ImageBackground, Image, Dimensions, KeyboardAvoidingView } from "react-native";
 
 import { auth, firestore } from "../Configs/firebase.config";
 import RegisterForm from "../Components/Register/RegisterForm";
@@ -33,35 +33,47 @@ export const Register = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground
-      style={styles.container}
-      source={require("../assets/pics/bg.png")}
-    >
-      <Image
-        style={styles.icon}
-        source={require("../assets/pics/signup.png")}
-      />
-      <RegisterForm handleSignUp={signUp} />
-      <Text style={styles.haveAccount}>
-        <Text>Already have an account? </Text>
-        <Text
-          style={styles.login}
-          onPress={() => {
-            navigation.replace("Sign In");
-          }}
-        >
-          Log In
-        </Text>
-      </Text>
-    </ImageBackground>
+    <>
+        <ImageBackground
+        style={styles.backgroundView}
+        source={require("../assets/pics/bg.png")}
+        />
+        <KeyboardAvoidingView style = {styles.container}>
+            <Image
+                style={styles.icon}
+                source={require("../assets/pics/signup.png")}
+            />
+            <RegisterForm handleSignUp={signUp} />
+            <Text style={styles.haveAccount}>
+                <Text>Already have an account? </Text>
+                <Text
+                style={styles.login}
+                onPress={() => {
+                    navigation.replace("Sign In");
+                }}
+                >
+                Log In
+                </Text>
+            </Text>
+        </KeyboardAvoidingView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+    zIndex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 2,
   },
   icon: {
     height: 120,
@@ -70,7 +82,7 @@ const styles = StyleSheet.create({
   },
   login: {
     color: colors.backgroundColor,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
 });
 

@@ -1,6 +1,7 @@
 const colors = {
   backgroundColor: "#8DC7FF",
-  lightgray: "#202020",
+  lightgray: "#808080",
+  darkgray: "#202020",
   lightred: "#FF7F7F",
 };
 

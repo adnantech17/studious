@@ -84,10 +84,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 2,
-    color: colors.lightgray,
+    color: colors.darkgray,
   },
   forgetPass: {
-    color: colors.lightgray,
+    color: colors.darkgray,
     alignSelf: "flex-end",
     paddingRight:50,
   },

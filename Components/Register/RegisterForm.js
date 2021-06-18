@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 2,
-    color: colors.lightgray,
+    color: colors.darkgray,
   },
   nameField: {
     alignContent: "center",

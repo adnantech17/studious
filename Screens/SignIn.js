@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   signup: {
     color: colors.backgroundColor,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
 });
 
