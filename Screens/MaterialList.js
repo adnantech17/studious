@@ -7,7 +7,7 @@ import Course from "../Components/Materials/Course";
 import CourseInputBox from "../Components/Materials/CourseInputBox";
 import MaterialMenu from "../Components/Materials/AddMenu";
 import { auth, firestore } from "../Configs/firebase.config";
-import { toggleMenuBox } from "../Redux/material/material.action";
+import { selectCourse, toggleMenuBox } from "../Redux/material/material.action";
 
 const MaterialList = ({
   courses,
@@ -15,6 +15,7 @@ const MaterialList = ({
   toggleMenuBox,
   navigation,
   inputBox,
+  selectCourse,
 }) => {
   useEffect(() => {
     firestore
@@ -29,7 +30,12 @@ const MaterialList = ({
           <Course key={course.id} course={course} navigation={navigation} />
         ))}
       </ScrollView>
-      <AddButton onPress={() => toggleMenuBox()} />
+      <AddButton
+        onPress={() => {
+          selectCourse(null);
+          toggleMenuBox();
+        }}
+      />
       {matMenuBox && <MaterialMenu navigation={navigation} />}
       {inputBox && <CourseInputBox />}
     </View>
@@ -43,6 +49,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleMenuBox: () => dispatch(toggleMenuBox()),
+  selectCourse: (course) => dispatch(selectCourse(course)),
 });
 
 const styles = StyleSheet.create({

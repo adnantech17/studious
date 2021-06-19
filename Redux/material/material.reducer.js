@@ -89,7 +89,7 @@ const courseReducer = (state = INITIAL_STATE, action) => {
         courses: updateMaterialUtil(state.courses, action.payload),
       };
 
-    case "TOGGLE_MATERIAL_MENU_BOX":
+    case "TOGGLE_MAT_MENU_BOX":
       return {
         ...state,
         matMenuBox: !state.matMenuBox,

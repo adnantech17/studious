@@ -87,6 +87,7 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
   setLoading: (loadingState) => dispatch(setLoading(loadingState)),
   setTodos: (todos) => dispatch(setTodos(todos)),
+  setCourses: (courses) => dispatch(setCourses(courses)),
 });
 
 const mapStateToProps = (state) => ({

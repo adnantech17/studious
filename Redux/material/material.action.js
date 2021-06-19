@@ -19,7 +19,7 @@ export const updateCourse = (course) => ({
 });
 
 export const toggleMenuBox = () => ({
-  type: "TOGGLE_MATERIAL_MENU_BOX",
+  type: "TOGGLE_MAT_MENU_BOX",
 });
 
 export const toggleCourseInput = () => ({
