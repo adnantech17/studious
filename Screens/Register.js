@@ -1,97 +1,89 @@
-import React, { useState } from "react";
-import { Text, StyleSheet, Button, View, TextInput } from "react-native";
-import { Picker } from "@react-native-community/picker";
+import React from "react";
+import { Text, StyleSheet, ImageBackground, Image, Dimensions, KeyboardAvoidingView } from "react-native";
+
 import { auth, firestore } from "../Configs/firebase.config";
+import RegisterForm from "../Components/Register/RegisterForm";
+import colors from "../assets/colors";
 
 export const Register = ({ navigation }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [gender, setGender] = useState("male");
+  const signUp = (
+    firstName,
+    lastName,
+    email,
+    password,
+    setRegistrationFailed,
+    setRegistrationFailError
+  ) => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        console.log(result);
+        firestore.collection("users").doc(auth.currentUser.uid).set({
+          firstName,
+          lastName,
+          email,
+        });
+        navigation.push("Profile");
+      })
+      .catch((err) => {
+        console.log(err);
+        setRegistrationFailed(true);
+        setRegistrationFailError(err);
+      });
+  };
 
-    const signUp = () => {
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((result) => {
-                firestore.collection("users").doc(auth.currentUser.uid).set({
-                    name,
-                    email,
-                    phone,
-                    gender,
-                });
-                navigation.push("Profile");
-            })
-            .catch((err) => console.log(err));
-    };
-
-    return (
-        <View style={styles.container}>
-            <Text>Create Account Screen</Text>
-            <TextInput
-                placeholder={"Name"}
-                value={name}
-                onChangeText={(value) => setName(value)}
+  return (
+    <>
+        <ImageBackground
+        style={styles.backgroundView}
+        source={require("../assets/pics/bg.png")}
+        />
+        <KeyboardAvoidingView style = {styles.container}>
+            <Image
+                style={styles.icon}
+                source={require("../assets/pics/signup.png")}
             />
-
-            <TextInput
-                placeholder={"Email"}
-                value={email}
-                onChangeText={(value) => setEmail(value)}
-            />
-
-            <TextInput
-                placeholder={"Password"}
-                secureTextEntry={true}
-                value={password}
-                onChangeText={(value) => setPassword(value)}
-            />
-
-            <TextInput
-                placeholder={"Phone Number"}
-                value={phone}
-                onChangeText={setPhone}
-            />
-
-            <Picker
-                style={{
-                    width: "40%",
-                    height: 50,
-                }}
-                selectedValue={gender}
-                onValueChange={(value) => setGender(value)}
-            >
-                <Picker.Item label="Male" value="male" />
-                <Picker.Item label="Female" value="female" />
-            </Picker>
-
-            <Button
-                style={styles.button}
-                title="Sign Up"
-                onPress={() => signUp()}
-            />
-            <Button
-                style={styles.button}
-                title="Login"
+            <RegisterForm handleSignUp={signUp} />
+            <Text style={styles.haveAccount}>
+                <Text>Already have an account? </Text>
+                <Text
+                style={styles.login}
                 onPress={() => {
                     navigation.replace("Sign In");
                 }}
-            />
-        </View>
-    );
+                >
+                Log In
+                </Text>
+            </Text>
+        </KeyboardAvoidingView>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    button: {
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        marginVertical: 10,
-        borderRadius: 5,
-    },
+  backgroundView: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+    zIndex: 1,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 2,
+  },
+  icon: {
+    height: 120,
+    width: 270,
+    marginBottom: 50,
+  },
+  login: {
+    color: colors.backgroundColor,
+    fontWeight: "bold",
+  },
 });
 
 export default Register;
