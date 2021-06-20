@@ -20,6 +20,7 @@ const FieldInput = ({item, setItem, onDelete}) => {
                 placeholder = "Field Name" 
                 value = {item.fieldName}
                 onBlur = {() => setFieldNameTouched(true)}
+                onFocus = {() => setFieldNameTouched(false)}
                 onChangeText = {(text) => {
                         setItem({
                             ...item,
@@ -34,6 +35,7 @@ const FieldInput = ({item, setItem, onDelete}) => {
                 placeholder = "Value" 
                 value = {item.value}
                 onBlur = {() => setFieldValueTouched(true)}
+                onFocus = {() => setFieldValueTouched(false)}
                 onChangeText = {(text) => {
                     setItem({
                         ...item,
