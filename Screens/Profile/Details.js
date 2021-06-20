@@ -1,34 +1,8 @@
 import React from "react"
-import { Text, View, Button, FlatList, ToastAndroid } from "react-native"
+import { View, Button, FlatList, ToastAndroid } from "react-native"
+import { connect } from "react-redux";
 
 import FieldItem from "../../Components/Profile/FieldItem"
-
-const fields = [
-    {
-        id: "1",
-        fieldName: "Name",
-        value: "Mridul",
-        required: true,
-    },
-    {
-        id: "2",
-        fieldName: "Email",
-        value: "mridul.haque.mh@gmail.com",
-        required: true,
-    },
-    {
-        id: "3",
-        fieldName: "Sex",
-        value: "Male",
-        required: false,
-    },
-    {
-        id: "4",
-        fieldName: "Date of Birth",
-        value: "20 Dec 1998",
-        required: false,
-    }
-]
 
 const renderField = ({item}) => {
     const onCopyPress = () => {
@@ -39,11 +13,11 @@ const renderField = ({item}) => {
     )
 }
 
-const Details = ({navigation}) => {
+const Details = ({navigation, fieldData}) => {
     return (
         <View>
             <FlatList
-                data = {fields}
+                data = {fieldData}
                 keyExtractor = {(item) => item.id}
                 renderItem = {renderField}
             />
@@ -55,4 +29,12 @@ const Details = ({navigation}) => {
     )
 }
 
-export default Details;
+const mapStateToProps = (state) => ({
+    fieldData: state.profile.fieldData,
+
+});
+const mapDispatchToProps = (dispatch) => ({
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details);

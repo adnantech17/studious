@@ -7,10 +7,9 @@ const Profile = ({ currentUser, navigation }) => {
     return (
         currentUser && (
             <View>
-                <Text>Welcome {currentUser.name}</Text>
-                <Text>Email: {currentUser.email}</Text>
-                <Text>Mobile: {currentUser.phone}</Text>
-                <Text>Gender {currentUser.gender}</Text>
+                <Text>{`${currentUser.firstName} ${currentUser.lastName}`}</Text>
+                <Text>{currentUser.email}</Text>
+
                 <Button
                     title="Details"
                     onPress={ () => navigation.push("Details") }

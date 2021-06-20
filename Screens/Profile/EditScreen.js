@@ -1,43 +1,38 @@
 import React, { useState, useRef } from "react"
 import nextId from "react-id-generator";
 import { View, Button, ToastAndroid, FlatList, KeyboardAvoidingView } from "react-native"
+import { connect } from "react-redux";
+
 import FieldInput from "../../Components/Profile/FieldInput";
+import { setFieldData } from "../../Redux/profile/profile.action";
 
-const fieldData = [
-    {
-        id: "1",
-        fieldName: "Name",
-        value: "Mridul",
-        required: true,
-    },
-    {
-        id: "2",
-        fieldName: "Email",
-        value: "mridul.haque.mh@gmail.com",
-        required: true,
-    },
-    {
-        id: "3",
-        fieldName: "Sex",
-        value: "Male",
-        required: false,
-    },
-    {
-        id: "4",
-        fieldName: "Date of Birth",
-        value: "20 Dec 1998",
-        required: false,
-    }
-]
-
-
-
-const EditScreen = () => {
+const EditScreen = ({navigation, fieldData, setFieldData}) => {
     const [data, setData] = useState(fieldData);
     const [newItem, setNewItem] = useState();
 
     const listRef = useRef();
 
+    const onSave = () => {
+        setFieldData(data.filter( (field) => field.fieldName != "" && field.value != "" ));
+        navigation.goBack();
+    }
+
+    const createEmptyField = () => {
+        return {
+            id: nextId(),
+            fieldName: "",
+            value: "",
+            required: false,
+        }   
+    }
+
+    const addField = () =>
+    {
+        const emptyField = createEmptyField();
+        setNewItem(emptyField);
+        setData(data.concat(emptyField));
+    }
+    
 
     const renderFieldInput = ({item}) => {
         const setItem = (updatedField) => {
@@ -63,20 +58,6 @@ const EditScreen = () => {
         )
     }
 
-    const createEmptyField = () => {
-        return {
-            id: nextId(),
-            fieldName: "",
-            value: "",
-            required: false,
-        }   
-    }
-    const addField = () =>
-    {
-        const emptyField = createEmptyField();
-        setNewItem(emptyField);
-        setData(data.concat(emptyField));
-    }
     
     return (
         <KeyboardAvoidingView>
@@ -100,7 +81,7 @@ const EditScreen = () => {
                         />
                         <Button 
                             title = "Save"
-                            onPress = {() => console.log(data)}
+                            onPress = {onSave}
                         />
                         <View
                             style = {{height: 40}}
@@ -113,4 +94,12 @@ const EditScreen = () => {
     )
 }
 
-export default EditScreen;
+const mapStateToProps = (state) => ({
+    fieldData: state.profile.fieldData,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setFieldData: (fieldData) => dispatch(setFieldData(fieldData)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditScreen);
