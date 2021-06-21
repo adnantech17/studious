@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignIn from "../Screens/SignIn";
 import Register from "../Screens/Register";
 import Profile from "../Screens/Profile";
+import ConfirmPin from "../Screens/ConfirmPin";
 const AuthStack = createStackNavigator();
 
 const SignedOutNav = () => {
@@ -23,6 +24,12 @@ const SignedOutNav = () => {
         component={Profile}
         options={{ title: "Profile" }}
       />
+      <AuthStack.Screen
+        name="Confirm Pin"
+        component={ConfirmPin}
+        options={{ title: "Confirm Pin" }}
+      />
+
     </AuthStack.Navigator>
   );
 };

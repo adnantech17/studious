@@ -40,7 +40,7 @@ const SignIn = ({ navigation, loadingState }) => {
             style={styles.logo}
             source={require("../assets/pics/logo.png")}
           />
-          <SignInForm handleSignIn={login} />
+          <SignInForm handleSignIn={login} navigation={navigation} />
           <Text style={styles.noAccount}>
             <Text>Don't have an account? </Text>
             <Text

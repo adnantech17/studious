@@ -25,7 +25,7 @@ const inputFields = () => {
   };
 };
 
-const SignInForm = ({ handleSignIn }) => {
+const SignInForm = ({ navigation, handleSignIn }) => {
   const [loginFailed, setLoginFailed] = useState(false);
 
   const handleSubmit = ({ email, password }) => {
@@ -60,7 +60,12 @@ const SignInForm = ({ handleSignIn }) => {
         placeholder={"Password"}
         name="password"
       />
-      <Text style={styles.forgetPass}>Forget Password?</Text>
+      <Text
+        style={styles.forgetPass}
+        onPress={() => navigation.push("Confirm Pin")}
+      >
+        Forget Password?
+      </Text>
       <FormikSubmitButton
         buttonStyle={styles.buttonStyle}
         textStyle={styles.buttonTextStyle}
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
   forgetPass: {
     color: colors.darkgray,
     alignSelf: "flex-end",
-    paddingRight:50,
+    paddingRight: 50,
   },
 });
 
