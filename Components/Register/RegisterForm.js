@@ -20,7 +20,7 @@ const registerSchema = Yup.object().shape({
     .required("Please enter your password.")
     .min(6, "Too short!"),
   confirmPassword: Yup.string()
-    .required("Please confirm your password")
+    .required("Please confirm your password.")
     .oneOf([Yup.ref("password"), null], "Passwords must match!"),
 });
 
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "flex-start",
   },
   buttonTextStyle: {
     fontSize: 16,
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
   nameField: {
     alignContent: "center",
     justifyContent: "center",
-    width: "49%",
+    width: "49.5%",
   },
 });
 
