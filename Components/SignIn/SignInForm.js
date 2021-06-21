@@ -62,7 +62,7 @@ const SignInForm = ({ navigation, handleSignIn }) => {
       />
       <Text
         style={styles.forgetPass}
-        onPress={() => navigation.push("Confirm Pin")}
+        onPress={() => navigation.push("Forget Password")}
       >
         Forget Password?
       </Text>

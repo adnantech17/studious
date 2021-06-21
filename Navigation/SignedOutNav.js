@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignIn from "../Screens/SignIn";
 import Register from "../Screens/Register";
 import Profile from "../Screens/Profile";
-import ConfirmPin from "../Screens/ConfirmPin";
+import ForgetPassword from "../Screens/ForgetPassword";
 const AuthStack = createStackNavigator();
 
 const SignedOutNav = () => {
@@ -25,9 +25,9 @@ const SignedOutNav = () => {
         options={{ title: "Profile" }}
       />
       <AuthStack.Screen
-        name="Confirm Pin"
-        component={ConfirmPin}
-        options={{ title: "Confirm Pin" }}
+        name="Forget Password"
+        component={ForgetPassword}
+        options={{ title: "Forget Password" }}
       />
 
     </AuthStack.Navigator>
