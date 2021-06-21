@@ -26,7 +26,8 @@ const INITIAL_STATE = {
             value: "20 Dec 1998",
             required: false,
         }
-    ]
+    ],
+    profileImageUri: null,
 }
 
 const profileReducer = (state = INITIAL_STATE, action) => {
@@ -40,6 +41,11 @@ const profileReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 fieldData: setFieldDataUtil(action.payload),
+            }
+        case "SET_PROFILE_IMAGE_URI":
+            return {
+                ...state,
+                profileImageUri: action.payload,
             }
         default: return state;
     }

@@ -2,18 +2,27 @@ import React, { useState, useRef } from "react"
 import nextId from "react-id-generator";
 import { View, Button, ToastAndroid, FlatList, KeyboardAvoidingView } from "react-native"
 import { connect } from "react-redux";
+import ImageInput from "../../Components/Form/ImageInput";
 
 import FieldInput from "../../Components/Profile/FieldInput";
-import { setFieldData } from "../../Redux/profile/profile.action";
+import { setFieldData, setProfileImageUri } from "../../Redux/profile/profile.action";
 
-const EditScreen = ({navigation, fieldData, setFieldData}) => {
+const EditScreen = ({
+    navigation, 
+    fieldData, 
+    setFieldData, 
+    profileImageUri,
+    setProfileImageUri
+}) => {
     const [data, setData] = useState(fieldData);
     const [newItem, setNewItem] = useState();
+    const [imageUri, setImageUri] = useState(profileImageUri);
 
     const listRef = useRef();
 
     const onSave = () => {
         setFieldData(data.filter( (field) => field.fieldName != "" && field.value != "" ));
+        setProfileImageUri(imageUri);
         navigation.goBack();
     }
 
@@ -73,6 +82,9 @@ const EditScreen = ({navigation, fieldData, setFieldData}) => {
                         setNewItem(null);
                     }
                 }}
+                ListHeaderComponent = {
+                    <ImageInput imageUri = {imageUri} onChangeImage = {setImageUri} />
+                }
                 ListFooterComponent = {
                     <>
                         <Button
@@ -96,10 +108,12 @@ const EditScreen = ({navigation, fieldData, setFieldData}) => {
 
 const mapStateToProps = (state) => ({
     fieldData: state.profile.fieldData,
+    profileImageUri: state.profile.profileImageUri,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     setFieldData: (fieldData) => dispatch(setFieldData(fieldData)),
+    setProfileImageUri: (imageUri) => dispatch(setProfileImageUri(imageUri)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditScreen);
