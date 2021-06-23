@@ -55,27 +55,38 @@ const TodoList = ({
           keyExtractor={(item) => item.id.toString()}
           ListFooterComponent = {
             <>
-              {todos.filter((todo) => todo.completed).length > 0 && (
-                <TouchableOpacity
-                  style={styles.completedHeadline}
-                  onPress={() => setShowCompleted(!showCompleted)}
-                >
-                  <Text style={styles.completedHeadlineText}>Completed</Text>
-                  <Ionicons
-                    style={styles.completedHeadlineIcon}
-                    size={20}
-                    name={showCompleted ? "chevron-down" : "chevron-back"}
-                    color="gray"
-                  />
-                </TouchableOpacity>
-              )}
               <FlatList
-                data={todos
+                data={ showCompleted ? todos
                   .filter((todo) => todo.completed)
-                  .sort((a, b) => a.date - b.date)}
+                  .sort((a, b) => a.date - b.date) : null}
                 renderItem={({ item }) => <Todo key={item.id} todo={item} />}
                 keyExtractor={(item) => item.id.toString()}
-              />
+                ListHeaderComponent = {
+                  <>
+                    {todos.filter((todo) => todo.completed).length > 0 && (
+                      <TouchableOpacity
+                        style={styles.completedHeadline}
+                        onPress={() => setShowCompleted(!showCompleted)}
+                      >
+                        <Text style={styles.completedHeadlineText}>Completed</Text>
+                        <Ionicons
+                          style={styles.completedHeadlineIcon}
+                          size={20}
+                          name={showCompleted ? "chevron-down" : "chevron-back"}
+                          color="gray"
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </>
+                }
+                /> 
+            </>
+          }
+          ListEmptyComponent = {
+            <>
+              { todos.length == 0 &&
+                <Text>Insert your tasks here.</Text>
+              }
             </>
           }
         />
