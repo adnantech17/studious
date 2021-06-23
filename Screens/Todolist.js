@@ -52,28 +52,32 @@ const TodoList = ({
           onRefresh={onRefresh}
           refreshing={refreshing}
           renderItem={({ item }) => <Todo key={item.id} todo={item} />}
-          keyExtractor={(item) => item.id}
-        />
-        {todos.filter((todo) => todo.completed).length > 0 && (
-          <TouchableOpacity
-            style={styles.completedHeadline}
-            onPress={() => setShowCompleted(!showCompleted)}
-          >
-            <Text style={styles.completedHeadlineText}>Completed</Text>
-            <Ionicons
-              style={styles.completedHeadlineIcon}
-              size={20}
-              name={showCompleted ? "chevron-down" : "chevron-back"}
-              color="gray"
-            />
-          </TouchableOpacity>
-        )}
-        <FlatList
-          data={todos
-            .filter((todo) => todo.completed)
-            .sort((a, b) => a.date - b.date)}
-          renderItem={({ item }) => <Todo key={item.id} todo={item} />}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
+          ListFooterComponent = {
+            <>
+              {todos.filter((todo) => todo.completed).length > 0 && (
+                <TouchableOpacity
+                  style={styles.completedHeadline}
+                  onPress={() => setShowCompleted(!showCompleted)}
+                >
+                  <Text style={styles.completedHeadlineText}>Completed</Text>
+                  <Ionicons
+                    style={styles.completedHeadlineIcon}
+                    size={20}
+                    name={showCompleted ? "chevron-down" : "chevron-back"}
+                    color="gray"
+                  />
+                </TouchableOpacity>
+              )}
+              <FlatList
+                data={todos
+                  .filter((todo) => todo.completed)
+                  .sort((a, b) => a.date - b.date)}
+                renderItem={({ item }) => <Todo key={item.id} todo={item} />}
+                keyExtractor={(item) => item.id.toString()}
+              />
+            </>
+          }
         />
       </View>
 
