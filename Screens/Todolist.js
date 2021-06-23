@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  ScrollView,
+  FlatList,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,11 +8,18 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import Todo from "../Components/TodoList/Todo";
-import { selectTodo, toggleTodoInput } from "../Redux/todo/todo.action";
+import {
+  selectTodo,
+  setTodos,
+  toggleTodoInput,
+} from "../Redux/todo/todo.action";
 import TodoInputBox from "../Components/TodoList/TodoInputBox";
 import { Ionicons } from "@expo/vector-icons";
 import TodoMenu from "../Components/TodoList/TodoMenu";
-import { firebaseTodoUpload } from "../Utils/FirebaseUtils";
+import {
+  firebaseTodoDownload,
+  firebaseTodoUpload,
+} from "../Utils/FirebaseUtils";
 import { formatDate } from "../Utils/date.utils";
 
 const TodoList = ({
@@ -21,23 +28,32 @@ const TodoList = ({
   inputBox,
   menuBox,
   selectTodo,
+  setTodos,
 }) => {
   const [showCompleted, setShowCompleted] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    firebaseTodoUpload(todos);
+    // firebaseTodoUpload(todos);
   }, [todos]);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    firebaseTodoDownload(setRefreshing, setTodos);
+  };
+
   return (
     <View style={styles.container}>
       <View>
-        <ScrollView>
-          {todos
+        <FlatList
+          data={todos
             .filter((todo) => !todo.completed)
-            .sort((a, b) => formatDate(a.date) - formatDate(b.date))
-            .map((todo) => (
-              <Todo key={todo.id} todo={todo} />
-            ))}
-        </ScrollView>
+            .sort((a, b) => formatDate(a.date) - formatDate(b.date))}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          renderItem={({ item }) => <Todo key={item.id} todo={item} />}
+          keyExtractor={(item) => item.id}
+        />
         {todos.filter((todo) => todo.completed).length > 0 && (
           <TouchableOpacity
             style={styles.completedHeadline}
@@ -52,13 +68,13 @@ const TodoList = ({
             />
           </TouchableOpacity>
         )}
-        <ScrollView>
-          {showCompleted &&
-            todos
-              .filter((todo) => todo.completed)
-              .sort((a, b) => a.date - b.date)
-              .map((todo) => <Todo key={todo.id} todo={todo} />)}
-        </ScrollView>
+        <FlatList
+          data={todos
+            .filter((todo) => todo.completed)
+            .sort((a, b) => a.date - b.date)}
+          renderItem={({ item }) => <Todo key={item.id} todo={item} />}
+          keyExtractor={(item) => item.id}
+        />
       </View>
 
       {inputBox && <TodoInputBox />}
@@ -82,10 +98,12 @@ const mapStateToProps = (state) => ({
   todos: state.todos.todos,
   inputBox: state.todos.inputBox,
   menuBox: state.todos.menuBox,
+  user: state.user.currentUser,
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleTodoInput: () => dispatch(toggleTodoInput()),
   selectTodo: (todo) => dispatch(selectTodo(todo)),
+  setTodos: (todos) => dispatch(setTodos(todos)),
 });
 
 const styles = StyleSheet.create({

@@ -11,6 +11,7 @@ import nextId from "react-id-generator";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {
   addTodo,
+  setTodos,
   toggleTodoInput,
   updateTodo,
 } from "../../Redux/todo/todo.action";
@@ -18,6 +19,12 @@ import { Ionicons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import { formatDate, getDateText, getTimeText } from "../../Utils/date.utils";
 import DateButton from "../Buttons/DateButton";
+import {
+  firebaseNewTodoUpload,
+  firebaseTodoUpdate,
+  firebaseTodoUpload,
+} from "../../Utils/FirebaseUtils";
+import { set } from "react-native-reanimated";
 
 const TodoInputBox = ({
   addTodo,
@@ -25,6 +32,7 @@ const TodoInputBox = ({
   toggleTodoInput,
   selectedTodo,
   updateTodo,
+  setTodos,
 }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
@@ -80,6 +88,10 @@ const TodoInputBox = ({
     if (selectedTodo) todo.id = selectedTodo.id;
 
     selectedTodo ? updateTodo(todo) : addTodo(todo);
+
+    selectedTodo
+      ? firebaseTodoUpdate(todo, setTodos)
+      : firebaseNewTodoUpload(todo, setTodos);
 
     setTitle("");
     toggleTodoInput();
@@ -193,6 +205,7 @@ const mapDispatchToProps = (dispatch) => ({
   addTodo: (todo) => dispatch(addTodo(todo)),
   toggleTodoInput: () => dispatch(toggleTodoInput()),
   updateTodo: (todo) => dispatch(updateTodo(todo)),
+  setTodos: (todos) => dispatch(setTodos(todos)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoInputBox);
