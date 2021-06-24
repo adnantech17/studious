@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { auth } from "../../Configs/firebase.config";
 import colors from "../../assets/colors";
 import { AntDesign } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 
 const Profile = ({ currentUser, navigation }) => {
   return (
