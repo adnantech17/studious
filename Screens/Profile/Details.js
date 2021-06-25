@@ -1,175 +1,197 @@
-import React, { useEffect, useState } from "react";
-import nextId from "react-id-generator";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   FlatList,
-  ToastAndroid,
-  Image,
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-  Text,
+  Dimensions,
 } from "react-native";
-import * as Sharing from "expo-sharing";
-import * as MediaLibrary from "expo-media-library";
 import { connect } from "react-redux";
-import AddNewFieldModal from "../../Components/Profile/AddNewFieldModal";
-import FieldItem from "../../Components/Profile/FieldItem";
-import { addField } from "../../Redux/profile/profile.action";
-import { MaterialIcons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import colors from "../../assets/colors";
 import { Feather } from "@expo/vector-icons";
 
-const renderField = ({ item }) => {
-  const onCopyPress = () => {
-    ToastAndroid.show("Copied!", ToastAndroid.SHORT);
-  };
-  return <FieldItem item={item} onButtonPress={onCopyPress} />;
-};
+import FieldItem from "../../Components/Profile/FieldItem";
+import { addField, deleteField, editField, setProfileImageUri } from "../../Redux/profile/profile.action";
+import colors from "../../assets/colors";
+import ImageComponent from "../../Components/Profile/ImageComponent";
+import FieldInputModal from "../../Components/Profile/FieldInputModal";
+import TwoButtonModal from "../../Components/reusable/TwoButtonModal";
 
-const Details = ({ navigation, fieldData, addField, profileImageUri }) => {
-  const [addNewModalShown, setAddNewModalShown] = useState(false);
+
+const Details = ({ 
+    navigation, 
+    fieldData, 
+    addField, 
+    editField, 
+    deleteField,
+    profileImageUri, 
+    setProfileImageUri,
+}) => {
+  const list = useRef();
+  const [fieldInputModalShown, setFieldInputModalShown] = useState(false);
+  const [imageDeleteModalShown, setImageDeleteModalShown] = useState(false);
+  const [fieldDeleteModalShown, setFieldDeleteModalShown] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   useEffect(() => {
-    requestPermission();
-  }, []);
+      if(!fieldInputModalShown && !fieldDeleteModalShown) setSelectedItem(null);
+  }, [fieldInputModalShown, fieldDeleteModalShown]);
 
-  const requestPermission = async () => {
-    const { granted } = await MediaLibrary.requestPermissionsAsync();
-    if (!granted) alert("You need to enable permission to access the library.");
-  };
 
-  const onAddNewField = (item) => {
+  const addNewField = (item) => {
     const field = {
-      id: nextId(),
+      id: new Date().toString(),
       required: false,
       ...item,
     };
     addField(field);
-    setAddNewModalShown(false);
+    list.current?.scrollToEnd();
   };
+
+  const onImageDeletePressed = () => {
+      setImageDeleteModalShown(true);
+  }
+
+
+  const onModalSubmit = (item) => {
+    !selectedItem ? addNewField(item) : editField(item);
+  }
+
+  const renderField = ({ item }) => {
+    const onEditPress = () => {
+        setSelectedItem(item);
+        setFieldInputModalShown(true);
+    }
+    const onDeletePress = () => {
+        setFieldDeleteModalShown(true);
+        setSelectedItem(item);
+    }
+    return <FieldItem item={item} onEditPress = {onEditPress} onDeletePress = {onDeletePress} />;
+  };
+
   return (
     <>
       <ImageBackground
-        style={styles.container}
+        style={styles.backgroundView}
         source={require("../../assets/pics/bg.png")}
-      >
+      />
+      <View style= {styles.container}>        
         <FlatList
+          ref = {list}
           data={fieldData}
           keyExtractor={(item) => item.id}
           renderItem={renderField}
           ListHeaderComponent={
             <View style={styles.dataContainer}>
-              <View
-                style={{
-                  height: 140,
-                  width: 140,
-                  borderRadius: 20,
-                  overflow: "hidden",
-                  borderWidth: 0.5,
-                  border: colors.lightgray,
-                }}
-                onPress={() => toggleProfileSettings()}
-              >
-                <Image
-                  srouce={require("../../assets/pics/dp.png")}
-                  style={styles.image}
-                />
-                <Image source={{ uri: profileImageUri }} style={styles.image} />
-              </View>
-              <View style={styles.imageButtons}>
-                <TouchableOpacity style={styles.imageSettings}>
-                  <Feather name="edit" size={18} color="black" />
-                  <Text style={styles.imageButtonsText}>Edit</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => Sharing.shareAsync(profileImageUri)}
-                  style={styles.imageSettings}
-                >
-                  <AntDesign name="sharealt" size={18} color="black" />
-                  <Text style={styles.imageButtonsText}>Share</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    MediaLibrary.saveToLibraryAsync(profileImageUri)
-                  }
-                  style={styles.imageSettings}
-                >
-                  <MaterialIcons name="save-alt" size={18} color="black" />
-                  <Text style={styles.imageButtonsText}>Save</Text>
-                </TouchableOpacity>
-              </View>
+              <ImageComponent 
+                setProfileImageUri= {setProfileImageUri} 
+                profileImageUri = {profileImageUri} 
+                onDeletePress = {onImageDeletePressed} 
+              />
             </View>
           }
+          ListFooterComponent = {
+              <View style = {{height: 110}} />
+          }
         />
-        <View style={styles.buttonContainer}>
+        {
+        !fieldInputModalShown &&
+        !fieldDeleteModalShown &&
+        !imageDeleteModalShown &&
+        <View 
+            style={styles.buttonContainer} 
+        >
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              setAddNewModalShown(true);
+              setFieldInputModalShown(true);
+              console.log(profileImageUri);
             }}
           >
             <Feather name="plus" size={24} color="#393A3C" />
           </TouchableOpacity>
         </View>
-      </ImageBackground>
-      {addNewModalShown && (
-        <AddNewFieldModal
-          onSubmit={onAddNewField}
-          isVisible={addNewModalShown}
-          setVisibility={setAddNewModalShown}
+        }
+      </View>
+      {fieldInputModalShown && (
+        <FieldInputModal
+          selectedItem = {selectedItem}
+          onSubmit={onModalSubmit}
+          isVisible={fieldInputModalShown}
+          setVisibility={setFieldInputModalShown}
         />
       )}
+      {
+          fieldDeleteModalShown && (
+                <TwoButtonModal
+                    title = "Delete"
+                    body = "Are you sure that you want to delete this field?"
+                    isVisible = {fieldDeleteModalShown}
+                    setVisibility = {setFieldDeleteModalShown}
+                    rightButtonTitle = "Delete"
+                    rightButtonPressed = {
+                        () => {
+                            deleteField(selectedItem);
+                        }
+                    }
+                />
+          )
+      }
+      {
+          imageDeleteModalShown && (
+                <TwoButtonModal
+                    title = "Delete"
+                    body = "Are you sure that you want to delete this image?"
+                    isVisible = {imageDeleteModalShown}
+                    setVisibility = {setImageDeleteModalShown}
+                    rightButtonTitle = "Delete"
+                    rightButtonPressed = {
+                        () => {
+                            setProfileImageUri(null);
+                        }
+                    }
+                />
+          )
+      }
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    zIndex: 1,    
+  },
   container: {
+    position: "relative",
     display: "flex",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 100,
+    zIndex: 2,
   },
   dataContainer: {
     alignItems: "center",
-    borderRadius: 1000,
     justifyContent: "center",
-    marginVertical: 10,
-    overflow: "hidden",
+    marginBottom: 20,
     width: 350,
     display: "flex",
     position: "relative",
-  },
-  image: {
-    height: "100%",
-    width: "100%",
-  },
-  imageButtons: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 10,
-  },
-  imageSettings: {
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 5,
-    marginRight: 16,
-  },
-  imageButtonsText: {
-    marginLeft: 5,
-    fontSize: 12,
+    paddingTop: 100,
   },
   buttonContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: "105%",
-    left: "50%",
-    transform: [{ translateX: -30 }],
+    bottom: 32,
+    right: 32,
+    margin: 8,
+    zIndex: 3,
   },
   button: {
     borderColor: colors.lightgray,
@@ -179,6 +201,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundColor,
     alignItems: "center",
     justifyContent: "center",
+    elevation: 5,
   },
   buttonText: {
     marginLeft: 7,
@@ -192,6 +215,8 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   addField: (field) => dispatch(addField(field)),
+  setProfileImageUri: (imageUri) => dispatch(setProfileImageUri(imageUri)),
+  editField: (field) => dispatch(editField(field)),
+  deleteField: (field) => dispatch(deleteField(field)),
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(Details);

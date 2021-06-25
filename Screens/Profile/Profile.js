@@ -12,21 +12,25 @@ import { connect } from "react-redux";
 import { auth } from "../../Configs/firebase.config";
 import colors from "../../assets/colors";
 import { AntDesign } from "@expo/vector-icons";
+import NavigationOption from "../../Components/Profile/NavigationOption";
 
-const Profile = ({ currentUser, navigation }) => {
+const Profile = ({ currentUser, profileImageUri, navigation }) => {
   return (
     currentUser && (
       <ImageBackground
         style={styles.container}
         source={require("../../assets/pics/bg.png")}
       >
-        <Image
-          style={styles.dp}
-          source={require("../../assets/pics/profile.png")}
-        />
-        <Text style={styles.name}>
-          {` ${currentUser.firstName} ${currentUser.lastName}`}
-        </Text>
+        {
+          !profileImageUri ?
+          <Image
+              source={require("../../assets/pics/dp.png")}
+              style={styles.dp}
+          />
+          :
+          <Image source={{ uri: profileImageUri }} style={styles.dp}/>
+        }
+        <Text style={styles.name}>{currentUser.firstName} {currentUser.lastName}</Text>
         <Text style={styles.mail}>{currentUser.email}</Text>
         <TouchableOpacity
           onPress={async () => {
@@ -37,35 +41,30 @@ const Profile = ({ currentUser, navigation }) => {
           <Text style={styles.buttonText}>Log Out?</Text>
         </TouchableOpacity>
         <View style={styles.options}>
-          <View
-            style={styles.option}
-            onPress={() => navigation.push("Details")}
-          >
-            <Text
-              style={styles.optText}
-              onPress={() => navigation.push("Details")}
-            >
-              Profile Details
-            </Text>
-            <TouchableOpacity
-              style={styles.rightIcon}
-              onPress={() => navigation.push("Details")}
-            >
-              <AntDesign name="right" size={18} color="black" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.option}>
-            <Text style={styles.optText}>Terms & Policies</Text>
-            <TouchableOpacity style={styles.rightIcon}>
-              <AntDesign name="right" size={18} color="black" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.option}>
-            <Text style={styles.optText}>About Us</Text>
-            <TouchableOpacity style={styles.rightIcon}>
-              <AntDesign name="right" size={18} color="black" />
-            </TouchableOpacity>
-          </View>
+          <NavigationOption
+            navigation = {navigation}
+            containerStyle = {styles.option}
+            textStyle = {styles.optText}
+            iconStyle = {styles.rightIcon}
+            navigateTo = "Details"
+            title = "Profile Details"
+          />
+          <NavigationOption
+            navigation = {navigation}
+            containerStyle = {styles.option}
+            textStyle = {styles.optText}
+            iconStyle = {styles.rightIcon}
+            navigateTo = "TermsAndPolicies"
+            title = "Terms & Policies"
+          />
+          <NavigationOption
+            navigation = {navigation}
+            containerStyle = {styles.option}
+            textStyle = {styles.optText}
+            iconStyle = {styles.rightIcon}
+            navigateTo = "AboutUs"
+            title = "About Us"
+          />
         </View>
       </ImageBackground>
     )
@@ -74,6 +73,7 @@ const Profile = ({ currentUser, navigation }) => {
 
 const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
+  profileImageUri : state.profile.profileImageUri,
 });
 
 export default connect(mapStateToProps)(Profile);
@@ -85,15 +85,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   dp: {
-    width: 100,
-    height: 100,
-    borderRadius: 10000,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
     alignSelf: "center",
-    marginBottom: 40,
+    marginBottom: 15,
     marginTop: 200,
-  },
-  profile: {
-    fontSize: 24,
   },
   button: {
     alignItems: "flex-end",
@@ -103,14 +100,15 @@ const styles = StyleSheet.create({
   buttonText: {
     color: colors.backgroundColor,
     fontSize: 16,
+    fontWeight: "bold",
   },
   mail: {
-    fontSize: 18,
-    marginVertical: 5,
+    fontSize: 16,
+    marginVertical: 2,
   },
   name: {
     fontSize: 28,
-    marginVertical: 5,
+    marginVertical: 2,
     fontWeight: "bold",
   },
   options: {

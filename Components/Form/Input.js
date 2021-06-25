@@ -1,10 +1,10 @@
-import React from "react"
+import React, { forwardRef } from "react"
 import { StyleSheet, TextInput, View } from "react-native"
 
-const Input = ({style, containerStyle, ...otherProps}) => {
+const Input = ({style, containerStyle, ...otherProps}, ref) => {
     return (
         <View style = {[styles.container, containerStyle]}>
-            <TextInput 
+            <TextInput ref = {ref}
                 style = {[styles.input, style]}
                 {...otherProps}
             />
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Input;
+export default forwardRef(Input);

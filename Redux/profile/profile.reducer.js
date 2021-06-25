@@ -1,4 +1,5 @@
-import { addFieldUtil, setFieldDataUtil } from "./profile.utils";
+import { ADD_FIELD, DELETE_FIELD, EDIT_FIELD, SET_FIELD_DATA, SET_PROFILE_IMAGE_URI } from "./profile.action";
+import { addFieldUtil, deleteFieldUtil, setEditFieldUtil, setFieldDataUtil } from "./profile.utils";
 
 const INITIAL_STATE = {
     fieldData: [
@@ -32,20 +33,30 @@ const INITIAL_STATE = {
 
 const profileReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
-        case "ADD_FIELD": 
+        case ADD_FIELD: 
             return {
                 ...state,
                 fieldData: addFieldUtil(state.fieldData, action.payload),
             }
-        case "SET_FIELD_DATA":
+        case SET_FIELD_DATA:
             return {
                 ...state,
                 fieldData: setFieldDataUtil(action.payload),
             }
-        case "SET_PROFILE_IMAGE_URI":
+        case SET_PROFILE_IMAGE_URI:
             return {
                 ...state,
                 profileImageUri: action.payload,
+            }
+        case EDIT_FIELD:
+            return {
+                ...state,
+                fieldData: setEditFieldUtil(state.fieldData, action.payload),
+            }
+        case DELETE_FIELD:
+            return {
+                ...state,
+                fieldData: deleteFieldUtil(state.fieldData, action.payload),
             }
         default: return state;
     }

@@ -3,7 +3,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import Profile from "../Screens/Profile/Profile";
 import Details from "../Screens/Profile/Details";
-import EditScreen from "../Screens/Profile/EditScreen";
+import AboutUs from "../Screens/Profile/AboutUs";
+import TermsAndPolicies from "../Screens/Profile/TermsAndPolicies";
 
 const ProfilesStack = createStackNavigator();
 
@@ -25,9 +26,14 @@ const ProfilesNav = () => {
         options={{ title: "Details" }}
       />
       <ProfilesStack.Screen
-        name="EditScreen"
-        component={EditScreen}
-        options={{ title: "Edit" }}
+        name="AboutUs"
+        component={AboutUs}
+        options={{title: "About Us"}}
+      />
+      <ProfilesStack.Screen
+        name="TermsAndPolicies"
+        component={TermsAndPolicies}
+        options={{title: "Terms and Policies"}}
       />
     </ProfilesStack.Navigator>
   );
