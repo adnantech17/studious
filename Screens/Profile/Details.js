@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import nextId from "react-id-generator";
 import {
   View,
-  Button,
   FlatList,
   ToastAndroid,
   Image,
@@ -65,7 +64,6 @@ const Details = ({ navigation, fieldData, addField, profileImageUri }) => {
                 style={{
                   height: 140,
                   width: 140,
-                  backgroundColor: "blue",
                   borderRadius: 20,
                   overflow: "hidden",
                   borderWidth: 0.5,
@@ -73,6 +71,10 @@ const Details = ({ navigation, fieldData, addField, profileImageUri }) => {
                 }}
                 onPress={() => toggleProfileSettings()}
               >
+                <Image
+                  srouce={require("../../assets/pics/dp.png")}
+                  style={styles.image}
+                />
                 <Image source={{ uri: profileImageUri }} style={styles.image} />
               </View>
               <View style={styles.imageButtons}>
@@ -100,19 +102,17 @@ const Details = ({ navigation, fieldData, addField, profileImageUri }) => {
               </View>
             </View>
           }
-          ListFooterComponent={
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  setAddNewModalShown(true);
-                }}
-              >
-                <Feather name="plus" size={24} color="#393A3C" />
-              </TouchableOpacity>
-            </View>
-          }
         />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              setAddNewModalShown(true);
+            }}
+          >
+            <Feather name="plus" size={24} color="#393A3C" />
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
       {addNewModalShown && (
         <AddNewFieldModal
@@ -132,7 +132,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: 100,
-    position: "relative",
   },
   dataContainer: {
     alignItems: "center",
@@ -142,6 +141,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: 350,
     display: "flex",
+    position: "relative",
   },
   image: {
     height: "100%",
@@ -166,6 +166,10 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
+    top: "105%",
+    left: "50%",
+    transform: [{ translateX: -30 }],
   },
   button: {
     borderColor: colors.lightgray,

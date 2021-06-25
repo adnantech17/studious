@@ -28,6 +28,7 @@ const AddNewFieldModal = ({ onSubmit, isVisible, setVisibility }) => {
     >
       <View style={styles.container}>
         <View style={styles.field}>
+          <Text style={styles.newFieldTitle}>Add New Field</Text>
           <Input
             style={styles.input}
             placeholder="Field Name"
@@ -67,6 +68,12 @@ const AddNewFieldModal = ({ onSubmit, isVisible, setVisibility }) => {
         </View>
         <View style={styles.buttons}>
           <TouchableOpacity
+            onPress={() => setVisibility(false)}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             style={styles.button}
             onPress={() => {
               if (validItem()) onSubmit(item);
@@ -77,12 +84,6 @@ const AddNewFieldModal = ({ onSubmit, isVisible, setVisibility }) => {
             }}
           >
             <Text style={styles.buttonText}>Add</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setVisibility(false)}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Cancel</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -99,6 +100,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: "80%",
     paddingTop: 30,
+  },
+  newFieldTitle: {
+    fontSize: 18,
+    marginLeft: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   input: {
     borderBottomWidth: 0.5,
