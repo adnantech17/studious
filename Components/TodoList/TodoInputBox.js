@@ -133,8 +133,8 @@ const TodoInputBox = ({
           <Ionicons
             style={styles.send}
             name="send"
-            size={32}
-            color="green"
+            size={28}
+            color="#72AFFF"
             onPress={addNewTodo}
           />
         </View>
@@ -167,12 +167,13 @@ const styles = StyleSheet.create({
 
   textInput: {
     height: 32,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
+    marginVertical: 15,
   },
 
   belowText: {
-    paddingHorizontal: 8,
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
     flexDirection: "row",
     justifyContent: "space-between",
   },

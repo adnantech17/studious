@@ -37,14 +37,21 @@ const Todo = ({
             );
             setChk(!chk);
           }}
-          color={chk ? "#888888" : "#4630EB"}
+          color="#72AFFF"
           value={chk}
         />
-        <Text style={todo.completed && styles.crossed}>{todo.name}</Text>
+        <Text
+          style={[
+            todo.completed && styles.crossed,
+            !todo.completed && styles.name,
+          ]}
+        >
+          {todo.name}
+        </Text>
       </View>
       <View style={styles.date}>
-        {todo.date && <Text>{getDateText(todo.date)}</Text>}
-        {todo.time && <Text>{getTimeText(todo.time)}</Text>}
+        {todo.date && <Text style={styles.time}>{getDateText(todo.date)}</Text>}
+        {todo.time && <Text style={styles.time}>{getTimeText(todo.time)}</Text>}
       </View>
     </TouchableOpacity>
   );
@@ -61,29 +68,34 @@ const styles = StyleSheet.create({
   crossed: {
     textDecorationLine: "line-through",
     textDecorationStyle: "solid",
+    marginLeft: 10,
   },
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 8,
-    height: 48,
-    borderBottomWidth: 0.3,
+    paddingHorizontal: 30,
+    borderBottomWidth: 0.1,
     alignItems: "center",
+    paddingVertical: 10,
   },
   title: {
     flexDirection: "row",
     alignItems: "center",
   },
-
   date: {
     justifyContent: "center",
     alignItems: "center",
+    fontSize: 16,
   },
   button: {
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginVertical: 10,
     borderRadius: 5,
+  },
+  time: { fontSize: 10 },
+  name: {
+    marginLeft: 10,
   },
 });
 

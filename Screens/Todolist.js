@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ImageBackground,
+  Image,
 } from "react-native";
 import { connect } from "react-redux";
 import Todo from "../Components/TodoList/Todo";
@@ -16,11 +18,11 @@ import {
 import TodoInputBox from "../Components/TodoList/TodoInputBox";
 import { Ionicons } from "@expo/vector-icons";
 import TodoMenu from "../Components/TodoList/TodoMenu";
-import {
-  firebaseTodoDownload,
-  firebaseTodoUpload,
-} from "../Utils/FirebaseUtils";
+<AntDesign name="plus" size={24} color="black" />;
+
+import { firebaseTodoDownload } from "../Utils/FirebaseUtils";
 import { formatDate } from "../Utils/date.utils";
+import { AntDesign } from "@expo/vector-icons";
 
 const TodoList = ({
   todos,
@@ -43,8 +45,12 @@ const TodoList = ({
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/pics/bg.png")}
+    >
       <View>
+        <Text style={styles.title}>My Tasks</Text>
         <FlatList
           data={todos
             .filter((todo) => !todo.completed)
@@ -53,22 +59,28 @@ const TodoList = ({
           refreshing={refreshing}
           renderItem={({ item }) => <Todo key={item.id} todo={item} />}
           keyExtractor={(item) => item.id.toString()}
-          ListFooterComponent = {
+          ListFooterComponent={
             <>
               <FlatList
-                data={ showCompleted ? todos
-                  .filter((todo) => todo.completed)
-                  .sort((a, b) => a.date - b.date) : null}
+                data={
+                  showCompleted
+                    ? todos
+                        .filter((todo) => todo.completed)
+                        .sort((a, b) => a.date - b.date)
+                    : null
+                }
                 renderItem={({ item }) => <Todo key={item.id} todo={item} />}
                 keyExtractor={(item) => item.id.toString()}
-                ListHeaderComponent = {
+                ListHeaderComponent={
                   <>
                     {todos.filter((todo) => todo.completed).length > 0 && (
                       <TouchableOpacity
                         style={styles.completedHeadline}
                         onPress={() => setShowCompleted(!showCompleted)}
                       >
-                        <Text style={styles.completedHeadlineText}>Completed</Text>
+                        <Text style={styles.completedHeadlineText}>
+                          Completed
+                        </Text>
                         <Ionicons
                           style={styles.completedHeadlineIcon}
                           size={20}
@@ -79,14 +91,20 @@ const TodoList = ({
                     )}
                   </>
                 }
-                /> 
+              />
             </>
           }
-          ListEmptyComponent = {
+          ListEmptyComponent={
             <>
-              { todos.length == 0 &&
-                <Text>Insert your tasks here.</Text>
-              }
+              {todos.length == 0 && (
+                <View style={styles.emptyTodo}>
+                  <Image
+                    style={styles.empty}
+                    source={require("../assets/pics/empty.png")}
+                  />
+                  <Text style={styles.noTask}>No Task</Text>
+                </View>
+              )}
             </>
           }
         />
@@ -102,10 +120,10 @@ const TodoList = ({
             selectTodo(null);
           }}
         >
-          <Text style={{ fontSize: 32 }}>+</Text>
+          <AntDesign name="plus" size={24} color="black" />
         </TouchableOpacity>
       )}
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -125,7 +143,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
+    paddingTop: 70,
   },
+  title: { fontSize: 30, marginLeft: 30, marginBottom: 20 },
   button: {
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -137,7 +157,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.2)",
+    borderColor: "rgba(0,0,0,0.4)",
     alignItems: "center",
     justifyContent: "center",
     width: 48,
@@ -149,21 +169,33 @@ const styles = StyleSheet.create({
     right: 24,
   },
   completedHeadline: {
-    backgroundColor: "#ccc",
-    paddingHorizontal: 8,
+    paddingHorizontal: 35,
     textAlignVertical: "center",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderTopWidth: 0.3,
   },
 
   completedHeadlineText: {
-    height: 32,
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 20,
+    paddingVertical: 12,
   },
   completedHeadlineIcon: {
     width: 20,
+  },
+  empty: {
+    width: 200,
+    height: 200,
+  },
+  emptyTodo: {
+    width: "100%",
+    height: 600,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noTask: {
+    fontSize: 20,
   },
 });
 
