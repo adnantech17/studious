@@ -7,6 +7,7 @@ import {
   View,
   ImageBackground,
   Image,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 import Todo from "../Components/TodoList/Todo";
@@ -45,10 +46,12 @@ const TodoList = ({
   };
 
   return (
+    <>
     <ImageBackground
-      style={styles.container}
+      style={styles.backgroundView}
       source={require("../assets/pics/bg.png")}
-    >
+    />
+    <View style = {styles.container}>
       <View>
         <Text style={styles.title}>My Tasks</Text>
         <FlatList
@@ -79,7 +82,7 @@ const TodoList = ({
                         onPress={() => setShowCompleted(!showCompleted)}
                       >
                         <Text style={styles.completedHeadlineText}>
-                          Completed
+                          Completed ({todos.filter((todo) => todo.completed).length})
                         </Text>
                         <Ionicons
                           style={styles.completedHeadlineIcon}
@@ -122,9 +125,10 @@ const TodoList = ({
         >
           <AntDesign name="plus" size={24} color="black" />
         </TouchableOpacity>
-      )}
-    </ImageBackground>
-  );
+        )}
+    </View>
+    </>
+  )
 };
 
 const mapStateToProps = (state) => ({
@@ -140,6 +144,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+  },
   container: {
     flex: 1,
     justifyContent: "space-between",
