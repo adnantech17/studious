@@ -39,6 +39,7 @@ const ImageComponent = ({profileImageUri, setProfileImageUri, onDeletePress, use
       const pathRef = `${user.email}/profile_picture.${extension}`;
       const res = await fetch(uri);
       const blob = await res.blob();
+      setProfileImageUri(uri);
       await storage.ref(pathRef).put(blob);
       const uploadedUri = await storage.ref(pathRef).getDownloadURL();
       ToastAndroid.show("Image uploaded!", ToastAndroid.SHORT);

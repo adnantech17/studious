@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Text,
@@ -9,12 +9,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
+
 import { auth } from "../../Configs/firebase.config";
 import colors from "../../assets/colors";
-import { AntDesign } from "@expo/vector-icons";
 import NavigationOption from "../../Components/Profile/NavigationOption";
+import { firebaseSyncWithProfile } from "../../Utils/Profile/firebase.utils";
+import { setProfileData } from "../../Redux/profile/profile.action";
 
-const Profile = ({ currentUser, profileImageUri, navigation }) => {
+const Profile = ({ currentUser, profileImageUri, setProfileData, navigation }) => {
+  useEffect(() => {
+    firebaseSyncWithProfile(setProfileData);
+  }, [])
   return (
     currentUser && (
       <ImageBackground
@@ -76,7 +81,11 @@ const mapStateToProps = (state) => ({
   profileImageUri : state.profile.profileImageUri,
 });
 
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps = (dispatch) => ({
+  setProfileData: (profileData) => dispatch(setProfileData(profileData)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 const styles = StyleSheet.create({
   container: {

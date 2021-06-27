@@ -20,7 +20,6 @@ import { firebaseAddField, firebaseEditField, firebaseRemoveField, firebaseSetPr
 
 
 const Details = ({ 
-    navigation, 
     fieldData, 
     addField, 
     editField, 
@@ -42,7 +41,7 @@ const Details = ({
   }, [fieldInputModalShown, fieldDeleteModalShown]);
 
   const onRefresh = () => {
-    firebaseSyncWithProfile(setRefreshing, setProfileData)
+    firebaseSyncWithProfile(setProfileData, setRefreshing)
   }
 
 

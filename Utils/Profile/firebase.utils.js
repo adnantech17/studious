@@ -103,7 +103,7 @@ export const firebaseSetProfileImageUri = (profileImageUri) => {
     });
 }
 
-export const firebaseSyncWithProfile = (setRefreshing, setProfileData) => {
+export const firebaseSyncWithProfile = (setProfileData, setRefreshing) => {
     return firestore
     .collection("profile")
     .doc(auth.currentUser.uid)
