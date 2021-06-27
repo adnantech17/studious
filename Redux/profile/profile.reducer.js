@@ -1,4 +1,5 @@
-import { ADD_FIELD, DELETE_FIELD, EDIT_FIELD, SET_FIELD_DATA, SET_PROFILE_IMAGE_URI } from "./profile.action";
+import { firebaseDownloadProfileData } from "../../Utils/Profile/firebase.utils";
+import { ADD_FIELD, DELETE_FIELD, EDIT_FIELD, SET_FIELD_DATA, SET_PROFILE_DATA, SET_PROFILE_IMAGE_URI } from "./profile.action";
 import { addFieldUtil, deleteFieldUtil, setEditFieldUtil, setFieldDataUtil } from "./profile.utils";
 
 const INITIAL_STATE = {
@@ -57,6 +58,10 @@ const profileReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 fieldData: deleteFieldUtil(state.fieldData, action.payload),
+            }
+        case SET_PROFILE_DATA:
+            return {
+                ...action.payload,
             }
         default: return state;
     }

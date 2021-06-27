@@ -11,11 +11,12 @@ import { connect } from "react-redux";
 import { Feather } from "@expo/vector-icons";
 
 import FieldItem from "../../Components/Profile/FieldItem";
-import { addField, deleteField, editField, setProfileImageUri } from "../../Redux/profile/profile.action";
+import { addField, deleteField, editField, setProfileData, setProfileImageUri } from "../../Redux/profile/profile.action";
 import colors from "../../assets/colors";
 import ImageComponent from "../../Components/Profile/ImageComponent";
 import FieldInputModal from "../../Components/Profile/FieldInputModal";
 import TwoButtonModal from "../../Components/reusable/TwoButtonModal";
+import { firebaseAddField, firebaseEditField, firebaseRemoveField, firebaseSetProfileImageUri, firebaseSyncWithProfile } from "../../Utils/Profile/firebase.utils";
 
 
 const Details = ({ 
@@ -26,8 +27,11 @@ const Details = ({
     deleteField,
     profileImageUri, 
     setProfileImageUri,
+    setProfileData,
+    user,
 }) => {
   const list = useRef();
+  const [refreshing, setRefreshing] = useState(false); 
   const [fieldInputModalShown, setFieldInputModalShown] = useState(false);
   const [imageDeleteModalShown, setImageDeleteModalShown] = useState(false);
   const [fieldDeleteModalShown, setFieldDeleteModalShown] = useState(false);
@@ -37,6 +41,10 @@ const Details = ({
       if(!fieldInputModalShown && !fieldDeleteModalShown) setSelectedItem(null);
   }, [fieldInputModalShown, fieldDeleteModalShown]);
 
+  const onRefresh = () => {
+    firebaseSyncWithProfile(setRefreshing, setProfileData)
+  }
+
 
   const addNewField = (item) => {
     const field = {
@@ -45,8 +53,19 @@ const Details = ({
       ...item,
     };
     addField(field);
+    firebaseAddField(field),
     list.current?.scrollToEnd();
   };
+
+  const editFieldAndUpload = (item) => {
+    editField(item);
+    firebaseEditField(item);
+  }
+
+  const onSetProfileImageUri = (uri) => {
+    setProfileImageUri(uri);
+    firebaseSetProfileImageUri(uri);
+  }
 
   const onImageDeletePressed = () => {
       setImageDeleteModalShown(true);
@@ -54,7 +73,7 @@ const Details = ({
 
 
   const onModalSubmit = (item) => {
-    !selectedItem ? addNewField(item) : editField(item);
+    !selectedItem ? addNewField(item) : editFieldAndUpload(item);
   }
 
   const renderField = ({ item }) => {
@@ -78,15 +97,18 @@ const Details = ({
       <View style= {styles.container}>        
         <FlatList
           ref = {list}
+          refreshing = {refreshing}
+          onRefresh = {onRefresh}
           data={fieldData}
           keyExtractor={(item) => item.id}
           renderItem={renderField}
           ListHeaderComponent={
             <View style={styles.dataContainer}>
               <ImageComponent 
-                setProfileImageUri= {setProfileImageUri} 
+                setProfileImageUri= {onSetProfileImageUri} 
                 profileImageUri = {profileImageUri} 
                 onDeletePress = {onImageDeletePressed} 
+                user = {user}
               />
             </View>
           }
@@ -105,7 +127,6 @@ const Details = ({
             style={styles.button}
             onPress={() => {
               setFieldInputModalShown(true);
-              console.log(profileImageUri);
             }}
           >
             <Feather name="plus" size={24} color="#393A3C" />
@@ -132,6 +153,7 @@ const Details = ({
                     rightButtonPressed = {
                         () => {
                             deleteField(selectedItem);
+                            firebaseRemoveField(selectedItem);
                         }
                     }
                 />
@@ -147,7 +169,7 @@ const Details = ({
                     rightButtonTitle = "Delete"
                     rightButtonPressed = {
                         () => {
-                            setProfileImageUri(null);
+                            onSetProfileImageUri(null);
                         }
                     }
                 />
@@ -212,11 +234,13 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   fieldData: state.profile.fieldData,
   profileImageUri: state.profile.profileImageUri,
+  user: state.user.currentUser,
 });
 const mapDispatchToProps = (dispatch) => ({
   addField: (field) => dispatch(addField(field)),
   setProfileImageUri: (imageUri) => dispatch(setProfileImageUri(imageUri)),
   editField: (field) => dispatch(editField(field)),
   deleteField: (field) => dispatch(deleteField(field)),
+  setProfileData: (profileData) => dispatch(setProfileData(profileData)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Details);

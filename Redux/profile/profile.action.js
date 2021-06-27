@@ -27,3 +27,9 @@ export const deleteField = (field) => ({
     type : DELETE_FIELD,
     payload: field,
 })
+
+export const SET_PROFILE_DATA = "SET_PROFILE_DATA";
+export const setProfileData = (profileData) => ({
+    type: SET_PROFILE_DATA,
+    payload: profileData,
+})
