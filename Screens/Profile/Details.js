@@ -6,44 +6,56 @@ import {
   ImageBackground,
   TouchableOpacity,
   Dimensions,
+  Text,
 } from "react-native";
 import { connect } from "react-redux";
 import { Feather } from "@expo/vector-icons";
-
+import { AntDesign } from "@expo/vector-icons";
 import FieldItem from "../../Components/Profile/FieldItem";
-import { addField, deleteField, editField, setProfileData, setProfileImageUri } from "../../Redux/profile/profile.action";
+import {
+  addField,
+  deleteField,
+  editField,
+  setProfileData,
+  setProfileImageUri,
+} from "../../Redux/profile/profile.action";
 import colors from "../../assets/colors";
 import ImageComponent from "../../Components/Profile/ImageComponent";
 import FieldInputModal from "../../Components/Profile/FieldInputModal";
 import TwoButtonModal from "../../Components/reusable/TwoButtonModal";
-import { firebaseAddField, firebaseEditField, firebaseRemoveField, firebaseSetProfileImageUri, firebaseSyncWithProfile } from "../../Utils/Profile/firebase.utils";
+import {
+  firebaseAddField,
+  firebaseEditField,
+  firebaseRemoveField,
+  firebaseSetProfileImageUri,
+  firebaseSyncWithProfile,
+} from "../../Utils/Profile/firebase.utils";
 
-
-const Details = ({ 
-    fieldData, 
-    addField, 
-    editField, 
-    deleteField,
-    profileImageUri, 
-    setProfileImageUri,
-    setProfileData,
-    user,
+const Details = ({
+  fieldData,
+  addField,
+  editField,
+  deleteField,
+  profileImageUri,
+  setProfileImageUri,
+  setProfileData,
+  user,
+  navigation,
 }) => {
   const list = useRef();
-  const [refreshing, setRefreshing] = useState(false); 
+  const [refreshing, setRefreshing] = useState(false);
   const [fieldInputModalShown, setFieldInputModalShown] = useState(false);
   const [imageDeleteModalShown, setImageDeleteModalShown] = useState(false);
   const [fieldDeleteModalShown, setFieldDeleteModalShown] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-      if(!fieldInputModalShown && !fieldDeleteModalShown) setSelectedItem(null);
+    if (!fieldInputModalShown && !fieldDeleteModalShown) setSelectedItem(null);
   }, [fieldInputModalShown, fieldDeleteModalShown]);
 
   const onRefresh = () => {
-    firebaseSyncWithProfile(setProfileData, setRefreshing)
-  }
-
+    firebaseSyncWithProfile(setProfileData, setRefreshing);
+  };
 
   const addNewField = (item) => {
     const field = {
@@ -52,39 +64,43 @@ const Details = ({
       ...item,
     };
     addField(field);
-    firebaseAddField(field),
-    list.current?.scrollToEnd();
+    firebaseAddField(field), list.current?.scrollToEnd();
   };
 
   const editFieldAndUpload = (item) => {
     editField(item);
     firebaseEditField(item);
-  }
+  };
 
   const onSetProfileImageUri = (uri) => {
     setProfileImageUri(uri);
     firebaseSetProfileImageUri(uri);
-  }
+  };
 
   const onImageDeletePressed = () => {
-      setImageDeleteModalShown(true);
-  }
-
+    setImageDeleteModalShown(true);
+  };
 
   const onModalSubmit = (item) => {
     !selectedItem ? addNewField(item) : editFieldAndUpload(item);
-  }
+  };
 
   const renderField = ({ item }) => {
     const onEditPress = () => {
-        setSelectedItem(item);
-        setFieldInputModalShown(true);
-    }
+      setSelectedItem(item);
+      setFieldInputModalShown(true);
+    };
     const onDeletePress = () => {
-        setFieldDeleteModalShown(true);
-        setSelectedItem(item);
-    }
-    return <FieldItem item={item} onEditPress = {onEditPress} onDeletePress = {onDeletePress} />;
+      setFieldDeleteModalShown(true);
+      setSelectedItem(item);
+    };
+    return (
+      <FieldItem
+        item={item}
+        onEditPress={onEditPress}
+        onDeletePress={onDeletePress}
+      />
+    );
   };
 
   return (
@@ -93,87 +109,79 @@ const Details = ({
         style={styles.backgroundView}
         source={require("../../assets/pics/bg.png")}
       />
-      <View style= {styles.container}>        
+
+      <Text style={styles.backButton} onPress={() => navigation.goBack()}>
+        <AntDesign name="arrowleft" size={24} color="black" />
+      </Text>
+
+      <View style={styles.container}>
         <FlatList
-          ref = {list}
-          refreshing = {refreshing}
-          onRefresh = {onRefresh}
+          ref={list}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           data={fieldData}
           keyExtractor={(item) => item.id}
           renderItem={renderField}
           ListHeaderComponent={
             <View style={styles.dataContainer}>
-              <ImageComponent 
-                setProfileImageUri= {onSetProfileImageUri} 
-                profileImageUri = {profileImageUri} 
-                onDeletePress = {onImageDeletePressed} 
-                user = {user}
+              <ImageComponent
+                setProfileImageUri={onSetProfileImageUri}
+                profileImageUri={profileImageUri}
+                onDeletePress={onImageDeletePressed}
+                user={user}
               />
             </View>
           }
-          ListFooterComponent = {
-              <View style = {{height: 110}} />
-          }
+          ListFooterComponent={<View style={{ height: 110 }} />}
         />
-        {
-        !fieldInputModalShown &&
-        !fieldDeleteModalShown &&
-        !imageDeleteModalShown &&
-        <View 
-            style={styles.buttonContainer} 
-        >
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setFieldInputModalShown(true);
-            }}
-          >
-            <Feather name="plus" size={24} color="#393A3C" />
-          </TouchableOpacity>
-        </View>
-        }
+        {!fieldInputModalShown &&
+          !fieldDeleteModalShown &&
+          !imageDeleteModalShown && (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  setFieldInputModalShown(true);
+                }}
+              >
+                <Feather name="plus" size={24} color="#393A3C" />
+              </TouchableOpacity>
+            </View>
+          )}
       </View>
       {fieldInputModalShown && (
         <FieldInputModal
-          selectedItem = {selectedItem}
+          selectedItem={selectedItem}
           onSubmit={onModalSubmit}
           isVisible={fieldInputModalShown}
           setVisibility={setFieldInputModalShown}
         />
       )}
-      {
-          fieldDeleteModalShown && (
-                <TwoButtonModal
-                    title = "Delete"
-                    body = "Are you sure that you want to delete this field?"
-                    isVisible = {fieldDeleteModalShown}
-                    setVisibility = {setFieldDeleteModalShown}
-                    rightButtonTitle = "Delete"
-                    rightButtonPressed = {
-                        () => {
-                            deleteField(selectedItem);
-                            firebaseRemoveField(selectedItem);
-                        }
-                    }
-                />
-          )
-      }
-      {
-          imageDeleteModalShown && (
-                <TwoButtonModal
-                    title = "Delete"
-                    body = "Are you sure that you want to delete this image?"
-                    isVisible = {imageDeleteModalShown}
-                    setVisibility = {setImageDeleteModalShown}
-                    rightButtonTitle = "Delete"
-                    rightButtonPressed = {
-                        () => {
-                            onSetProfileImageUri(null);
-                        }
-                    }
-                />
-          )
-      }
+      {fieldDeleteModalShown && (
+        <TwoButtonModal
+          title="Delete"
+          body="Are you sure that you want to delete this field?"
+          isVisible={fieldDeleteModalShown}
+          setVisibility={setFieldDeleteModalShown}
+          rightButtonTitle="Delete"
+          rightButtonPressed={() => {
+            deleteField(selectedItem);
+            firebaseRemoveField(selectedItem);
+          }}
+        />
+      )}
+      {imageDeleteModalShown && (
+        <TwoButtonModal
+          title="Delete"
+          body="Are you sure that you want to delete this image?"
+          isVisible={imageDeleteModalShown}
+          setVisibility={setImageDeleteModalShown}
+          rightButtonTitle="Delete"
+          rightButtonPressed={() => {
+            onSetProfileImageUri(null);
+          }}
+        />
+      )}
     </>
   );
 };
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
     left: 0,
     height: Dimensions.get("window").height,
     width: Dimensions.get("window").width,
-    zIndex: 1,    
+    zIndex: 1,
   },
   container: {
     position: "relative",
@@ -229,6 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "black",
   },
+  backButton: { zIndex: 11111, position: "absolute", top: 50, left: 25 },
 });
 const mapStateToProps = (state) => ({
   fieldData: state.profile.fieldData,
