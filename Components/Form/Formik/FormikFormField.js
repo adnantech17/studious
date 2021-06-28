@@ -14,7 +14,6 @@ const FormikFormField = (
     rightIcon,
     rightIconOnPress,
     hidePassword,
-    forceSpace,
     ...otherProps
   },
   ref
@@ -49,7 +48,6 @@ const FormikFormField = (
       </View>
       <FormikErrorMessage
         error={errors[name]}
-        forceSpace={forceSpace}
         visible={touched[name]}
       />
     </View>

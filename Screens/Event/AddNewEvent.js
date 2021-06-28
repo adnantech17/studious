@@ -12,7 +12,6 @@ import EventForm from "../../Components/Event/EventForm";
 const AddNewEvent = ({
     navigation
 }) => {
-    
     return (
     <>
     <ImageBackground
@@ -24,7 +23,10 @@ const AddNewEvent = ({
             <Text style = {styles.title} >Add New Event</Text>
             <EventForm 
                 handleCancel = {() => navigation.goBack() } 
-                handleSubmit = {() => navigation.goBack() }
+                handleSubmit = {(event) => {
+                    console.log(event); 
+                    navigation.goBack(); 
+                }}
             />
         </View>
     </View>

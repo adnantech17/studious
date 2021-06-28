@@ -10,6 +10,7 @@ import FormikErrorMessage from "../Form/Formik/FormikErrorMessage";
 import colors from "../../assets/colors";
 import AppButton from "../reusable/Appbutton";
 import FormikFormPicker from "../Form/Formik/FormikFormPicker/FormikFormPicker";
+import FormikDatePicker from "../Form/Formik/FormikDatePicker";
 
 const eventSchema = Yup.object().shape({
   id: Yup
@@ -22,7 +23,7 @@ const eventSchema = Yup.object().shape({
   venue: Yup.string(),
   repeatEvent: Yup.object().required(),
   date: Yup.date().required("Please pick a date."),
-  time: Yup.date(),
+  time: Yup.date().required("Please pick a time."),
 });
 
 const inputFields = () => {
@@ -57,7 +58,6 @@ const repeatEventOptions = [
 ]
 
 const INITIAL_VALUES = () =>{ 
-    console.log("Loaded", new Date().toString());
     return ({
         id: new Date().toString(),
         title: "",
@@ -67,7 +67,7 @@ const INITIAL_VALUES = () =>{
             label : "Never",
             value : 0,
         },
-        date: null,
+        date: new Date(),
         time: null,
     })
 }
@@ -116,6 +116,16 @@ const EventForm = ({
         items = {repeatEventOptions}
         name = "repeatEvent"
       />
+      <FormikDatePicker
+        name = "date"
+        mode = "date"
+        icon = "calendar"
+      />
+      <FormikDatePicker
+        name = "time"
+        mode = "time"
+        icon = "time"
+      />
       <FormikSubmitButton
         buttonStyle={styles.buttonStyle}
         textStyle={styles.buttonTextStyle}
@@ -137,8 +147,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: "32%",
     borderRadius: 100,
-    marginTop: 40,
-    marginBottom: 10,
+    marginHorizontal: 10,
   },
   buttonTextStyle: {
     fontSize: 16,
