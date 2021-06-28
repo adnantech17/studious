@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import nextId from "react-id-generator";
 import { View, Text, TextInput, Button } from "react-native";
 import { connect } from "react-redux";
 import { Picker } from "@react-native-community/picker";
@@ -58,8 +57,9 @@ const NewMaterialScreen = ({
   };
 
   const createMaterial = (id) => {
+    const dt = new Date();
     return {
-      id: id || "mat-" + nextId(),
+      id: id || "mat-" + dt.getTime(),
       title: title,
       description: description,
       attachment: attachment ? attachment : null,

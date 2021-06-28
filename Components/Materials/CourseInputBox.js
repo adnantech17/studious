@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import nextId from "react-id-generator";
 import { StyleSheet, TextInput, View } from "react-native";
 
 import Modal from "react-native-modal";
@@ -46,8 +45,9 @@ const CourseInputBox = ({
       updateCourse(course);
       firebaseCourseUpdate(course, setCourses);
     } else {
+      const dt = new Date();
       const course = {
-        id: nextId(),
+        id: dt.getTime(),
         title: title,
         materials: [],
       };

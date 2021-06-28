@@ -16,11 +16,18 @@ function Course({
   selectCourse,
   selectMaterial,
   toggleMenuBox,
+  filterTags,
 }) {
   const addNewMaterial = () => {
     selectCourse(course);
     selectMaterial(null, null);
     navigation.navigate("NewMaterial");
+  };
+
+  const intersection = (array1, array2) => {
+    array1 = array1.map((item) => item.toLowerCase());
+    array2 = array2.map((item) => item.toLowerCase());
+    return array1.filter((value) => array2.includes(value));
   };
   return (
     <View style={styles.container}>
@@ -44,14 +51,27 @@ function Course({
         </TouchableOpacity>
       </View>
 
-      {course.materials.map((material) => (
-        <Material
-          course={course}
-          material={material}
-          navigation={navigation}
-          key={material.id}
-        />
-      ))}
+      {filterTags.length === 0
+        ? course.materials.map((material) => (
+            <Material
+              course={course}
+              material={material}
+              navigation={navigation}
+              key={material.id}
+            />
+          ))
+        : course.materials
+            .filter(
+              (material) => intersection(material.tags, filterTags).length
+            )
+            .map((material) => (
+              <Material
+                course={course}
+                material={material}
+                navigation={navigation}
+                key={material.id}
+              />
+            ))}
       <CourseMenu />
       <MaterialMenu navigation={navigation} />
     </View>
