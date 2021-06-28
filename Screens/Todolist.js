@@ -19,11 +19,11 @@ import {
 import TodoInputBox from "../Components/TodoList/TodoInputBox";
 import { Ionicons } from "@expo/vector-icons";
 import TodoMenu from "../Components/TodoList/TodoMenu";
-<AntDesign name="plus" size={24} color="black" />;
 
 import { firebaseTodoDownload } from "../Utils/FirebaseUtils";
 import { formatDate } from "../Utils/date.utils";
 import { AntDesign } from "@expo/vector-icons";
+import AddButton from "../Components/reusable/AddButton";
 
 const TodoList = ({
   todos,
@@ -116,15 +116,12 @@ const TodoList = ({
       {inputBox && <TodoInputBox />}
       {menuBox && <TodoMenu />}
       {!inputBox && (
-        <TouchableOpacity
-          style={styles.addButton}
+        <AddButton
           onPress={() => {
             toggleTodoInput();
             selectTodo(null);
           }}
-        >
-          <AntDesign name="plus" size={24} color="black" />
-        </TouchableOpacity>
+        />
         )}
     </View>
     </>

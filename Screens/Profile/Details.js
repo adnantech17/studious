@@ -17,6 +17,7 @@ import ImageComponent from "../../Components/Profile/ImageComponent";
 import FieldInputModal from "../../Components/Profile/FieldInputModal";
 import TwoButtonModal from "../../Components/reusable/TwoButtonModal";
 import { firebaseAddField, firebaseEditField, firebaseRemoveField, firebaseSetProfileImageUri, firebaseSyncWithProfile } from "../../Utils/Profile/firebase.utils";
+import AddButton from "../../Components/reusable/AddButton";
 
 
 const Details = ({ 
@@ -119,18 +120,11 @@ const Details = ({
         !fieldInputModalShown &&
         !fieldDeleteModalShown &&
         !imageDeleteModalShown &&
-        <View 
-            style={styles.buttonContainer} 
-        >
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setFieldInputModalShown(true);
-            }}
-          >
-            <Feather name="plus" size={24} color="#393A3C" />
-          </TouchableOpacity>
-        </View>
+        <AddButton
+          onPress = {() => {
+                  setFieldInputModalShown(true);
+          }}
+        />
         }
       </View>
       {fieldInputModalShown && (
