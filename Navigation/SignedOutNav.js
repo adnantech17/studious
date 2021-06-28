@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignIn from "../Screens/SignIn";
 import Register from "../Screens/Register";
 import Profile from "../Screens/Profile/Profile";
+import ForgetPassword from "../Screens/ForgetPassword"
 const AuthStack = createStackNavigator();
 
 const SignedOutNav = () => {
@@ -26,6 +27,11 @@ const SignedOutNav = () => {
         name="Profile"
         component={Profile}
         options={{ title: "Profile" }}
+      />
+      <AuthStack.Screen
+        name = "Forget Password"
+        component = {ForgetPassword}
+        options={{ title: "Forget Password" }}
       />
     </AuthStack.Navigator>
   );
