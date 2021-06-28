@@ -6,11 +6,10 @@ const FormikErrorMessage = ({
   error,
   visible,
   style,
-  forceSpace,
   ...otherProps
 }) => {
   if (!visible || !error)
-    return forceSpace ? <Text style={styles.text} /> : null;
+    return null;
 
   return (
     <Text style={[styles.error, style]} {...otherProps}>

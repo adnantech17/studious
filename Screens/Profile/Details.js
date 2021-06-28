@@ -30,6 +30,7 @@ import {
   firebaseSetProfileImageUri,
   firebaseSyncWithProfile,
 } from "../../Utils/Profile/firebase.utils";
+import AddButton from "../../Components/reusable/AddButton";
 
 const Details = ({
   fieldData,
@@ -64,9 +65,7 @@ const Details = ({
       ...item,
     };
     addField(field);
-    console.log("LOL");
     firebaseAddField(field);
-    console.log("LOL2");
     list.current?.scrollToEnd();
   };
 
@@ -113,9 +112,9 @@ const Details = ({
         source={require("../../assets/pics/bg.png")}
       />
 
-      <Text style={styles.backButton} onPress={() => navigation.goBack()}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <AntDesign name="arrowleft" size={24} color="black" />
-      </Text>
+      </TouchableOpacity>
 
       <View style={styles.container}>
         <FlatList
@@ -140,16 +139,11 @@ const Details = ({
         {!fieldInputModalShown &&
           !fieldDeleteModalShown &&
           !imageDeleteModalShown && (
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
+            <AddButton
+                onPress = {() => {
                   setFieldInputModalShown(true);
                 }}
-              >
-                <Feather name="plus" size={24} color="#393A3C" />
-              </TouchableOpacity>
-            </View>
+            />
           )}
       </View>
       {fieldInputModalShown && (
@@ -214,26 +208,6 @@ const styles = StyleSheet.create({
     display: "flex",
     position: "relative",
     paddingTop: 100,
-  },
-  buttonContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 32,
-    right: 32,
-    margin: 8,
-    zIndex: 3,
-  },
-  button: {
-    borderColor: colors.lightgray,
-    borderRadius: 100,
-    width: 60,
-    height: 60,
-    backgroundColor: colors.backgroundColor,
-    alignItems: "center",
-    justifyContent: "center",
-    elevation: 5,
   },
   buttonText: {
     marginLeft: 7,
