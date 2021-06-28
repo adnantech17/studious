@@ -3,7 +3,6 @@ export const addCourseUtil = (courses, item) => {
 };
 
 export const removeCourseUtil = (courses, item) => {
-  console.log(item);
   return courses.filter((course) => item.id !== course.id);
 };
 
@@ -38,15 +37,6 @@ export const removeMaterialUtil = (courses, item) => {
 
 export const updateMaterialUtil = (courses, item) => {
   const mat = item.material;
-
-  courses.map(
-    (course) =>
-      course.id === item.course_id && {
-        materials: course.materials.map((material) =>
-          console.log(mat.id === material.id, material.id, mat.id, "HDDD")
-        ),
-      }
-  );
 
   return courses.map((course) =>
     course.id === item.course_id

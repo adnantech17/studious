@@ -4,9 +4,17 @@ import { View, Text, TextInput, Button } from "react-native";
 import { connect } from "react-redux";
 import { Picker } from "@react-native-community/picker";
 
-import { addMaterial, updateMaterial } from "../Redux/material/material.action";
+import {
+  addMaterial,
+  setCourses,
+  updateMaterial,
+} from "../Redux/material/material.action";
 import TagInputBox from "../Components/Input/TagInputBox";
 import Attachment from "../Components/Materials/Attachment";
+import {
+  firebaseMaterialUpdate,
+  firebaseNewMaterialUpload,
+} from "../Utils/FirebaseUtils";
 
 const NewMaterialScreen = ({
   addMaterial,
@@ -15,7 +23,7 @@ const NewMaterialScreen = ({
   selectedCourse,
   selectedMaterial,
   updateMaterial,
-  user,
+  setCourses,
 }) => {
   const mat = selectedMaterial.material;
   const [title, setTitle] = useState(mat ? mat.title : "");
@@ -61,14 +69,18 @@ const NewMaterialScreen = ({
   };
 
   const addNewMaterial = () => {
+    const material = createMaterial(null);
     if (!performCheck()) return;
-    addMaterial(courseId, createMaterial(null));
+    addMaterial(courseId, material);
+    firebaseNewMaterialUpload(courseId, material, setCourses);
     cleanupWhenDone();
   };
 
   const updateGivenMaterial = () => {
+    const material = createMaterial(mat.id);
     if (!performCheck()) return;
-    updateMaterial(courseId, createMaterial(mat.id));
+    updateMaterial(courseId, material);
+    firebaseMaterialUpdate(courseId, material, setCourses);
     cleanupWhenDone();
   };
 
@@ -127,6 +139,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addMaterial(course_id, material)),
   updateMaterial: (course_id, material) =>
     dispatch(updateMaterial(course_id, material)),
+  setCourses: (courses) => dispatch(setCourses(courses)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewMaterialScreen);

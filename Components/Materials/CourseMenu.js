@@ -8,6 +8,7 @@ import {
   toggleCourseInput,
   toggleCourseMenu,
 } from "../../Redux/material/material.action";
+import { firebaseCourseDelete } from "../../Utils/FirebaseUtils";
 
 const CourseMenu = ({
   menuBox,
@@ -37,6 +38,7 @@ const CourseMenu = ({
           title="Remove"
           name="trash-bin"
           onPress={() => {
+            firebaseCourseDelete(selectedCourse);
             removeCourse(selectedCourse);
             toggleMenuBox();
           }}

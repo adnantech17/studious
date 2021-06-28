@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import AddButton from "../Components/Buttons/AddButton";
 import Course from "../Components/Materials/Course";
 import CourseInputBox from "../Components/Materials/CourseInputBox";
 import MaterialMenu from "../Components/Materials/AddMenu";
-import { auth, firestore } from "../Configs/firebase.config";
-import { toggleMenuBox } from "../Redux/material/material.action";
+import { setCourses, toggleMenuBox } from "../Redux/material/material.action";
+import { firebaseCourseDownload } from "../Utils/FirebaseUtils";
 
 const MaterialList = ({
   courses,
@@ -15,20 +15,25 @@ const MaterialList = ({
   toggleMenuBox,
   navigation,
   inputBox,
+  setCourses,
 }) => {
-  useEffect(() => {
-    firestore
-      .collection("courses")
-      .doc(auth.currentUser.uid)
-      .set({ Courses: courses });
-  }, [courses]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    firebaseCourseDownload(setRefreshing, setCourses);
+  };
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {courses.map((course) => (
-          <Course key={course.id} course={course} navigation={navigation} />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={courses}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
+        renderItem={({ item }) => (
+          <Course key={item.id} course={item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id.toString()}
+      />
       <AddButton onPress={() => toggleMenuBox()} />
       {matMenuBox && <MaterialMenu navigation={navigation} />}
       {inputBox && <CourseInputBox />}
@@ -43,6 +48,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   toggleMenuBox: () => dispatch(toggleMenuBox()),
+  setCourses: (courses) => dispatch(setCourses(courses)),
 });
 
 const styles = StyleSheet.create({
