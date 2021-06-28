@@ -11,6 +11,7 @@ import SignedOutNav from "./Navigation/SignedOutNav";
 import SignedInNav from "./Navigation/SignedInNav";
 import { setTodos } from "./Redux/todo/todo.action";
 import { firebaseNewTodoUpload } from "./Utils/FirebaseUtils";
+import { setProfileData } from "./Redux/profile/profile.action";
 
 class Index extends React.Component {
   unsubscribeFromAuth = function () {
@@ -21,7 +22,6 @@ class Index extends React.Component {
     this.props.setLoading(true);
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
       this.props.setCurrentUser(user);
-      this.props.setLoading(false);
       if (user) {
         await firestore
           .collection("users")
@@ -43,7 +43,7 @@ class Index extends React.Component {
           .doc(user.uid)
           .get()
           .then((doc) => {
-            if (doc.data().Todos) {
+            if (doc.exists && doc.data().Todos) {
               console.log("Data found");
               this.props.setTodos(doc.data().Todos);
             } else {
@@ -69,7 +69,17 @@ class Index extends React.Component {
               console.log("No such document!");
             }
           });
+        await firestore
+              .collection("profile")
+              .doc(user.id)
+              .get()
+              .then((doc) => {
+                if(doc.exists) {
+                  setProfileData(doc.data());
+                }
+              })
       }
+      this.props.setLoading(false);
     });
   }
   componentWillUnmount() {
@@ -92,12 +102,14 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
   setLoading: (loadingState) => dispatch(setLoading(loadingState)),
   setTodos: (todos) => dispatch(setTodos(todos)),
+  setProfileData: (profileData) => dispatch(setProfileData(profileData)),
 });
 
 const mapStateToProps = (state) => ({
   loading: state.user.loadingState,
   user: state.user.currentUser,
   todos: state.todos.todos,
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

@@ -1,5 +1,5 @@
 export const addFieldUtil = (fields, newField) => {
-    return [...fields, newField];
+    return fields ? [...fields, newField] : [newField];
 } 
 
 export const setFieldDataUtil = (fieldData) => {

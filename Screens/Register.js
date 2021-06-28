@@ -4,6 +4,33 @@ import { Text, StyleSheet, ImageBackground, Image, Dimensions, KeyboardAvoidingV
 import { auth, firestore } from "../Configs/firebase.config";
 import RegisterForm from "../Components/Register/RegisterForm";
 import colors from "../assets/colors";
+import { firebaseAddField } from "../Utils/Profile/firebase.utils";
+
+const firebaseUploadUserInformation = async (firstName, lastName, email) => {
+  await firestore.collection("users").doc(auth.currentUser.uid).set({
+    firstName,
+    lastName,
+    email,
+  });
+  await firebaseAddField({
+    id: new Date().toString()+'a',
+    fieldName: "First Name",
+    value: firstName,
+    required: true,
+  });
+  await firebaseAddField({
+    id: new Date().toString()+'b',
+    fieldName: "Last Name",
+    value: lastName,
+    required: true,
+  });
+  await firebaseAddField({
+    id: new Date().toString()+'c',
+    fieldName: "Email",
+    value: email,
+    required: true,
+  });
+}
 
 export const Register = ({ navigation }) => {
   const signUp = (
@@ -18,11 +45,7 @@ export const Register = ({ navigation }) => {
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
         console.log(result);
-        firestore.collection("users").doc(auth.currentUser.uid).set({
-          firstName,
-          lastName,
-          email,
-        });
+        firebaseUploadUserInformation(firstName, lastName, email);
         navigation.push("Profile");
       })
       .catch((err) => {

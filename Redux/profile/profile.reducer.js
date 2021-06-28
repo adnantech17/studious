@@ -1,4 +1,3 @@
-import { firebaseDownloadProfileData } from "../../Utils/Profile/firebase.utils";
 import { ADD_FIELD, DELETE_FIELD, EDIT_FIELD, SET_FIELD_DATA, SET_PROFILE_DATA, SET_PROFILE_IMAGE_URI } from "./profile.action";
 import { addFieldUtil, deleteFieldUtil, setEditFieldUtil, setFieldDataUtil } from "./profile.utils";
 

@@ -1,7 +1,7 @@
 import { auth, firestore } from "../../Configs/firebase.config";
 
-export const firebaseFieldDataUpload = (profileData) => {
-    firestore
+export const firebaseFieldDataUpload = async (profileData) => {
+    await firestore
           .collection("profile")
           .doc(auth.currentUser.uid)
           .set({
@@ -9,8 +9,8 @@ export const firebaseFieldDataUpload = (profileData) => {
           });
 }
 
-export const firebaseAddField = (newField) => {
-    firestore
+export const firebaseAddField = async (newField) => {
+    await firestore
     .collection("profile")
     .doc(auth.currentUser.uid)
     .get()
@@ -21,27 +21,27 @@ export const firebaseAddField = (newField) => {
           .doc(auth.currentUser.uid)
           .set({ 
               ...doc.data(),
-              fieldData: [...doc.data().fieldData, newField] 
+              fieldData: doc.data().fieldData ? [...doc.data().fieldData, newField] : [newField], 
            });
       } else {
         firestore
           .collection("profile")
           .doc(auth.currentUser.uid)
           .set({
-              fieldData: [newField] 
+              fieldData: [newField],
            });
         console.log("No such document!");
       }
     });
 }
 
-export const firebaseEditField = (editedField) => {
-    firestore
+export const firebaseEditField = async (editedField) => {
+    await firestore
     .collection("profile")
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().fieldData) {
         firestore
           .collection("profile")
           .doc(auth.currentUser.uid)
@@ -51,18 +51,17 @@ export const firebaseEditField = (editedField) => {
           });
       } else {
         console.log("No such document!");
-        return null;
       }
     });
 }
 
-export const firebaseRemoveField = (deletedField) => {
-    firestore
+export const firebaseRemoveField = async (deletedField) => {
+    await firestore
     .collection("profile")
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().fieldData) {
         firestore
           .collection("profile")
           .doc(auth.currentUser.uid)
@@ -77,8 +76,8 @@ export const firebaseRemoveField = (deletedField) => {
     });
 }
 
-export const firebaseSetProfileImageUri = (profileImageUri) => {
-    firestore
+export const firebaseSetProfileImageUri = async (profileImageUri) => {
+    await firestore
     .collection("profile")
     .doc(auth.currentUser.uid)
     .get()
@@ -103,8 +102,8 @@ export const firebaseSetProfileImageUri = (profileImageUri) => {
     });
 }
 
-export const firebaseSyncWithProfile = (setProfileData, setRefreshing) => {
-    return firestore
+export const firebaseSyncWithProfile = async (setProfileData, setRefreshing) => {
+    await firestore
     .collection("profile")
     .doc(auth.currentUser.uid)
     .get()
@@ -114,23 +113,8 @@ export const firebaseSyncWithProfile = (setProfileData, setRefreshing) => {
         if (setRefreshing) setRefreshing(false);
       } else {
         console.log("No such document!");
-        return null;
-      }
-    });
-}
-
-export const firebaseDownloadProfileData = () => {
-    if(!auth.currentUser) return null;
-    return firestore
-    .collection("profile")
-    .doc(auth.currentUser.uid)
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        return doc.data();
-      } else {
-        console.log("No such document!");
-        return null;
+        setProfileData(null);
+        if(setRefreshing) setRefreshing(false);
       }
     });
 }

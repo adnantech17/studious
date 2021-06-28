@@ -1,18 +1,19 @@
 import { auth, firestore } from "../Configs/firebase.config";
 
 export const firebaseNewTodoUpload = async (todo, setTodos) => {
-  firestore
+  await firestore
     .collection("todos")
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.data().Todos) {
+      if (doc.exists && doc.data().Todos) {
         setTodos([...doc.data().Todos, todo]);
         firestore
           .collection("todos")
           .doc(auth.currentUser.uid)
           .set({ Todos: [...doc.data().Todos, todo] });
       } else {
+        setTodos([todo]);
         firestore
           .collection("todos")
           .doc(auth.currentUser.uid)
@@ -23,12 +24,12 @@ export const firebaseNewTodoUpload = async (todo, setTodos) => {
 };
 
 export const firebaseTodoUpdate = async (todo, setTodos) => {
-  firestore
+  await firestore
     .collection("todos")
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().Todos) {
         var todos = doc.data().Todos;
         todos = todos.map((item) => (todo.id === item.id ? todo : item));
         setTodos([...todos]);
@@ -44,12 +45,12 @@ export const firebaseTodoUpdate = async (todo, setTodos) => {
 };
 
 export const firebaseTodoDelete = async (todo_id, setTodos) => {
-  firestore
+  await firestore
     .collection("todos")
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().Todos) {
         var todos = doc.data().Todos;
         todos = todos.filter((item) => todo_id !== item.id);
         // setTodos([...todos]);
@@ -65,12 +66,12 @@ export const firebaseTodoDelete = async (todo_id, setTodos) => {
 };
 
 export const firebaseTodoDownload = async (setRefreshing, setTodos) => {
-  return firestore
+  await firestore
     .collection("todos")
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().Todos) {
         setTodos(doc.data().Todos);
         if (setRefreshing) setRefreshing(false);
         console.log("here");

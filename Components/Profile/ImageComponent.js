@@ -26,14 +26,6 @@ const ImageComponent = ({profileImageUri, setProfileImageUri, onDeletePress, use
       requestPermission();
     }, []);
 
-    // useEffect(() => {
-    //   if(profileImageUri) {
-    //     // download file here
-    //     const downloadedUri = null;
-    //     setLocalImageUri(downloadedUri);
-    //   }
-    // }, [profileImageUri]);
-
     const uploadImage = async (uri, extension) => {
       console.log(uri);
       const pathRef = `${user.email}/profile_picture.${extension}`;
@@ -57,22 +49,32 @@ const ImageComponent = ({profileImageUri, setProfileImageUri, onDeletePress, use
     }
 
     const shareImage = async () => {
-      if(localImageUri) Sharing.shareAsync(localImageUri.uri);
-      else {
-        const uri = await downloadImage(profileImageUri);
-        Sharing.shareAsync(uri.uri);  
+      try{
+        if(localImageUri) Sharing.shareAsync(localImageUri.uri);
+        else {
+          const uri = await downloadImage(profileImageUri);
+          Sharing.shareAsync(uri.uri);  
+        }
+      } catch (error) {
+        console.log(error);
+        ToastAndroid.show("Please try again later!", ToastAndroid.SHORT);
       }
     }
 
     const saveToDevice = async () => {
-      if(localImageUri) MediaLibrary.saveToLibraryAsync(localImageUri.uri).then(() => {
-        ToastAndroid.show("Saved to device!", ToastAndroid.SHORT);
-      }); 
-      else {
-        const uri = await downloadImage(profileImageUri);
-        MediaLibrary.saveToLibraryAsync(uri.uri).then(() => {
+      try{
+        if(localImageUri) MediaLibrary.saveToLibraryAsync(localImageUri.uri).then(() => {
           ToastAndroid.show("Saved to device!", ToastAndroid.SHORT);
         }); 
+        else {
+          const uri = await downloadImage(profileImageUri);
+          MediaLibrary.saveToLibraryAsync(uri.uri).then(() => {
+            ToastAndroid.show("Saved to device!", ToastAndroid.SHORT);
+          }); 
+        }
+      } catch(error) {
+        console.log(error);
+        ToastAndroid.show("Please try again later!", ToastAndroid.SHORT);
       }
     }
 
