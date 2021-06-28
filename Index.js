@@ -9,8 +9,8 @@ import { setCurrentUser, setLoading } from "./Redux/user/user.action";
 import { auth, firestore } from "./Configs/firebase.config";
 import SignedOutNav from "./Navigation/SignedOutNav";
 import SignedInNav from "./Navigation/SignedInNav";
-import { setCourses } from "./Redux/material/material.action";
 import { setTodos } from "./Redux/todo/todo.action";
+import { firebaseNewTodoUpload } from "./Utils/FirebaseUtils";
 
 class Index extends React.Component {
   unsubscribeFromAuth = function () {
@@ -43,24 +43,29 @@ class Index extends React.Component {
           .doc(user.uid)
           .get()
           .then((doc) => {
-            if (doc.exists) {
-              console.log("Hello Firebase", doc.data());
+            if (doc.data().Todos) {
+              console.log("Data found");
               this.props.setTodos(doc.data().Todos);
-              console.log("TODOS DATA: ", doc.data().Todos);
-              console.log("TODOS: ", this.props.todos);
             } else {
-              console.log("No such document!");
-            }
-          });
-
-        await firestore
-          .collection("courses")
-          .doc(user.uid)
-          .get()
-          .then((doc) => {
-            if (doc.exists) {
-              this.props.setCourses(doc.data().Courses);
-            } else {
+              this.props.setTodos([
+                {
+                  id: 0,
+                  name: "Hello World",
+                  date: new Date(),
+                  time: new Date(),
+                  completed: false,
+                },
+              ]);
+              firebaseNewTodoUpload(
+                {
+                  id: 0,
+                  name: "Hello World",
+                  date: new Date(),
+                  time: new Date(),
+                  completed: false,
+                },
+                this.props.setTodos
+              );
               console.log("No such document!");
             }
           });
@@ -87,7 +92,6 @@ const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
   setLoading: (loadingState) => dispatch(setLoading(loadingState)),
   setTodos: (todos) => dispatch(setTodos(todos)),
-  setCourses: (courses) => dispatch(setCourses(courses)),
 });
 
 const mapStateToProps = (state) => ({
