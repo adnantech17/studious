@@ -5,7 +5,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 const DateButton = ({ icon, text, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
-      <Ionicons style={{ marginRight: 4 }} name={icon} size={16} color="gray" />
+      <Ionicons style={{ marginRight: 4 }} name={icon} size={20} color="gray" />
       <Text>{text}</Text>
     </TouchableOpacity>
   );
@@ -16,9 +16,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 100,
     paddingHorizontal: 5,
-    marginRight: 5,
+    marginRight: 10,
+    paddingVertical: 13,
+    flex: 0.4,
+    justifyContent: "center",
   },
 });
 

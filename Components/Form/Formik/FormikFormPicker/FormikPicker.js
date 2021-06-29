@@ -6,7 +6,7 @@ import {
   Modal,
   Button,
   FlatList,
-  Text
+  Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FormikPickerItem from "./FormikPickerItem";
@@ -27,7 +27,7 @@ function FormikPicker({
   return (
     <>
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-        <View style={[styles.container, { width }]}>
+        <View style={[styles.container]}>
           {icon && (
             <MaterialCommunityIcons
               name={icon}
@@ -49,26 +49,23 @@ function FormikPicker({
           />
         </View>
       </TouchableWithoutFeedback>
-      <Modal 
-        visible={modalVisible} 
-        animationType="slide"
-      >
-          <Button title="Close" onPress={() => setModalVisible(false)} />
-          <FlatList
-            data={items}
-            keyExtractor={(item) => item.value.toString()}
-            numColumns={numberOfColumns}
-            renderItem={({ item }) => (
-              <PickerItemComponent
-                item={item}
-                label={item.label}
-                onPress={() => {
-                  setModalVisible(false);
-                  onSelectItem(item);
-                }}
-              />
-            )}
-          />
+      <Modal visible={modalVisible} animationType="slide">
+        <Button title="Close" onPress={() => setModalVisible(false)} />
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item.value.toString()}
+          numColumns={numberOfColumns}
+          renderItem={({ item }) => (
+            <PickerItemComponent
+              item={item}
+              label={item.label}
+              onPress={() => {
+                setModalVisible(false);
+                onSelectItem(item);
+              }}
+            />
+          )}
+        />
       </Modal>
     </>
   );
@@ -76,18 +73,17 @@ function FormikPicker({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.medium,
     borderRadius: 25,
     flexDirection: "row",
     padding: 15,
-    marginVertical: 10,
+    marginTop: 10,
+    marginBottom: 20,
+    width: "80%",
+    borderWidth: 1.0,
+    paddingHorizontal: 25,
   },
   icon: {
     marginRight: 10,
-  },
-  placeholder: {
-    color: colors.darkgray,
-    flex: 1,
   },
   text: {
     flex: 1,

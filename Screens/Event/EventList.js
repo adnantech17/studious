@@ -28,97 +28,88 @@ import { deleteEvent } from "../../Redux/event/event.action";
 //     },
 // ]
 
-const EventList = ({
-    navigation,
-    events,
-    deleteEvent,
-}) => {
-    const [refreshing, setRefreshing] = useState(false);
-    const onRefresh = () => {
-
-    }
-    const goToEdit = (event) => {
-        navigation.push("Edit Event",{item : event});
-    }
-    return (
+const EventList = ({ navigation, events, deleteEvent }) => {
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = () => {};
+  const goToEdit = (event) => {
+    navigation.push("Edit Event", { item: event });
+  };
+  return (
     <>
-    <ImageBackground
+      <ImageBackground
         style={styles.backgroundView}
         source={require("../../assets/pics/bg.png")}
-    />
-    <View style = {styles.container}>
+      />
+      <View style={styles.container}>
         <View>
-        <Text style={styles.title}>My Events</Text>
-        <FlatList
+          <Text style={styles.title}>My Events</Text>
+          <FlatList
             data={events}
             onRefresh={onRefresh}
             refreshing={refreshing}
-            renderItem={({item}) => {
-                return(
-                <EventCard 
-                    event = {item} 
-                    onDelete = {deleteEvent}
-                    onEdit = {goToEdit}
+            renderItem={({ item }) => {
+              return (
+                <EventCard
+                  event={item}
+                  onDelete={deleteEvent}
+                  onEdit={goToEdit}
                 />
-                );
+              );
             }}
-            keyExtractor={(item) => (item.id)}
+            keyExtractor={(item) => item.id}
             ListEmptyComponent={
-            <>
+              <>
                 <View style={styles.emptyEvent}>
-                    <Image
+                  <Image
                     style={styles.empty}
                     source={require("../../assets/pics/empty.png")}
-                    />
-                    <Text style={styles.noEvent}>No Event</Text>
+                  />
+                  <Text style={styles.noEvent}>No Event</Text>
                 </View>
-            </>
+              </>
             }
-        />
+          />
         </View>
-        <AddButton
-            onPress = { () => navigation.push("Add New Event")}
-        />
-    </View>
+        <AddButton onPress={() => navigation.push("Add New Event")} />
+      </View>
     </>
-    )
+  );
 };
 
 const mapStateToProps = (state) => ({
-    events : state.events.eventData,
+  events: state.events.eventData,
 });
 const mapDispatchToProps = (dispatch) => ({
-    deleteEvent: (item) => dispatch(deleteEvent(item)),
+  deleteEvent: (item) => dispatch(deleteEvent(item)),
 });
 
 const styles = StyleSheet.create({
-    backgroundView: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: Dimensions.get("window").height,
-        width: Dimensions.get("window").width,
-    },
-    container: {
-        flex: 1,
-        justifyContent: "space-between",
-        paddingTop: 70,
-    },
-    title: { fontSize: 30, marginLeft: 30, marginBottom: 20 },
-    empty: {
-        width: 200,
-        height: 200,
-    },
-    emptyEvent: {
-        width: "100%",
-        height: 600,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    noEvent: {
-        fontSize: 20,
-    },
+  backgroundView: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    paddingTop: 70,
+  },
+  title: { fontSize: 30, marginLeft: 30, marginBottom: 20 },
+  empty: {
+    width: 215,
+    height: 200,
+  },
+  emptyEvent: {
+    width: "100%",
+    height: 600,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noEvent: {
+    fontSize: 20,
+  },
 });
-    
+
 export default connect(mapStateToProps, mapDispatchToProps)(EventList);
-    

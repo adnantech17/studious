@@ -21,7 +21,6 @@ const AddNewEvent = ({
         source={require("../../assets/pics/bg.png")}
     />
     <View style = {styles.container}>
-        <View>
             <Text style = {styles.title} >Add New Event</Text>
             <EventForm 
                 handleCancel = {() => navigation.goBack() } 
@@ -31,7 +30,6 @@ const AddNewEvent = ({
                     navigation.goBack(); 
                 }}
             />
-        </View>
     </View>
     </>
     )
@@ -53,11 +51,10 @@ const styles = StyleSheet.create({
         width: Dimensions.get("window").width,
     },
     container: {
-        flex: 1,
         justifyContent: "space-between",
-        paddingTop: 70,
+        paddingTop: 150,
     },
-    title: { fontSize: 30, marginLeft: 30, marginBottom: 20 },
+    title: { fontSize: 25, marginLeft: 45, marginBottom: 40 },
 });
     
 export default connect(mapStateToProps, mapDispatchToProps)(AddNewEvent);
