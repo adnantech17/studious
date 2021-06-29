@@ -3,11 +3,11 @@ import {
   View,
   StyleSheet,
   TouchableWithoutFeedback,
-  Modal,
   Button,
   FlatList,
   Text,
 } from "react-native";
+import Modal from "react-native-modal";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FormikPickerItem from "./FormikPickerItem";
 import colors from "../../../../assets/colors";
@@ -49,7 +49,7 @@ function FormikPicker({
           />
         </View>
       </TouchableWithoutFeedback>
-      <Modal visible={modalVisible} animationType="slide">
+      {modalVisible && <Modal visible={modalVisible}>
         <Button title="Close" onPress={() => setModalVisible(false)} />
         <FlatList
           data={items}
@@ -66,7 +66,7 @@ function FormikPicker({
             />
           )}
         />
-      </Modal>
+      </Modal>}
     </>
   );
 }
