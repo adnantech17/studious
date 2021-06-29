@@ -1,3 +1,4 @@
+import { AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -7,30 +8,14 @@ import {
   ImageBackground,
   Image,
   Dimensions,
-  Button,
+  TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
 import EventCard from "../../Components/Event/EventCard";
-import AddButton from "../../Components/reusable/AddButton";
 import { deleteEvent, updateDisplayEvent } from "../../Redux/event/event.action";
 import { getDateTime } from "../../Utils/Event/event.utils";
 
-// const events = [
-//     {
-//         id: "1",
-//         title: "CSE",
-//     },
-//     {
-//         id: "2",
-//         title: "EEE",
-//     },
-//     {
-//         id: "3",
-//         title: "MATH"
-//     },
-// ]
-
-const EventList = ({
+const PastEventList = ({
     navigation,
     events,
     displayEvents,
@@ -70,10 +55,20 @@ const EventList = ({
     />
     <View style = {styles.container}>
         <View style = {styles.childContainer}>
-        <Text style={styles.title}>My Events</Text>
+        <View style = {styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                <AntDesign name="arrowleft" size={30} color="black" />
+            </TouchableOpacity>
+            <View style = {styles.headerText}>
+                <Text style={styles.title}>My Past Events</Text>
+            </View>
+        </View>
+        <View style = {styles.alert}>
+            <Text>Past events automatically gets deleted after 7 days.</Text>
+        </View>
         <FlatList
-            data={displayEvents?.futureEvents
-                .sort((a,b) => getDateTime(a.date,a.time) - getDateTime(b.date,b.time))
+            data={displayEvents?.pastEvents
+                .sort((a,b) => getDateTime(b.date,b.time) - getDateTime(a.date,a.time))
             }
             onRefresh={onRefresh}
             refreshing={refreshing}
@@ -86,26 +81,13 @@ const EventList = ({
                     style={styles.empty}
                     source={require("../../assets/pics/empty.png")}
                     />
-                    <Text style={styles.noEvent}>No Event</Text>
+                    <Text style={styles.noEvent}>No Past Event</Text>
                 </View>
             </>
-            }
-            ListHeaderComponent = {
-                <>
-                { (displayEvents?.pastEvents && displayEvents.pastEvents.length > 0) &&
-                <Button 
-                  title = "Show Past Events"
-                  onPress = {() => navigation.push("Past Events")}
-                />
-                }
-                </>
             }
         />
         </View>
     </View>
-    <AddButton
-        onPress = { () => navigation.push("Add New Event")}
-    />
     </>
     )
 };
@@ -141,8 +123,6 @@ const styles = StyleSheet.create({
     },
     title: { 
         fontSize: 30, 
-        marginLeft: 30, 
-        marginBottom: 20,
     },
     empty: {
         width: 200,
@@ -157,7 +137,24 @@ const styles = StyleSheet.create({
     noEvent: {
         fontSize: 20,
     },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 20,
+    },
+    headerText: {
+        flex: 1,
+        marginLeft: 40,
+    },
+    backButton: { 
+        top : 1,
+        left: 25, 
+    },
+    alert: {
+        paddingHorizontal: 25,
+        backgroundColor: "orange",
+    }
 });
     
-export default connect(mapStateToProps, mapDispatchToProps)(EventList);
+export default connect(mapStateToProps, mapDispatchToProps)(PastEventList);
     
