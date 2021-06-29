@@ -21,3 +21,8 @@ export const setEventData = (eventData) => ({
     type: SET_EVENT_DATA,
     payload: eventData,
 })
+
+export const UPDATE_DISPLAY_EVENT = "UPDATE_DISPLAY_EVENT";
+export const updateDisplayEvent = () => ({
+    type: UPDATE_DISPLAY_EVENT,
+})

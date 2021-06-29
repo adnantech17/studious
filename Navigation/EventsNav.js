@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import EventList from "../Screens/Event/EventList";
 import AddNewEvent from "../Screens/Event/AddNewEvent";
 import EditEvent from "../Screens/Event/EditEvent";
+import PastEventList from "../Screens/Event/PastEventList";
 const EventsStack = createStackNavigator();
 
 const EventsNav = () => {
@@ -27,6 +28,11 @@ const EventsNav = () => {
                 name = "Edit Event"
                 component = {EditEvent}
                 options = {{title: "Edit Event"}}
+            />
+            <EventsStack.Screen
+                name = "Past Events"
+                component = {PastEventList}
+                options = {{title: "Past Event List"}}
             />
         </EventsStack.Navigator>
     );
