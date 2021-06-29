@@ -6,11 +6,12 @@ import * as Yup from "yup";
 import FormikForm from "../Form/Formik/FormikForm";
 import FormikFormField from "../Form/Formik/FormikFormField";
 import FormikSubmitButton from "../Form/Formik/FormikSubmitButton";
-import FormikErrorMessage from "../Form/Formik/FormikErrorMessage";
 import colors from "../../assets/colors";
 import AppButton from "../reusable/Appbutton";
 import FormikFormPicker from "../Form/Formik/FormikFormPicker/FormikFormPicker";
-import FormikDatePicker from "../Form/Formik/FormikDatePicker";
+import FormikDateTimePicker from "../Form/Formik/FormikDateTimePicker";
+import { getDateText, getTimeText } from "../../Utils/date.utils";
+import { REPEAT_DAILY, REPEAT_EVERY_OTHER_WEEK, REPEAT_MONTHLY, REPEAT_NEVER, REPEAT_WEEKLY } from "../../Utils/Event/repeat.utils";
 
 const eventSchema = Yup.object().shape({
   id: Yup
@@ -39,36 +40,22 @@ const inputFields = () => {
 };
 
 const repeatEventOptions = [
-    {
-        label : "Never",
-        value : 0,
-    },
-    {
-        label : "Weekly",
-        value : 1,
-    },
-    {
-        label : "Every Other Week",
-        value : 2,
-    },
-    {
-        label : "Monthly",
-        value : 3,
-    },
+    REPEAT_NEVER,
+    REPEAT_DAILY,
+    REPEAT_WEEKLY,
+    REPEAT_EVERY_OTHER_WEEK,
+    REPEAT_MONTHLY,
 ]
 
-const INITIAL_VALUES = () =>{ 
+const INITIAL_VALUES = () => { 
     return ({
         id: new Date().toString(),
         title: "",
         description: "",
         venue: "",
-        repeatEvent: {
-            label : "Never",
-            value : 0,
-        },
+        repeatEvent: REPEAT_NEVER,
         date: new Date(),
-        time: null,
+        time: new Date(),
     })
 }
 
@@ -116,15 +103,17 @@ const EventForm = ({
         items = {repeatEventOptions}
         name = "repeatEvent"
       />
-      <FormikDatePicker
+      <FormikDateTimePicker
         name = "date"
         mode = "date"
         icon = "calendar"
+        getText = {getDateText}
       />
-      <FormikDatePicker
+      <FormikDateTimePicker
         name = "time"
         mode = "time"
         icon = "time"
+        getText = {getTimeText}
       />
       <FormikSubmitButton
         buttonStyle={styles.buttonStyle}
@@ -145,9 +134,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     backgroundColor: colors.backgroundColor,
     paddingVertical: 12,
-    paddingHorizontal: "32%",
+    paddingHorizontal: "10%",
     borderRadius: 100,
-    marginHorizontal: 10,
+    marginVertical: 5,
+    marginHorizontal: "30%",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
   buttonTextStyle: {
     fontSize: 16,

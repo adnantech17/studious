@@ -4,13 +4,13 @@ import { useFormikContext } from "formik";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DateButton from "../../Buttons/DateButton";
-import { getDateText } from "../../../Utils/date.utils";
 import FormikErrorMessage from "./FormikErrorMessage";
 
-const FormikDatePicker = ({
+const FormikDateTimePicker = ({
     name,
     icon,
     mode,
+    getText,
     ...otherProps
 }) => {
     const { setFieldTouched, setFieldValue, errors, touched, values } = useFormikContext();
@@ -31,7 +31,7 @@ const FormikDatePicker = ({
             onPress = {() => {
                 setShowPicker(true);
             }}
-            text = {getDateText(values[name])}
+            text = {getText(values[name])}
         />
         <FormikErrorMessage 
             error = {errors[name]}
@@ -49,4 +49,4 @@ const FormikDatePicker = ({
     )
 }
 
-export default FormikDatePicker;
+export default FormikDateTimePicker;

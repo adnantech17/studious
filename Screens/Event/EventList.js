@@ -9,29 +9,36 @@ import {
   Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
+import EventCard from "../../Components/Event/EventCard";
 import AddButton from "../../Components/reusable/AddButton";
+import { deleteEvent } from "../../Redux/event/event.action";
 
-const events = [
-    {
-        id: "1",
-        title: "CSE",
-    },
-    {
-        id: "2",
-        title: "EEE",
-    },
-    {
-        id: "3",
-        title: "MATH"
-    },
-]
+// const events = [
+//     {
+//         id: "1",
+//         title: "CSE",
+//     },
+//     {
+//         id: "2",
+//         title: "EEE",
+//     },
+//     {
+//         id: "3",
+//         title: "MATH"
+//     },
+// ]
 
 const EventList = ({
     navigation,
+    events,
+    deleteEvent,
 }) => {
     const [refreshing, setRefreshing] = useState(false);
     const onRefresh = () => {
 
+    }
+    const goToEdit = (event) => {
+        navigation.push("Edit Event",{item : event});
     }
     return (
     <>
@@ -48,7 +55,11 @@ const EventList = ({
             refreshing={refreshing}
             renderItem={({item}) => {
                 return(
-                <Text>{item.title}</Text>
+                <EventCard 
+                    event = {item} 
+                    onDelete = {deleteEvent}
+                    onEdit = {goToEdit}
+                />
                 );
             }}
             keyExtractor={(item) => (item.id)}
@@ -74,10 +85,10 @@ const EventList = ({
 };
 
 const mapStateToProps = (state) => ({
-
+    events : state.events.eventData,
 });
 const mapDispatchToProps = (dispatch) => ({
-    
+    deleteEvent: (item) => dispatch(deleteEvent(item)),
 });
 
 const styles = StyleSheet.create({

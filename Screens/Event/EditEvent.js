@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import EventForm from "../../Components/Event/EventForm";
-import { addEvent } from "../../Redux/event/event.action";
+import { editEvent } from "../../Redux/event/event.action";
 
 const AddNewEvent = ({
     navigation,
-    addEvent
+    editEvent,
+    route,
 }) => {
     return (
     <>
@@ -22,12 +23,15 @@ const AddNewEvent = ({
     />
     <View style = {styles.container}>
         <View>
-            <Text style = {styles.title} >Add New Event</Text>
+            <Text style = {styles.title} >Edit Event</Text>
             <EventForm 
+                item = {route.params.item}
+                cancelButtonLabel = "Cancel"
                 handleCancel = {() => navigation.goBack() } 
+                submitButtonLabel = "Edit"
                 handleSubmit = {(event) => {
                     console.log(event); 
-                    addEvent(event);
+                    editEvent(event);
                     navigation.goBack(); 
                 }}
             />
@@ -41,7 +45,7 @@ const mapStateToProps = (state) => ({
 
 });
 const mapDispatchToProps = (dispatch) => ({
-    addEvent: (newEvent) => dispatch(addEvent(newEvent)),
+    editEvent: (editedEvent) => dispatch(editEvent(editedEvent)),
 });
 
 const styles = StyleSheet.create({

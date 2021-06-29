@@ -3,6 +3,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import EventList from "../Screens/Event/EventList";
 import AddNewEvent from "../Screens/Event/AddNewEvent";
+import EditEvent from "../Screens/Event/EditEvent";
 const EventsStack = createStackNavigator();
 
 const EventsNav = () => {
@@ -21,6 +22,11 @@ const EventsNav = () => {
                 name= "Add New Event"
                 component = {AddNewEvent}
                 options = {{ title: "Add New Event "}}
+            />
+            <EventsStack.Screen
+                name = "Edit Event"
+                component = {EditEvent}
+                options = {{title: "Edit Event"}}
             />
         </EventsStack.Navigator>
     );

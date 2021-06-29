@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import eventReducer from "./event/event.reducer";
 import courseReducer from "./material/material.reducer";
 import profileReducer from "./profile/profile.reducer";
 import todoReducer from "./todo/todo.reducer";
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
     todos: todoReducer,
     courses: courseReducer,
     profile: profileReducer,
+    events: eventReducer,
 });
 
 export default rootReducer;

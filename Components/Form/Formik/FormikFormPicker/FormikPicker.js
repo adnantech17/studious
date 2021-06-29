@@ -49,7 +49,10 @@ function FormikPicker({
           />
         </View>
       </TouchableWithoutFeedback>
-      <Modal visible={modalVisible} animationType="slide">
+      <Modal 
+        visible={modalVisible} 
+        animationType="slide"
+      >
           <Button title="Close" onPress={() => setModalVisible(false)} />
           <FlatList
             data={items}
@@ -73,7 +76,7 @@ function FormikPicker({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.lightgray,
+    backgroundColor: colors.medium,
     borderRadius: 25,
     flexDirection: "row",
     padding: 15,
