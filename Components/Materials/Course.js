@@ -24,11 +24,12 @@ function Course({
     navigation.navigate("NewMaterial");
   };
 
-  const intersection = (array1, array2) => {
-    array1 = array1.map((item) => item.toLowerCase());
-    array2 = array2.map((item) => item.toLowerCase());
-    return array1.filter((value) => array2.includes(value));
-  };
+  function subset(arr1, arr2) {
+    return arr2.every(function (val) {
+      return arr1.indexOf(val) >= 0;
+    });
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -61,9 +62,7 @@ function Course({
             />
           ))
         : course.materials
-            .filter(
-              (material) => intersection(material.tags, filterTags).length
-            )
+            .filter((material) => subset(material.tags, filterTags))
             .map((material) => (
               <Material
                 course={course}
