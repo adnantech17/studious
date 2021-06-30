@@ -38,30 +38,30 @@ export const generateDisplayEvents = (events) => {
         const dateTime = getDateTime(event.date, event.time);
         if(dateTime < now) pastEvents.push(displayEvent);
         else futureEvents.push(displayEvent);
-        // if(event.repeatEvent != REPEAT_NEVER) {
-        //     let repeatedEvent = {
-        //         ...event,
-        //     };
-        //     for(let i = 1; i < 10000; i++)
-        //     {
-        //         repeatedEvent = {
-        //             ...repeatedEvent,
-        //             displayId: event.id + i,
-        //         }
+        if(event.repeatEvent != REPEAT_NEVER) {
+            let repeatedEvent = {
+                ...event,
+            };
+            for(let i = 1; i < 10000; i++)
+            {
+                repeatedEvent = {
+                    ...repeatedEvent,
+                    displayId: event.id + i,
+                }
 
-        //         if(repeatedEvent.repeatEvent.incrementDay) {
-        //             repeatedEvent.date =  incrementDate(repeatedEvent.date,event.repeatEvent.incrementDay);
-        //         }
-        //         else {
-        //             repeatedEvent.date = incrementMonth(repeatedEvent.date,event.repeatEvent.incrementMonth);
-        //         }
+                if(repeatedEvent.repeatEvent.incrementDay) {
+                    repeatedEvent.date =  incrementDate(repeatedEvent.date,event.repeatEvent.incrementDay);
+                }
+                else {
+                    repeatedEvent.date = incrementMonth(repeatedEvent.date,event.repeatEvent.incrementMonth);
+                }
 
-        //         const repeatedDateTime = getDateTime(formatDate(repeatedEvent.date), formatDate(repeatedEvent.time));
-        //         if(repeatedDateTime > timeLimit) break;
-        //         if(repeatedDateTime < now) pastEvents.push(repeatedEvent);
-        //         else futureEvents.push(repeatedEvent);
-        //     };
-        // };
+                const repeatedDateTime = getDateTime(repeatedEvent.date, repeatedEvent.time);
+                if(repeatedDateTime > timeLimit) break;
+                if(repeatedDateTime < now) pastEvents.push(repeatedEvent);
+                else futureEvents.push(repeatedEvent);
+            };
+        };
     });
     return {
         pastEvents : [...pastEvents],
