@@ -27,6 +27,14 @@ const MaterialMenu = ({
     >
       <View style={styles.container}>
         <MenuButton
+          title="View"
+          name="pencil"
+          onPress={() => {
+            toggleMenuBox();
+            navigation.navigate("ViewMaterial");
+          }}
+        />
+        <MenuButton
           title="Edit"
           name="pencil"
           onPress={() => {

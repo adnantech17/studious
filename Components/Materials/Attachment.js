@@ -5,16 +5,11 @@ import ProgressDialogBox from "../DialogBox/ProgressDialogBox";
 import * as DocumentPicker from "expo-document-picker";
 import { storage } from "../../Configs/firebase.config";
 import { connect } from "react-redux";
-import { useEffect } from "react";
-import * as Permissions from "expo-permissions";
-import { downloadToFolder } from "expo-file-dl";
-const channelId = "DownloadInfo";
 
 const Attachment = ({ attachment, setAttachment, user }) => {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [canceled, setCanceled] = useState(false);
-  const [downloadProgress, setDownloadProgress] = useState("0%");
 
   const pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -61,34 +56,6 @@ const Attachment = ({ attachment, setAttachment, user }) => {
     );
   };
 
-  useEffect(() => {
-    if (downloadProgress === "100%") {
-      Alert.alert(
-        "Download Complete",
-        "",
-        [{ text: "OK", onPress: () => {} }],
-        { cancelable: false }
-      );
-      setDownloadProgress("0%");
-    }
-  }, [downloadProgress]);
-
-  async function getMediaLibraryPermissions() {
-    await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
-  }
-
-  const downloadProgressUpdater = ({
-    totalBytesWritten,
-    totalBytesExpectedToWrite,
-  }) => {
-    const pctg = 100 * (totalBytesWritten / totalBytesExpectedToWrite);
-    setDownloadProgress(`${pctg.toFixed(0)}%`);
-  };
-
-  useEffect(() => {
-    getMediaLibraryPermissions();
-  });
-
   return (
     <View>
       <ProgressDialogBox
@@ -101,27 +68,6 @@ const Attachment = ({ attachment, setAttachment, user }) => {
       <TouchableOpacity onPress={pickDocument}>
         <Text>{attachment ? attachment.name : "Add attachment"}</Text>
       </TouchableOpacity>
-      {attachment !== null && (
-        <View>
-          <Button
-            title="Download"
-            onPress={async () => {
-              console.log(attachment);
-
-              await downloadToFolder(
-                attachment.url,
-                attachment.name,
-                "Download",
-                channelId,
-                {
-                  downloadProgressCallback: downloadProgressUpdater,
-                }
-              );
-            }}
-          />
-          <Text>{downloadProgress}</Text>
-        </View>
-      )}
     </View>
   );
 };
