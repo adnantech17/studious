@@ -43,6 +43,7 @@ const FormikDateTimePicker = ({
                 mode = {mode}
                 value = {new Date()}
                 onChange = {onChangeDate}
+                {...otherProps}
             />
         }
         </>

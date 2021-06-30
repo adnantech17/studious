@@ -49,7 +49,11 @@ function FormikPicker({
           />
         </View>
       </TouchableWithoutFeedback>
-      {modalVisible && <Modal visible={modalVisible}>
+      {modalVisible && 
+      <Modal 
+        isVisible={modalVisible}
+        style = {styles.modal}
+      >
         <Button title="Close" onPress={() => setModalVisible(false)} />
         <FlatList
           data={items}
@@ -88,6 +92,9 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
   },
+  modal: {
+    backgroundColor: "white",
+  }
 });
 
 export default FormikPicker;

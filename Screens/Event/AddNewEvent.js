@@ -9,6 +9,7 @@ import {
 import { connect } from "react-redux";
 import EventForm from "../../Components/Event/EventForm";
 import { addEvent } from "../../Redux/event/event.action";
+import { firebaseAddEvent } from "../../Utils/Event/firebase.utils";
 
 const AddNewEvent = ({
     navigation,
@@ -25,7 +26,8 @@ const AddNewEvent = ({
             <EventForm 
                 handleCancel = {() => navigation.goBack() } 
                 handleSubmit = {(event) => {
-                    console.log(event); 
+                    console.log(event);
+                    firebaseAddEvent(event); 
                     addEvent(event);
                     navigation.goBack(); 
                 }}
