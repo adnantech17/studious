@@ -83,7 +83,7 @@ const EventForm = ({
       >
         <FormikFormField
           ref={fields.title}
-          placeholder={"Event Title"}
+          placeholder={"Event Name"}
           autoCapitalize="words"
           keyboardType="default"
           name="title"
