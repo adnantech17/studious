@@ -14,6 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import colors from "../../assets/colors";
 import { storage } from "../../Configs/firebase.config"
 import * as FileSystem from 'expo-file-system';
+import Modal from "react-native-modal";
 
 
 
@@ -122,6 +123,15 @@ const ImageComponent = ({profileImageUri, setProfileImageUri, onDeletePress, use
               </TouchableOpacity>
               {
               imageSettingsShown && 
+              <Modal
+                isVisible = {imageSettingsShown}
+                onBackButtonPress = {toggleImageSettings}
+                onBackdropPress = {toggleImageSettings}
+              >
+              <View style = {styles.modal}>
+              <View style = {styles.imageBigContainer}>
+              <Image source={{ uri: profileImageUri }} style={styles.image}/>
+              </View>
               <View style={styles.imageButtons}>
                 <TouchableOpacity 
                     onPress = {selectImage}
@@ -156,6 +166,8 @@ const ImageComponent = ({profileImageUri, setProfileImageUri, onDeletePress, use
                     <Text style={styles.imageButtonsText}>Delete</Text>
                 </TouchableOpacity>
               </View>
+              </View>
+              </Modal>
               }   
         </>
     )
@@ -184,10 +196,30 @@ const styles = StyleSheet.create({
     imageContainer: {
       height: 140,
       width: 140,
-      borderRadius: 20,
+      borderRadius: 70,
       overflow: "hidden",
       borderWidth: 0.5,
       borderColor: colors.lightgray,
+    },
+    imageBigContainer: {
+      width: "100%",
+      aspectRatio: 1/1,
+      borderRadius: 10,
+      overflow: "hidden",
+      borderWidth: 0.5,
+      borderColor: colors.medium,
+    },
+    modal: {
+      justifyContent: "center",
+      alignContent: "center",
+      alignItems: "center",
+      alignSelf: "center",
+      backgroundColor: "white",
+      borderRadius: 20,
+      width: "80%",
+      paddingTop: 30,
+      paddingBottom: 20,
+      paddingHorizontal: 20,
     }
 });
 
