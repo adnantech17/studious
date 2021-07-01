@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Button, Alert } from "react-native";
 import { connect } from "react-redux";
 import { Picker } from "@react-native-community/picker";
-import TagInputBox from "../Components/Input/TagInputBox";
-import { useEffect } from "react";
-import * as Permissions from "expo-permissions";
+import * as MediaLibrary from "expo-media-library";
 import { downloadToFolder } from "expo-file-dl";
+
+import TagInputBox from "../Components/Input/TagInputBox";
 const channelId = "DownloadInfo";
 
 const ViewMaterialScreen = ({ courses, selectedCourse, selectedMaterial }) => {
@@ -13,6 +13,11 @@ const ViewMaterialScreen = ({ courses, selectedCourse, selectedMaterial }) => {
   console.log(mat);
   const [downloadProgress, setDownloadProgress] = useState("0%");
   const [tags, setTags] = useState(mat ? mat.tags : []);
+
+  const requestPermission = async () => {
+    const { granted } = await MediaLibrary.requestPermissionsAsync();
+    if (!granted) alert("You need to enable permission to access the library.");
+};
 
   useEffect(() => {
     if (downloadProgress === "100%") {
@@ -27,7 +32,7 @@ const ViewMaterialScreen = ({ courses, selectedCourse, selectedMaterial }) => {
   }, [downloadProgress]);
 
   async function getMediaLibraryPermissions() {
-    await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    await requestPermission();
   }
 
   const downloadProgressUpdater = ({

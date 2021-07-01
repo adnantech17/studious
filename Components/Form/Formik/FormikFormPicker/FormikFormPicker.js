@@ -11,6 +11,9 @@ function FormikFormPicker({
   PickerItemComponent,
   placeholder,
   width,
+  keyExtractor,
+  labelProperty,
+  disabled,
 }) {
   const { errors, setFieldValue, touched, values } = useFormikContext();
 
@@ -24,6 +27,9 @@ function FormikFormPicker({
         placeholder={placeholder}
         selectedItem={values[name]}
         width={width}
+        keyExtractor = {keyExtractor}
+        labelProperty = {labelProperty}
+        disabled = {disabled}
       />
       <FormikErrorMessage error={errors[name]} visible={touched[name]} />
     </>

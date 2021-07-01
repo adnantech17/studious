@@ -21,12 +21,15 @@ function FormikPicker({
   placeholder,
   selectedItem,
   width = "100%",
+  keyExtractor = ((item) => item.value.toString()),
+  labelProperty = "label",
+  disabled = false
 }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
+      <TouchableWithoutFeedback disabled = {disabled} onPress={() => setModalVisible(true)}>
         <View style={[styles.container]}>
           {icon && (
             <MaterialCommunityIcons
@@ -37,7 +40,7 @@ function FormikPicker({
             />
           )}
           {selectedItem ? (
-            <Text style={styles.text}>{selectedItem.label}</Text>
+            <Text style={styles.text}>{selectedItem[labelProperty]}</Text>
           ) : (
             <Text style={styles.placeholder}>{placeholder}</Text>
           )}
@@ -57,12 +60,12 @@ function FormikPicker({
         <Button title="Close" onPress={() => setModalVisible(false)} />
         <FlatList
           data={items}
-          keyExtractor={(item) => item.value.toString()}
+          keyExtractor={keyExtractor}
           numColumns={numberOfColumns}
           renderItem={({ item }) => (
             <PickerItemComponent
               item={item}
-              label={item.label}
+              label={item[labelProperty]}
               onPress={() => {
                 setModalVisible(false);
                 onSelectItem(item);
