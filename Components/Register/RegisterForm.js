@@ -11,8 +11,8 @@ import FormikPasswordField from "../Form/Formik/FormikPasswordField";
 import colors from "../../assets/colors";
 
 const registerSchema = Yup.object().shape({
-  firstName: Yup.string().required("Required!"),
-  lastName: Yup.string().required("Required!"),
+  firstName: Yup.string().trim().required("Required!"),
+  lastName: Yup.string().trim().required("Required!"),
   email: Yup.string()
     .required("Please enter your email.")
     .email("Invalid email address!"),
