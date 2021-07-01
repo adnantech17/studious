@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -34,9 +35,10 @@ const Profile = ({ currentUser, profileImageUri, setProfileData, navigation, set
     currentUser && (
       <>
       <ImageBackground
-        style={styles.container}
+        style={styles.backgroundView}
         source={require("../../assets/pics/bg.png")}
-      >
+      />
+      <View style={styles.container} >
         {/* {
           !profileImageUri ?
           <Image
@@ -88,7 +90,7 @@ const Profile = ({ currentUser, profileImageUri, setProfileData, navigation, set
             title = "About Us"
           />
         </View>
-      </ImageBackground>
+      </View>
       {imageDeleteModalShown && (
         <TwoButtonModal
           title="Delete"
@@ -116,14 +118,21 @@ const mapDispatchToProps = (dispatch) => ({
   setProfileImageUri: (uri) => dispatch(setProfileImageUri(uri)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    zIndex: 1,
+  },
   container: {
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 40,
     paddingTop: 200,
+    zIndex: 2,
   },
   dp: {
     width: 140,
@@ -170,3 +179,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
