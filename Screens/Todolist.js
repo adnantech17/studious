@@ -24,6 +24,7 @@ import { firebaseTodoDownload } from "../Utils/FirebaseUtils";
 import { formatDate } from "../Utils/date.utils";
 import { AntDesign } from "@expo/vector-icons";
 import AddButton from "../Components/reusable/AddButton";
+import { getDateTime } from "../Utils/Event/event.utils";
 
 const TodoList = ({
   todos,
@@ -57,7 +58,8 @@ const TodoList = ({
         <FlatList
           data={todos
             .filter((todo) => !todo.completed)
-            .sort((a, b) => formatDate(a.date) - formatDate(b.date))}
+            .sort((a, b) => getDateTime(formatDate(a.date), formatDate(a.time))
+                     - getDateTime(formatDate(b.date), formatDate(b.time)))}
           onRefresh={onRefresh}
           refreshing={refreshing}
           renderItem={({ item }) => <Todo key={item.id} todo={item} />}
@@ -69,7 +71,8 @@ const TodoList = ({
                   showCompleted
                     ? todos
                         .filter((todo) => todo.completed)
-                        .sort((a, b) => a.date - b.date)
+                        .sort((a, b) => getDateTime(formatDate(b.date), formatDate(b.time))
+                          - getDateTime(formatDate(a.date), formatDate(a.time)))
                     : null
                 }
                 renderItem={({ item }) => <Todo key={item.id} todo={item} />}
