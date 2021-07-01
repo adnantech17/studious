@@ -19,7 +19,7 @@ import {
   updateDisplayEvent,
 } from "../../Redux/event/event.action";
 import { getDateTime } from "../../Utils/Event/event.utils";
-import { firebaseRemoveEvent } from "../../Utils/Event/firebase.utils";
+import { firebaseRemoveEvent, firebaseSyncWithEvent } from "../../Utils/Event/firebase.utils";
 
 const PastEventList = ({
   navigation,
@@ -33,6 +33,7 @@ const PastEventList = ({
   const onRefresh = () => {
     setRefreshing(true);
     updateEvent();
+    firebaseSyncWithEvent();
     setRefreshing(false);
   };
   useEffect(() => {
