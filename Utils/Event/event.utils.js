@@ -2,6 +2,7 @@ import { formatDate, incrementDate } from "../date.utils";
 import { REPEAT_NEVER } from "./repeat.utils";
 
 export const getDateTime = (date, time) => {
+    if(!time) return date;
     let dateTime = new Date();
     dateTime.setFullYear(date.getFullYear(),date.getMonth(),date.getDate());
     dateTime.setHours(time.getHours());

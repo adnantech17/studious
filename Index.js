@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -12,6 +12,7 @@ import SignedInNav from "./Navigation/SignedInNav";
 import { setTodos } from "./Redux/todo/todo.action";
 import { firebaseNewTodoUpload } from "./Utils/FirebaseUtils";
 import { setProfileData } from "./Redux/profile/profile.action";
+import LottieView from "lottie-react-native";
 
 class Index extends React.Component {
   unsubscribeFromAuth = function () {
@@ -70,14 +71,14 @@ class Index extends React.Component {
             }
           });
         await firestore
-              .collection("profile")
-              .doc(user.id)
-              .get()
-              .then((doc) => {
-                if(doc.exists) {
-                  setProfileData(doc.data());
-                }
-              })
+          .collection("profile")
+          .doc(user.id)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              setProfileData(doc.data());
+            }
+          });
       }
       this.props.setLoading(false);
     });
@@ -91,7 +92,15 @@ class Index extends React.Component {
         <NavigationContainer>
           {!this.props.loading &&
             (this.props.user !== null ? <SignedInNav /> : <SignedOutNav />)}
-          {this.props.loading && <Text>Loading</Text>}
+          {this.props.loading && (
+            <View style={styles.lottieContainer}>
+              <LottieView
+                style={styles.lottie}
+                source={require("./assets/pics/loading.json")}
+                autoPlay
+              />
+            </View>
+          )}
         </NavigationContainer>
       </Provider>
     );
@@ -109,7 +118,17 @@ const mapStateToProps = (state) => ({
   loading: state.user.loadingState,
   user: state.user.currentUser,
   todos: state.todos.todos,
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);
+
+const styles = StyleSheet.create({
+  lottieContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  lottie: {
+    width: "100%",
+  },
+});

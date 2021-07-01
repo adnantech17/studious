@@ -21,10 +21,10 @@ import {
 
 const eventSchema = Yup.object().shape({
   id: Yup.string().required(),
-  title: Yup.string().required("Please enter a title."),
+  title: Yup.string().trim().required("Please enter a title."),
   description: Yup.string(),
   venue: Yup.string(),
-  repeatEvent: Yup.object().required(),
+  repeatEvent: Yup.object().nullable().required("Please select an option."),
   date: Yup.date().required("Please pick a date."),
   time: Yup.date().required("Please pick a time."),
 });
@@ -55,7 +55,7 @@ const INITIAL_VALUES = () => {
     title: "",
     description: "",
     venue: "",
-    repeatEvent: REPEAT_NEVER,
+    repeatEvent: null,
     date: incrementDate(new Date(), 1),
     time: new Date(),
   };
@@ -83,7 +83,7 @@ const EventForm = ({
       >
         <FormikFormField
           ref={fields.title}
-          placeholder={"Event Title"}
+          placeholder={"Event Name"}
           autoCapitalize="words"
           keyboardType="default"
           name="title"
@@ -102,7 +102,11 @@ const EventForm = ({
           keyboardType="default"
           name="venue"
         />
-        <FormikFormPicker items={repeatEventOptions} name="repeatEvent" />
+        <FormikFormPicker 
+          items={repeatEventOptions} 
+          name="repeatEvent" 
+          placeholder = "Repeat"
+        />
         <View style={styles.time}>
           <FormikDateTimePicker
             name="date"

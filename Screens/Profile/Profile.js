@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Text,
@@ -7,39 +7,50 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 
 import { auth } from "../../Configs/firebase.config";
 import colors from "../../assets/colors";
 import NavigationOption from "../../Components/Profile/NavigationOption";
-import { firebaseSyncWithProfile } from "../../Utils/Profile/firebase.utils";
-import { setProfileData } from "../../Redux/profile/profile.action";
+import { firebaseSetProfileImageUri, firebaseSyncWithProfile } from "../../Utils/Profile/firebase.utils";
+import { setProfileData, setProfileImageUri } from "../../Redux/profile/profile.action";
+import TwoButtonModal from "../../Components/reusable/TwoButtonModal";
+import ImageComponent from "../../Components/Profile/ImageComponent";
 
-const Profile = ({ currentUser, profileImageUri, setProfileData, navigation }) => {
+const Profile = ({ currentUser, profileImageUri, setProfileData, navigation, setProfileImageUri }) => {
+  const [imageDeleteModalShown, setImageDeleteModalShown] = useState(false);
+  const [logOutModalShown, setLogOutModalShown] = useState(false);
   useEffect(() => {
     firebaseSyncWithProfile(setProfileData);
-  }, [])
+  }, []);
+  const onSetProfileImageUri = (uri) => {
+    setProfileImageUri(uri);
+    firebaseSetProfileImageUri(uri);
+  }
+  const onImageDeletePressed = () => {
+    setImageDeleteModalShown(true);
+  };
   return (
     currentUser && (
+      <>
       <ImageBackground
-        style={styles.container}
+        style={styles.backgroundView}
         source={require("../../assets/pics/bg.png")}
-      >
-        {
-          !profileImageUri ?
-          <Image
-              source={require("../../assets/pics/dp.png")}
-              style={styles.dp}
-          />
-          :
-          <Image source={{ uri: profileImageUri }} style={styles.dp}/>
-        }
+      />
+      <View style={styles.container} >
+         <ImageComponent
+          setProfileImageUri={onSetProfileImageUri}
+          profileImageUri={profileImageUri}
+          onDeletePress={onImageDeletePressed}
+          user={currentUser}
+        />
         <Text style={styles.name}>{currentUser.firstName} {currentUser.lastName}</Text>
         <Text style={styles.mail}>{currentUser.email}</Text>
         <TouchableOpacity
           onPress={async () => {
-            await auth.signOut();
+            setLogOutModalShown(true);
           }}
           style={styles.button}
         >
@@ -71,7 +82,32 @@ const Profile = ({ currentUser, profileImageUri, setProfileData, navigation }) =
             title = "About Us"
           />
         </View>
-      </ImageBackground>
+      </View>
+      {imageDeleteModalShown && (
+        <TwoButtonModal
+          title="Delete"
+          body="Are you sure that you want to delete this image?"
+          isVisible={imageDeleteModalShown}
+          setVisibility={setImageDeleteModalShown}
+          rightButtonTitle="Delete"
+          rightButtonPressed={() => {
+            onSetProfileImageUri(null);
+          }}
+        />
+      )}
+      {logOutModalShown && (
+        <TwoButtonModal
+          title = "Log Out"
+          body = "Are you sure that you want to log out?"
+          isVisible = {logOutModalShown}
+          setVisibility={setLogOutModalShown}
+          rightButtonTitle = "Log Out"
+          rightButtonPressed= {async () => {
+            await auth.signOut();
+          }}
+        />
+      )}
+      </>
     )
   );
 };
@@ -83,15 +119,24 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   setProfileData: (profileData) => dispatch(setProfileData(profileData)),
+  setProfileImageUri: (uri) => dispatch(setProfileImageUri(uri)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
-
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    zIndex: 1,
+  },
   container: {
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 40,
+    paddingTop: 200,
+    zIndex: 2,
   },
   dp: {
     width: 140,
@@ -138,3 +183,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
