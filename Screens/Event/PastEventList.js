@@ -19,6 +19,7 @@ import {
   updateDisplayEvent,
 } from "../../Redux/event/event.action";
 import { getDateTime } from "../../Utils/Event/event.utils";
+import { firebaseRemoveEvent } from "../../Utils/Event/firebase.utils";
 
 const PastEventList = ({
   navigation,
