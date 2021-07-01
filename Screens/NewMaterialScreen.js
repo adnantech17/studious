@@ -26,68 +26,9 @@ const NewMaterialScreen = ({
   setCourses,
 }) => {
   const mat = selectedMaterial.material;
-  // const [title, setTitle] = useState(mat ? mat.title : "");
-  // const [description, setDescription] = useState(mat ? mat.description : "");
-  // const [attachment, setAttachment] = useState(mat ? mat.attachment : null);
-  // const [tags, setTags] = useState(mat ? mat.tags : []);
-  // const [courseId, setCourseId] = useState(
-  //   selectedCourse ? selectedCourse.id : -1
-  // );
-
-  // const performCheck = () => {
-  //   if (title.trim() === "") {
-  //     console.log("Material must have a title");
-  //     return false;
-  //   } else if (attachment === null && description.trim() === "") {
-  //     console.log("Material must contain an attachment or description.");
-  //     return false;
-  //   } else if (courseId === -1) {
-  //     console.log("Must select a course first");
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  // const cleanupWhenDone = () => {
-  //   setTitle("");
-  //   setDescription("");
-  //   setAttachment("");
-  //   setCourseId(null);
-
-  //   navigation.popToTop();
-  // };
-
-  // const createMaterial = (id) => {
-  //   const dt = new Date();
-  //   return {
-  //     id: id || "mat-" + dt.getTime(),
-  //     title: title,
-  //     description: description,
-  //     attachment: attachment ? attachment : null,
-  //     datetime: new Date(),
-  //     tags: tags,
-  //   };
-  // };
-  // const addNewMaterial = () => {
-  //   const material = createMaterial(null);
-  //   if (!performCheck()) return;
-  //   addMaterial(courseId, material);
-  //   firebaseNewMaterialUpload(courseId, material, setCourses);
-  //   cleanupWhenDone();
-  // };
-
-  // const updateGivenMaterial = () => {
-  //   const material = createMaterial(mat.id);
-  //   if (!performCheck()) return;
-  //   updateMaterial(courseId, material);
-  //   firebaseMaterialUpdate(courseId, material, setCourses);
-  //   cleanupWhenDone();
-  // };
-
   const addNewMaterial = (material, courseId) => {
     addMaterial(courseId, material);
     firebaseNewMaterialUpload(courseId, material, setCourses);
-
   };
 
   const updateGivenMaterial = (material, courseId) => {
@@ -105,31 +46,37 @@ const NewMaterialScreen = ({
         tags: item.tags,
         datetime: item.datetime,
       },
-      courseId: item.course.id,  
-    }
-  }
+      courseId: item.course.id,
+    };
+  };
 
   const handleSubmit = (item) => {
-    const {material, courseId} = spiltItem(item);
+    const { material, courseId } = spiltItem(item);
     console.log(material, courseId);
 
-    selectedMaterial.material ? updateGivenMaterial(material, courseId) : addNewMaterial(material, courseId);
+    selectedMaterial.material
+      ? updateGivenMaterial(material, courseId)
+      : addNewMaterial(material, courseId);
 
     navigation.goBack();
-  }
+  };
   return (
     <View>
       <MaterialForm
-        item = {mat ? {
-          ...mat,
-          course: selectedCourse,
-          } : null } 
-        courses = {courses}
-        courseEditDisabled = {mat}
-        handleSubmit = {handleSubmit}
-        handleCancel = {() => navigation.goBack()}
-        submitButtonLabel = {mat ? "EDIT" : "ADD"}
-        cancelButtonLabel = {mat ? "CANCEL" : "DISCARD"}
+        item={
+          mat
+            ? {
+                ...mat,
+                course: selectedCourse,
+              }
+            : null
+        }
+        courses={courses}
+        courseEditDisabled={mat}
+        handleSubmit={handleSubmit}
+        handleCancel={() => navigation.goBack()}
+        submitButtonLabel={mat ? "EDIT" : "ADD"}
+        cancelButtonLabel={mat ? "CANCEL" : "DISCARD"}
       />
       {/* <TextInput placeholder="Title" value={title} onChangeText={setTitle} />
       <TextInput
