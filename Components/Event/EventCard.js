@@ -43,7 +43,7 @@ const EventCard = ({ containerStyle, event, onEdit, onDelete }) => {
           <View style={styles.modalContainer}>
             <Text style={styles.title}>Event Details</Text>
             <Text style={styles.eventInfo}>
-              <Text style={styles.eventInfoTitle}>Name : </Text>
+              <Text style={styles.eventInfoTitle}>Title : </Text>
               <Text style={styles.eventInfoText}>{event.title}</Text>
             </Text>
             {event.description != "" && (
@@ -54,7 +54,7 @@ const EventCard = ({ containerStyle, event, onEdit, onDelete }) => {
             )}
             {event.venue != "" && (
               <Text style={styles.eventInfo}>
-                <Text style={styles.eventInfoTitle}>Vanue : </Text>
+                <Text style={styles.eventInfoTitle}>Venue : </Text>
                 <Text style={styles.eventInfoText}>{event.value}</Text>
               </Text>
             )}

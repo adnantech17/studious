@@ -17,8 +17,11 @@ import AddButton from "../../Components/reusable/AddButton";
 import {
   deleteEvent,
   updateDisplayEvent,
+  setSelectedEvent,
+  setEventData
 } from "../../Redux/event/event.action";
 import { getDateTime } from "../../Utils/Event/event.utils";
+import { firebaseRemoveEvent, firebaseSyncWithEvent } from "../../Utils/Event/firebase.utils";
 
 // const events = [
 //     {
@@ -41,25 +44,32 @@ const EventList = ({
   displayEvents,
   deleteEvent,
   updateEvent,
+  setSelectedEvent,
+  setEventData,
 }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
     updateEvent();
+    firebaseSyncWithEvent(setEventData,setRefreshing);
     setRefreshing(false);
   };
-  // useEffect(() => {
-  //     updateEvent(),
-  //     setInterval(() => updateEvent(), 60000);
-  // }, [])
+  useEffect(() => {
+    firebaseSyncWithEvent(setEventData,setRefreshing);
+  }, [])
   useEffect(() => {
     updateEvent();
   }, [events]);
   const goToEdit = (event) => {
-    navigation.push("Edit Event", { item: event });
+    setSelectedEvent(event),
+    navigation.push("Edit Event");
   };
+  const handleDelete = (event) => {
+      firebaseRemoveEvent(event);
+      deleteEvent(event);
+  }
   const renderItem = ({ item }) => {
-    return <EventCard event={item} onDelete={deleteEvent} onEdit={goToEdit} />;
+    return <EventCard event={item} onDelete={handleDelete} onEdit={goToEdit} />;
   };
   return (
     <>
@@ -117,6 +127,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   deleteEvent: (item) => dispatch(deleteEvent(item)),
   updateEvent: () => dispatch(updateDisplayEvent()),
+  setSelectedEvent: (item) => dispatch(setSelectedEvent(item)),
+  setEventData: (eventData) => dispatch(setEventData(eventData)),
 });
 
 const styles = StyleSheet.create({

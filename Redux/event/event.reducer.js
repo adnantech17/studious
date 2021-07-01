@@ -1,9 +1,10 @@
-import { ADD_EVENT, DELETE_EVENT, EDIT_EVENT, SET_EVENT_DATA, UPDATE_DISPLAY_EVENT } from "./event.action"
+import { ADD_EVENT, DELETE_EVENT, EDIT_EVENT, SET_EVENT_DATA, SET_SELECTED_EVENT, UPDATE_DISPLAY_EVENT } from "./event.action"
 import { addEventUtil, deleteEventUtil, editEventUtil, updateDisplayEventUtil } from "./event.utils";
 
 const INITIAL_STATE = {
     eventData: null,
     displayEvents: null,
+    selectedEvent: null,
 }
 
 const eventReducer = (state = INITIAL_STATE, action) => {
@@ -28,11 +29,15 @@ const eventReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 eventData : action.payload,
             })
-
         case UPDATE_DISPLAY_EVENT:
             return ({
                 ...state,
                 displayEvents: updateDisplayEventUtil(state.eventData),
+            })
+        case SET_SELECTED_EVENT:
+            return ({
+                ...state,
+                selectedEvent: action.payload,
             })
         default:
             return state;

@@ -26,3 +26,9 @@ export const UPDATE_DISPLAY_EVENT = "UPDATE_DISPLAY_EVENT";
 export const updateDisplayEvent = () => ({
     type: UPDATE_DISPLAY_EVENT,
 })
+
+export const SET_SELECTED_EVENT = "SET_SELECTED_EVENT";
+export const setSelectedEvent = (item) => ({
+    type: SET_SELECTED_EVENT,
+    payload: item,
+})

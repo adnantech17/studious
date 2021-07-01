@@ -9,11 +9,12 @@ import {
 import { connect } from "react-redux";
 import EventForm from "../../Components/Event/EventForm";
 import { editEvent } from "../../Redux/event/event.action";
+import { firebaseEditEvent } from "../../Utils/Event/firebase.utils";
 
 const AddNewEvent = ({
     navigation,
     editEvent,
-    route,
+    selectedEvent,
 }) => {
     return (
     <>
@@ -25,12 +26,13 @@ const AddNewEvent = ({
         <View>
             <Text style = {styles.title} >Edit Event</Text>
             <EventForm 
-                item = {route.params.item}
-                cancelButtonLabel = "Cancel"
+                item = {selectedEvent}
+                cancelButtonLabel = "CANCEL"
                 handleCancel = {() => navigation.goBack() } 
-                submitButtonLabel = "Edit"
+                submitButtonLabel = "EDIT"
                 handleSubmit = {(event) => {
                     console.log(event); 
+                    firebaseEditEvent(event);
                     editEvent(event);
                     navigation.goBack(); 
                 }}
@@ -42,7 +44,7 @@ const AddNewEvent = ({
 };
 
 const mapStateToProps = (state) => ({
-
+    selectedEvent: state.events.selectedEvent,
 });
 const mapDispatchToProps = (dispatch) => ({
     editEvent: (editedEvent) => dispatch(editEvent(editedEvent)),

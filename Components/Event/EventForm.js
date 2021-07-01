@@ -10,7 +10,7 @@ import colors from "../../assets/colors";
 import AppButton from "../reusable/Appbutton";
 import FormikFormPicker from "../Form/Formik/FormikFormPicker/FormikFormPicker";
 import FormikDateTimePicker from "../Form/Formik/FormikDateTimePicker";
-import { getDateText, getTimeText } from "../../Utils/date.utils";
+import { getDateText, getTimeText, incrementDate } from "../../Utils/date.utils";
 import {
   REPEAT_DAILY,
   REPEAT_EVERY_OTHER_WEEK,
@@ -56,7 +56,7 @@ const INITIAL_VALUES = () => {
     description: "",
     venue: "",
     repeatEvent: REPEAT_NEVER,
-    date: new Date(),
+    date: incrementDate(new Date(), 1),
     time: new Date(),
   };
 };
@@ -65,8 +65,8 @@ const EventForm = ({
   item,
   handleSubmit,
   handleCancel,
-  submitButtonLabel = "Add",
-  cancelButtonLabel = "Discard",
+  submitButtonLabel = "ADD",
+  cancelButtonLabel = "DISCARD",
 }) => {
   const fields = inputFields();
   const initialValues = item ? item : INITIAL_VALUES();
@@ -109,6 +109,7 @@ const EventForm = ({
             mode="date"
             icon="calendar"
             getText={getDateText}
+            minimumDate = {new Date()}
           />
           <FormikDateTimePicker
             name="time"
@@ -121,13 +122,13 @@ const EventForm = ({
           <AppButton
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
-            title="CANCEL"
+            title={cancelButtonLabel}
             onPress={handleCancel}
           />
           <FormikSubmitButton
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
-            title="ADD"
+            title={submitButtonLabel}
           />
         </View>
       </FormikForm>
