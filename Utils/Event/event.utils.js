@@ -38,7 +38,7 @@ export const generateDisplayEvents = (events) => {
         const dateTime = getDateTime(event.date, event.time);
         if(dateTime < now) pastEvents.push(displayEvent);
         else futureEvents.push(displayEvent);
-        if(event.repeatEvent != REPEAT_NEVER) {
+        if(event.repeatEvent.value != REPEAT_NEVER.value) {
             let repeatedEvent = {
                 ...event,
             };
@@ -80,7 +80,7 @@ export const deleteObsoleteEvents = (events) => {
         };
         const dateTime = getDateTime(event.date, event.time);
         if(dateTime < timeLimit) {
-            if(event.repeatEvent != REPEAT_NEVER) {
+            if(event.repeatEvent.value != REPEAT_NEVER.value) {
                 let newEvent = {...event};
                 while(true) {
                     if(newEvent.repeatEvent.incrementDay) {
