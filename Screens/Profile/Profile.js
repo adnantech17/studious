@@ -21,6 +21,7 @@ import ImageComponent from "../../Components/Profile/ImageComponent";
 
 const Profile = ({ currentUser, profileImageUri, setProfileData, navigation, setProfileImageUri }) => {
   const [imageDeleteModalShown, setImageDeleteModalShown] = useState(false);
+  const [logOutModalShown, setLogOutModalShown] = useState(false);
   useEffect(() => {
     firebaseSyncWithProfile(setProfileData);
   }, []);
@@ -39,15 +40,6 @@ const Profile = ({ currentUser, profileImageUri, setProfileData, navigation, set
         source={require("../../assets/pics/bg.png")}
       />
       <View style={styles.container} >
-        {/* {
-          !profileImageUri ?
-          <Image
-              source={require("../../assets/pics/dp.png")}
-              style={styles.dp}
-          />
-          :
-          <Image source={{ uri: profileImageUri }} style={styles.dp}/>
-        } */}
          <ImageComponent
           setProfileImageUri={onSetProfileImageUri}
           profileImageUri={profileImageUri}
@@ -58,7 +50,7 @@ const Profile = ({ currentUser, profileImageUri, setProfileData, navigation, set
         <Text style={styles.mail}>{currentUser.email}</Text>
         <TouchableOpacity
           onPress={async () => {
-            await auth.signOut();
+            setLogOutModalShown(true);
           }}
           style={styles.button}
         >
@@ -100,6 +92,18 @@ const Profile = ({ currentUser, profileImageUri, setProfileData, navigation, set
           rightButtonTitle="Delete"
           rightButtonPressed={() => {
             onSetProfileImageUri(null);
+          }}
+        />
+      )}
+      {logOutModalShown && (
+        <TwoButtonModal
+          title = "Log Out"
+          body = "Are you sure that you want to log out?"
+          isVisible = {logOutModalShown}
+          setVisibility={setLogOutModalShown}
+          rightButtonTitle = "Log Out"
+          rightButtonPressed= {async () => {
+            await auth.signOut();
           }}
         />
       )}
