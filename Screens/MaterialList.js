@@ -42,6 +42,10 @@ const MaterialList = ({
     }
   };
 
+  useEffect(() => {
+    onRefresh();
+  }, []);
+
   return (
     <View style={styles.container}>
       {filterBox ? (
