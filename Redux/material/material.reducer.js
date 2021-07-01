@@ -31,6 +31,7 @@ const INITIAL_STATE = {
   inputBox: false,
   courseMenuBox: false,
   materialMenuBox: false,
+  filterBox: false,
 };
 
 const courseReducer = (state = INITIAL_STATE, action) => {
@@ -111,6 +112,12 @@ const courseReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         inputBox: !state.inputBox,
+      };
+
+    case "TOGGLE_FILTER_INPUT":
+      return {
+        ...state,
+        filterBox: !state.filterBox,
       };
 
     default:

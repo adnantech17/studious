@@ -8,6 +8,7 @@ import {
   removeMaterial,
   toggleMaterialMenu,
 } from "../../Redux/material/material.action";
+import { firebaseMaterialDelete } from "../../Utils/FirebaseUtils";
 
 const MaterialMenu = ({
   menuBox,
@@ -26,6 +27,14 @@ const MaterialMenu = ({
     >
       <View style={styles.container}>
         <MenuButton
+          title="View"
+          name="pencil"
+          onPress={() => {
+            toggleMenuBox();
+            navigation.navigate("ViewMaterial");
+          }}
+        />
+        <MenuButton
           title="Edit"
           name="pencil"
           onPress={() => {
@@ -38,6 +47,10 @@ const MaterialMenu = ({
           name="trash-bin"
           onPress={() => {
             removeMaterial(
+              selectedMaterial.course_id,
+              selectedMaterial.material
+            );
+            firebaseMaterialDelete(
               selectedMaterial.course_id,
               selectedMaterial.material
             );

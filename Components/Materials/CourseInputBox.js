@@ -1,16 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import nextId from "react-id-generator";
 import { StyleSheet, TextInput, View } from "react-native";
 
 import Modal from "react-native-modal";
 import { connect } from "react-redux";
 import {
   addCourse,
+  setCourses,
   toggleCourseInput,
   toggleMenuBox,
   updateCourse,
 } from "../../Redux/material/material.action";
+import {
+  firebaseCourseUpdate,
+  firebaseNewCourseUpload,
+} from "../../Utils/FirebaseUtils";
 
 const CourseInputBox = ({
   inputBox,
@@ -18,8 +22,8 @@ const CourseInputBox = ({
   toggleCourseInput,
   selectedCourse,
   updateCourse,
+  setCourses,
 }) => {
-  console.log("Selected: ", selectedCourse);
   const [title, setTitle] = useState(
     selectedCourse ? selectedCourse.title : ""
   );
@@ -32,17 +36,24 @@ const CourseInputBox = ({
     }
 
     if (selectedCourse) {
-      updateCourse({
+      const course = {
         id: selectedCourse.id,
         title: title,
         materials: selectedCourse.materials,
-      });
+      };
+
+      updateCourse(course);
+      firebaseCourseUpdate(course, setCourses);
     } else {
-      addCourse({
-        id: nextId(),
+      const dt = new Date();
+      const course = {
+        id: dt.getTime(),
         title: title,
         materials: [],
-      });
+      };
+      addCourse(course);
+
+      firebaseNewCourseUpload(course, setCourses);
     }
     toggleCourseInput();
   };
@@ -57,7 +68,7 @@ const CourseInputBox = ({
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
-          placeholder="What do you want to do?"
+          placeholder="Course Name?"
           placeholderTextColor={error ? "#AF0000" : "#a9a9a9"}
           value={title}
           onChangeText={(text) => {
@@ -100,6 +111,7 @@ const mapDispatchToProps = (dispatch) => ({
   toggleCourseInput: () => dispatch(toggleCourseInput()),
   addCourse: (course) => dispatch(addCourse(course)),
   updateCourse: (course) => dispatch(updateCourse(course)),
+  setCourses: (courses) => dispatch(setCourses(courses)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CourseInputBox);

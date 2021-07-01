@@ -58,3 +58,7 @@ export const updateMaterial = (course_id, material) => ({
 export const toggleMaterialMenu = () => ({
   type: "TOGGLE_MATERIAL_MENU_BOX",
 });
+
+export const toggleFilterBox = () => ({
+  type: "TOGGLE_FILTER_INPUT",
+});

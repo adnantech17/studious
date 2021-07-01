@@ -16,12 +16,20 @@ function Course({
   selectCourse,
   selectMaterial,
   toggleMenuBox,
+  filterTags,
 }) {
   const addNewMaterial = () => {
     selectCourse(course);
     selectMaterial(null, null);
     navigation.navigate("NewMaterial");
   };
+
+  function subset(arr1, arr2) {
+    return arr2.every(function (val) {
+      return arr1.indexOf(val) >= 0;
+    });
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -44,14 +52,25 @@ function Course({
         </TouchableOpacity>
       </View>
 
-      {course.materials.map((material) => (
-        <Material
-          course={course}
-          material={material}
-          navigation={navigation}
-          key={material.id}
-        />
-      ))}
+      {filterTags.length === 0
+        ? course.materials.map((material) => (
+            <Material
+              course={course}
+              material={material}
+              navigation={navigation}
+              key={material.id}
+            />
+          ))
+        : course.materials
+            .filter((material) => subset(material.tags, filterTags))
+            .map((material) => (
+              <Material
+                course={course}
+                material={material}
+                navigation={navigation}
+                key={material.id}
+              />
+            ))}
       <CourseMenu />
       <MaterialMenu navigation={navigation} />
     </View>
