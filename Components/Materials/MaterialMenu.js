@@ -18,6 +18,15 @@ const MaterialMenu = ({
   navigation,
 }) => {
   console.log(selectedMaterial);
+
+  const handleDelete = () => {
+    removeMaterial(selectedMaterial.course_id, selectedMaterial.material);
+    firebaseMaterialDelete(
+      selectedMaterial.course_id,
+      selectedMaterial.material
+    );
+    toggleMenuBox();
+  };
   return (
     <Modal
       onBackdropPress={toggleMenuBox}
@@ -42,21 +51,7 @@ const MaterialMenu = ({
             navigation.navigate("NewMaterial");
           }}
         />
-        <MenuButton
-          title="Remove"
-          name="trash-bin"
-          onPress={() => {
-            removeMaterial(
-              selectedMaterial.course_id,
-              selectedMaterial.material
-            );
-            firebaseMaterialDelete(
-              selectedMaterial.course_id,
-              selectedMaterial.material
-            );
-            toggleMenuBox();
-          }}
-        />
+        <MenuButton title="Remove" name="trash-bin" onPress={handleDelete} />
       </View>
     </Modal>
   );

@@ -243,6 +243,7 @@ export const firebaseMaterialDelete = async (courseId, material) => {
     .then((doc) => {
       if (doc.data() && doc.data().Courses) {
         var courses = doc.data().Courses;
+        console.log("COURSES", courses);
         courses = courses.map((course) =>
           course.id === courseId
             ? {
@@ -253,6 +254,49 @@ export const firebaseMaterialDelete = async (courseId, material) => {
               }
             : course
         );
+        firestore
+          .collection("courses")
+          .doc(auth.currentUser.uid)
+          .set({ Courses: courses });
+      } else {
+        firestore
+          .collection("courses")
+          .doc(auth.currentUser.uid)
+          .set({ Courses: [course] });
+        console.log("No such Course document!");
+      }
+    });
+};
+
+export const firebaseMaterialChangeCourse = async (
+  courseId,
+  coursePrevId,
+  material,
+  setCourses
+) => {
+  firestore
+    .collection("courses")
+    .doc(auth.currentUser.uid)
+    .get()
+    .then((doc) => {
+      if (doc.data() && doc.data().Courses) {
+        var courses = doc.data().Courses;
+        courses = courses.map((c) =>
+          courseId === c.id
+            ? { ...c, materials: [...c.materials, material] }
+            : c
+        );
+        courses = courses.map((course) =>
+          course.id === coursePrevId
+            ? {
+                ...course,
+                materials: course.materials.filter(
+                  (mat) => material.id !== mat.id
+                ),
+              }
+            : course
+        );
+        setCourses(courses);
         firestore
           .collection("courses")
           .doc(auth.currentUser.uid)

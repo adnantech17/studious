@@ -38,7 +38,6 @@ const MaterialForm = ({
   submitButtonLabel = "ADD",
   handleCancel,
   cancelButtonLabel = "DISCARD",
-  courseEditDisabled,
 }) => {
   const fields = inputFields();
 
@@ -84,7 +83,6 @@ const MaterialForm = ({
         name="course"
         keyExtractor={(course) => course.id.toString()}
         labelProperty="title"
-        disabled={courseEditDisabled}
       />
       <FormikAttachment name="attachment" />
       <AppButton

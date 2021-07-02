@@ -1,8 +1,8 @@
 import React from "react";
 import { useFormikContext } from "formik";
 
-import FormikPicker from "./FormikPicker"
-import FormikErrorMessage from "../FormikErrorMessage"
+import FormikPicker from "./FormikPicker";
+import FormikErrorMessage from "../FormikErrorMessage";
 
 function FormikFormPicker({
   items,
@@ -13,7 +13,6 @@ function FormikFormPicker({
   width,
   keyExtractor,
   labelProperty,
-  disabled,
 }) {
   const { errors, setFieldValue, touched, values } = useFormikContext();
 
@@ -27,9 +26,8 @@ function FormikFormPicker({
         placeholder={placeholder}
         selectedItem={values[name]}
         width={width}
-        keyExtractor = {keyExtractor}
-        labelProperty = {labelProperty}
-        disabled = {disabled}
+        keyExtractor={keyExtractor}
+        labelProperty={labelProperty}
       />
       <FormikErrorMessage error={errors[name]} visible={touched[name]} />
     </>
