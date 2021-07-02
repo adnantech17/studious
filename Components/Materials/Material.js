@@ -20,14 +20,20 @@ function Material({
   toggleMenuBox,
   selectMaterial,
   selectCourse,
+  navigation,
 }) {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => {
+      onLongPress={() => {
         selectCourse(course);
         selectMaterial(course.id, material);
         toggleMenuBox();
+      }}
+      onPress={() => {
+        selectCourse(course);
+        selectMaterial(course.id, material);
+        navigation.navigate("ViewMaterial");
       }}
     >
       <Text>{material.title}</Text>

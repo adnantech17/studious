@@ -1,8 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import Modal from "react-native-modal";
-import { Ionicons } from "@expo/vector-icons";
 import MenuButton from "../Buttons/MenuButton";
 import {
   removeMaterial,

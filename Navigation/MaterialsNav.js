@@ -22,7 +22,7 @@ const MaterialsNav = () => {
       <MaterialsStack.Screen
         name="ViewMaterial"
         component={ViewMaterialScreen}
-        options={{ title: "Add Material" }}
+        options={{ title: "Material Details" }}
       />
     </MaterialsStack.Navigator>
   );

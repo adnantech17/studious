@@ -5,19 +5,37 @@ import { Picker } from "@react-native-community/picker";
 import * as MediaLibrary from "expo-media-library";
 import { downloadToFolder } from "expo-file-dl";
 
+import { removeMaterial } from "../Redux/material/material.action";
+import { firebaseMaterialDelete } from "../Utils/FirebaseUtils";
+
 import TagInputBox from "../Components/Input/TagInputBox";
 const channelId = "DownloadInfo";
 
-const ViewMaterialScreen = ({ courses, selectedCourse, selectedMaterial }) => {
+const ViewMaterialScreen = ({
+  courses,
+  selectedCourse,
+  selectedMaterial,
+  navigation,
+  removeMaterial,
+}) => {
   const mat = selectedMaterial.material;
   console.log(mat);
   const [downloadProgress, setDownloadProgress] = useState("0%");
   const [tags, setTags] = useState(mat ? mat.tags : []);
 
+  const handleDelete = () => {
+    removeMaterial(selectedMaterial.course_id, selectedMaterial.material);
+    firebaseMaterialDelete(
+      selectedMaterial.course_id,
+      selectedMaterial.material
+    );
+    navigation.goBack();
+  };
+
   const requestPermission = async () => {
     const { granted } = await MediaLibrary.requestPermissionsAsync();
     if (!granted) alert("You need to enable permission to access the library.");
-};
+  };
 
   useEffect(() => {
     if (downloadProgress === "100%") {
@@ -85,6 +103,14 @@ const ViewMaterialScreen = ({ courses, selectedCourse, selectedMaterial }) => {
           <Text>{downloadProgress}</Text>
         </View>
       )}
+
+      <Button
+        title="Edit"
+        onPress={() => {
+          navigation.navigate("NewMaterial");
+        }}
+      ></Button>
+      <Button title="Delete" onPress={handleDelete}></Button>
     </View>
   );
 };
@@ -95,6 +121,9 @@ const mapStateToProps = (state) => ({
   selectedMaterial: state.courses.selectedMaterial,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  removeMaterial: (course_id, material) =>
+    dispatch(removeMaterial(course_id, material)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewMaterialScreen);
