@@ -53,7 +53,7 @@ const TodoList = ({
       source={require("../assets/pics/bg.png")}
     />
     <View style = {styles.container}>
-      <View>
+      <View  style = {styles.childContainer}>
         <Text style={styles.title}>My Tasks</Text>
         <FlatList
           data={todos
@@ -155,6 +155,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     paddingTop: 70,
+    alignItems: "center",
+  },
+  childContainer:{
+    width: "100%",
+    flex: 1,
   },
   title: { fontSize: 30, marginLeft: 30, marginBottom: 20 },
   button: {
