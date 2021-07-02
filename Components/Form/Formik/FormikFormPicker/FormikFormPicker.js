@@ -42,7 +42,6 @@ export default FormikFormPicker;
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
-    width: "100%",
-    marginLeft: 80,
+    width: "80%",
   },
 });
