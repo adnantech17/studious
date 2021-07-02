@@ -84,9 +84,8 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 25,
     flexDirection: "row",
-    padding: 15,
+    padding: 13.5,
     marginTop: 10,
-    marginBottom: 20,
     width: "80%",
     borderWidth: 1.0,
     paddingHorizontal: 25,
@@ -115,6 +114,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 10,
     alignSelf: "flex-end",
+  },
+  placeholder: {
+    flex: 1,
   },
 });
 

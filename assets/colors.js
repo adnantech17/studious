@@ -4,6 +4,7 @@ const colors = {
   backgroundColor: "#95C2FD",
   lightgray: "#393A3C",
   medium: "#bbbbbb",
+  active: "dodgerblue",
 };
 
 export default colors;

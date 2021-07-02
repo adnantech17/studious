@@ -1,8 +1,9 @@
 import React from "react";
 import { useFormikContext } from "formik";
+import { View, StyleSheet, Text } from "react-native";
 
-import FormikPicker from "./FormikPicker"
-import FormikErrorMessage from "../FormikErrorMessage"
+import FormikPicker from "./FormikPicker";
+import FormikErrorMessage from "../FormikErrorMessage";
 
 function FormikFormPicker({
   items,
@@ -15,7 +16,7 @@ function FormikFormPicker({
   const { errors, setFieldValue, touched, values } = useFormikContext();
 
   return (
-    <>
+    <View style={styles.container}>
       <FormikPicker
         items={items}
         numberOfColumns={numberOfColumns}
@@ -26,8 +27,16 @@ function FormikFormPicker({
         width={width}
       />
       <FormikErrorMessage error={errors[name]} visible={touched[name]} />
-    </>
+    </View>
   );
 }
 
 export default FormikFormPicker;
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+    width: "100%",
+    marginLeft: 80,
+  },
+});
