@@ -6,6 +6,8 @@ import { Picker } from "@react-native-community/picker";
 import {
   addMaterial,
   removeMaterial,
+  selectCourse,
+  selectMaterial,
   setCourses,
   updateMaterial,
 } from "../Redux/material/material.action";
@@ -28,18 +30,14 @@ const NewMaterialScreen = ({
   updateMaterial,
   setCourses,
   removeMaterial,
+  selectMaterial,
+  selectCourse,
 }) => {
   const mat = selectedMaterial.material;
   const addNewMaterial = (material, courseId) => {
     console.log("ADD: ", material, courseId);
     addMaterial(courseId, material);
     firebaseNewMaterialUpload(courseId, material, setCourses);
-  };
-
-  const deleteMaterial = (material, courseId) => {
-    console.log("DEL: ", material, courseId);
-    removeMaterial(courseId, material);
-    firebaseMaterialDelete(courseId, material);
   };
 
   const updateGivenMaterial = (material, courseId) => {
@@ -74,6 +72,8 @@ const NewMaterialScreen = ({
 
   const handleSubmit = (item) => {
     const { material, courseId } = spiltItem(item);
+    selectMaterial(courseId, material);
+    selectCourse(item.course);
 
     selectedMaterial.material
       ? updateGivenMaterial(material, courseId)
@@ -83,7 +83,7 @@ const NewMaterialScreen = ({
   };
   return (
     <View>
-      <Text>{mat? "Edit Material" : "Add Material"}</Text>
+      <Text>{mat ? "Edit Material" : "Add Material"}</Text>
       <MaterialForm
         item={
           mat
@@ -118,6 +118,9 @@ const mapDispatchToProps = (dispatch) => ({
   setCourses: (courses) => dispatch(setCourses(courses)),
   removeMaterial: (course_id, material) =>
     dispatch(removeMaterial(course_id, material)),
+  selectMaterial: (course_id, material) =>
+    dispatch(selectMaterial(course_id, material)),
+  selectCourse: (course) => dispatch(selectCourse(course)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewMaterialScreen);

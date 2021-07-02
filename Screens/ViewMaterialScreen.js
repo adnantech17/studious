@@ -1,27 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, Alert } from "react-native";
 import { connect } from "react-redux";
-import { Picker } from "@react-native-community/picker";
 import * as MediaLibrary from "expo-media-library";
-import { downloadToFolder } from "expo-file-dl";
-import * as WebBrowser from 'expo-web-browser';
+import * as WebBrowser from "expo-web-browser";
 
 import { removeMaterial } from "../Redux/material/material.action";
 import { firebaseMaterialDelete } from "../Utils/FirebaseUtils";
 
-import TagInputBox from "../Components/Input/TagInputBox";
 import TagViewBox from "../Components/Materials/TagViewBox";
-const channelId = "DownloadInfo";
 
 const ViewMaterialScreen = ({
-  courses,
   selectedCourse,
   selectedMaterial,
   navigation,
   removeMaterial,
 }) => {
   const mat = selectedMaterial.material;
-  console.log(mat);
+  console.log("Material", mat);
   const [downloadProgress, setDownloadProgress] = useState("0%");
   const [tags, setTags] = useState(mat ? mat.tags : []);
 
@@ -72,30 +67,16 @@ const ViewMaterialScreen = ({
       <Text>Title: {mat.title}</Text>
       <Text>Description: {mat.description}</Text>
       <Text>Tags: </Text>
-      <TagViewBox tags = {tags} />
+      <TagViewBox tags={tags} />
 
       <Text>Course: </Text>
       <Text>{selectedCourse.title}</Text>
       <Text>Attachment: {mat.attachment ? mat.attachment.name : "none"}</Text>
       {mat.attachment !== null && (
         <View>
-          {/* <Button
-            title="Download"
+          <Button
+            title="Open"
             onPress={async () => {
-              await downloadToFolder(
-                mat.attachment.url,
-                mat.attachment.name,
-                "Download",
-                channelId,
-                {
-                  downloadProgressCallback: downloadProgressUpdater,
-                }
-              );
-            }}
-          /> */}
-          <Button 
-            title = "Open"
-            onPress = {async() => {
               await WebBrowser.openBrowserAsync(mat.attachment.url);
             }}
           />
