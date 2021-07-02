@@ -15,6 +15,7 @@ import colors from "../../assets/colors";
 import EventCard from "../../Components/Event/EventCard";
 import {
   deleteEvent,
+  setEventData,
   setSelectedEvent,
   updateDisplayEvent,
 } from "../../Redux/event/event.action";
@@ -28,12 +29,13 @@ const PastEventList = ({
   deleteEvent,
   updateEvent,
   setSelectedEvent,
+  setEventData,
 }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
+    await firebaseSyncWithEvent(setEventData,setRefreshing);
     updateEvent();
-    firebaseSyncWithEvent();
     setRefreshing(false);
   };
   useEffect(() => {
@@ -109,6 +111,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteEvent: (item) => dispatch(deleteEvent(item)),
   updateEvent: () => dispatch(updateDisplayEvent()),
   setSelectedEvent: (event) => dispatch(setSelectedEvent(event)),
+  setEventData: (eventData) => dispatch(setEventData(eventData)),
 });
 
 const styles = StyleSheet.create({
