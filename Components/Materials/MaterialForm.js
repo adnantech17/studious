@@ -11,6 +11,7 @@ import FormikTagInput from "../Form/Formik/FormikTagInput";
 import FormikFormPicker from "../Form/Formik/FormikFormPicker/FormikFormPicker";
 import FormikAttachment from "../Form/Formik/FormikAttachment";
 import AppButton from "../reusable/Appbutton";
+import { formatDate } from "../../Utils/date.utils";
 
 const materialSchema = Yup.object().shape({
   id: Yup.string().required(),
@@ -42,7 +43,10 @@ const MaterialForm = ({
   const fields = inputFields();
 
   const initialValues = item
-    ? item
+    ? {
+      ...item,
+      datetime: formatDate(item.datetime),
+    }
     : {
         id: "mat-" + new Date().getTime(),
         title: "",
