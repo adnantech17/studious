@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Picker } from "@react-native-community/picker";
 import * as MediaLibrary from "expo-media-library";
 import { downloadToFolder } from "expo-file-dl";
+import * as WebBrowser from 'expo-web-browser';
 
 import { removeMaterial } from "../Redux/material/material.action";
 import { firebaseMaterialDelete } from "../Utils/FirebaseUtils";
@@ -78,7 +79,7 @@ const ViewMaterialScreen = ({
       <Text>Attachment: {mat.attachment ? mat.attachment.name : "none"}</Text>
       {mat.attachment !== null && (
         <View>
-          <Button
+          {/* <Button
             title="Download"
             onPress={async () => {
               await downloadToFolder(
@@ -90,6 +91,12 @@ const ViewMaterialScreen = ({
                   downloadProgressCallback: downloadProgressUpdater,
                 }
               );
+            }}
+          /> */}
+          <Button 
+            title = "Open"
+            onPress = {async() => {
+              await WebBrowser.openBrowserAsync(mat.attachment.url);
             }}
           />
         </View>

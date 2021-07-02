@@ -1,19 +1,22 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import colors from "../../assets/colors";
 
 const TagViewBox = ({tags}) => {
     return(
-        <ScrollView>
-            <View style = {styles.container}>
-                {tags.map((tag) => (
+        <View style = {styles.container}>
+            <FlatList
+                data = {tags}
+                renderItem = {({item}) => (
                     <View style = {styles.tagContainer}>
-                        <Text>{tag}</Text>
+                        <Text>{item}</Text>
                     </View>
-                ))}
-            </View>
-        </ScrollView>
+                )}
+                keyExtractor = {(item) => item}
+                horizontal
+            />
+        </View>
     )
 }
 
