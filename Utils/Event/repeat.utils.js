@@ -1,31 +1,31 @@
 export const REPEAT_NEVER = {
-    label : "Never",
+    label : "Repeat Never",
     value : 0,
 }
 
 export const REPEAT_DAILY = {
-    label : "Everyday",
+    label : "Repeat Everyday",
     incrementDay : 1,
     incrementMonth : 0,
     value : 1,
 }
 
 export const REPEAT_WEEKLY = {
-    label : "Every Week",
+    label : "Repeat Every Week",
     incrementDay : 7,
     incrementMonth : 0,
     value : 2,
 }
 
 export const REPEAT_EVERY_OTHER_WEEK = {
-    label : "Every Other Week",
+    label : "Repeat Every Other Week",
     incrementDay : 14,
     incrementMonth : 0,
     value : 3,
 }
 
 export const REPEAT_MONTHLY = {
-    label : "Every Month",
+    label : "Repeat Every Month",
     incrementDay : 0,
     incrementMonth : 1,
     value : 4,
