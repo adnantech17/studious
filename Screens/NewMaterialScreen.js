@@ -83,6 +83,7 @@ const NewMaterialScreen = ({
   };
   return (
     <View>
+      <Text>{mat? "Edit Material" : "Add Material"}</Text>
       <MaterialForm
         item={
           mat

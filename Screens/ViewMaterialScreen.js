@@ -9,6 +9,7 @@ import { removeMaterial } from "../Redux/material/material.action";
 import { firebaseMaterialDelete } from "../Utils/FirebaseUtils";
 
 import TagInputBox from "../Components/Input/TagInputBox";
+import TagViewBox from "../Components/Materials/TagViewBox";
 const channelId = "DownloadInfo";
 
 const ViewMaterialScreen = ({
@@ -69,20 +70,11 @@ const ViewMaterialScreen = ({
     <View>
       <Text>Title: {mat.title}</Text>
       <Text>Description: {mat.description}</Text>
-      <TagInputBox tag={tags} setTag={setTags} enabled={false} />
+      <Text>Tags: </Text>
+      <TagViewBox tags = {tags} />
 
       <Text>Course: </Text>
-      <Picker mode="dropdown" selectedValue={selectedCourse.id} enabled={false}>
-        {courses.map((course) => {
-          return (
-            <Picker.Item
-              label={course.title}
-              value={course.id}
-              key={course.id}
-            />
-          );
-        })}
-      </Picker>
+      <Text>{selectedCourse.title}</Text>
       <Text>Attachment: {mat.attachment ? mat.attachment.name : "none"}</Text>
       {mat.attachment !== null && (
         <View>
@@ -100,7 +92,6 @@ const ViewMaterialScreen = ({
               );
             }}
           />
-          <Text>{downloadProgress}</Text>
         </View>
       )}
 
