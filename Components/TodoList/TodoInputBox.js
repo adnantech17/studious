@@ -167,8 +167,8 @@ const styles = StyleSheet.create({
 
   textInput: {
     height: 32,
-    paddingHorizontal: 16,
-    marginVertical: 15,
+    paddingHorizontal: 25,
+    marginVertical: 10,
   },
 
   belowText: {

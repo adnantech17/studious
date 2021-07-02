@@ -16,11 +16,12 @@ const materialSchema = Yup.object().shape({
   id : Yup.string().required(),
   title: Yup
             .string()
+            .trim()
             .required("Please enter a title."),
   description: Yup.string(), 
   tags: Yup.array().of(Yup.string()),
   datetime: Yup.date(),
-  course: Yup.object().required("Please select a course."),
+  course: Yup.object().nullable().required("Please select a course."),
 });
 
 const inputFields = () => {

@@ -4,49 +4,38 @@ import {
   FlatList,
   StyleSheet,
   ImageBackground,
-  TouchableOpacity,
   Dimensions,
-  Text,
 } from "react-native";
 import { connect } from "react-redux";
-import { Feather } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import FieldItem from "../../Components/Profile/FieldItem";
 import {
   addField,
   deleteField,
   editField,
   setProfileData,
-  setProfileImageUri,
 } from "../../Redux/profile/profile.action";
-import colors from "../../assets/colors";
-import ImageComponent from "../../Components/Profile/ImageComponent";
 import FieldInputModal from "../../Components/Profile/FieldInputModal";
 import TwoButtonModal from "../../Components/reusable/TwoButtonModal";
 import {
   firebaseAddField,
   firebaseEditField,
   firebaseRemoveField,
-  firebaseSetProfileImageUri,
   firebaseSyncWithProfile,
 } from "../../Utils/Profile/firebase.utils";
 import AddButton from "../../Components/reusable/AddButton";
+import TitleWithBackButton from "../../Components/reusable/TitleWithBackButton";
 
 const Details = ({
   fieldData,
   addField,
   editField,
   deleteField,
-  profileImageUri,
-  setProfileImageUri,
   setProfileData,
-  user,
   navigation,
 }) => {
   const list = useRef();
   const [refreshing, setRefreshing] = useState(false);
   const [fieldInputModalShown, setFieldInputModalShown] = useState(false);
-  const [imageDeleteModalShown, setImageDeleteModalShown] = useState(false);
   const [fieldDeleteModalShown, setFieldDeleteModalShown] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -72,15 +61,6 @@ const Details = ({
   const editFieldAndUpload = (item) => {
     editField(item);
     firebaseEditField(item);
-  };
-
-  const onSetProfileImageUri = (uri) => {
-    setProfileImageUri(uri);
-    firebaseSetProfileImageUri(uri);
-  };
-
-  const onImageDeletePressed = () => {
-    setImageDeleteModalShown(true);
   };
 
   const onModalSubmit = (item) => {
@@ -111,12 +91,9 @@ const Details = ({
         style={styles.backgroundView}
         source={require("../../assets/pics/bg.png")}
       />
-
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <AntDesign name="arrowleft" size={24} color="black" />
-      </TouchableOpacity>
-
       <View style={styles.container}>
+        <View style = {styles.childContainer}>
+        <TitleWithBackButton title = "Details" onPress = {() => navigation.goBack()} />
         <FlatList
           ref={list}
           refreshing={refreshing}
@@ -124,27 +101,17 @@ const Details = ({
           data={fieldData}
           keyExtractor={(item) => item.id}
           renderItem={renderField}
-          ListHeaderComponent={
-            <View style={styles.dataContainer}>
-              <ImageComponent
-                setProfileImageUri={onSetProfileImageUri}
-                profileImageUri={profileImageUri}
-                onDeletePress={onImageDeletePressed}
-                user={user}
-              />
-            </View>
-          }
           ListFooterComponent={<View style={{ height: 110 }} />}
         />
         {!fieldInputModalShown &&
-          !fieldDeleteModalShown &&
-          !imageDeleteModalShown && (
+          !fieldDeleteModalShown && (
             <AddButton
                 onPress = {() => {
                   setFieldInputModalShown(true);
                 }}
             />
           )}
+      </View>
       </View>
       {fieldInputModalShown && (
         <FieldInputModal
@@ -164,18 +131,6 @@ const Details = ({
           rightButtonPressed={() => {
             deleteField(selectedItem);
             firebaseRemoveField(selectedItem);
-          }}
-        />
-      )}
-      {imageDeleteModalShown && (
-        <TwoButtonModal
-          title="Delete"
-          body="Are you sure that you want to delete this image?"
-          isVisible={imageDeleteModalShown}
-          setVisibility={setImageDeleteModalShown}
-          rightButtonTitle="Delete"
-          rightButtonPressed={() => {
-            onSetProfileImageUri(null);
           }}
         />
       )}
@@ -199,6 +154,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 2,
+    paddingTop: 50,
+  },
+  childContainer: {
+    position: "relative",
+    flex: 1,
+    width: "100%",
   },
   dataContainer: {
     alignItems: "center",
@@ -218,12 +179,9 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => ({
   fieldData: state.profile.fieldData,
-  profileImageUri: state.profile.profileImageUri,
-  user: state.user.currentUser,
 });
 const mapDispatchToProps = (dispatch) => ({
   addField: (field) => dispatch(addField(field)),
-  setProfileImageUri: (imageUri) => dispatch(setProfileImageUri(imageUri)),
   editField: (field) => dispatch(editField(field)),
   deleteField: (field) => dispatch(deleteField(field)),
   setProfileData: (profileData) => dispatch(setProfileData(profileData)),

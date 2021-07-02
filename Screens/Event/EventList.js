@@ -7,9 +7,11 @@ import {
   ImageBackground,
   Image,
   Dimensions,
-  Button,
+  TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
+import colors from "../../assets/colors";
+import { EvilIcons } from "@expo/vector-icons";
 import EventCard from "../../Components/Event/EventCard";
 import AddButton from "../../Components/reusable/AddButton";
 import {
@@ -77,7 +79,18 @@ const EventList = ({
       />
       <View style={styles.container}>
         <View style={styles.childContainer}>
-          <Text style={styles.title}>My Events</Text>
+          <View style={styles.header}>
+            <Text style={styles.title}>My Events</Text>
+            {displayEvents?.pastEvents && displayEvents.pastEvents.length > 0 && (
+              <TouchableOpacity
+                onPress={() => navigation.push("Past Events")}
+                style={styles.pastEvent}
+              >
+                <Text style={styles.pastEventText}>Past Events</Text>
+                <EvilIcons name="arrow-right" size={24} color="black" />
+              </TouchableOpacity>
+            )}
+          </View>
           <FlatList
             data={displayEvents?.futureEvents.sort(
               (a, b) =>
@@ -94,21 +107,11 @@ const EventList = ({
                     style={styles.empty}
                     source={require("../../assets/pics/empty.png")}
                   />
-                  <Text style={styles.noEvent}>No Event</Text>
+                  <Text style={styles.noEvent}>No Upcoming Event</Text>
                 </View>
               </>
             }
-            ListHeaderComponent={
-              <>
-                {displayEvents?.pastEvents &&
-                  displayEvents.pastEvents.length > 0 && (
-                    <Button
-                      title="Show Past Events"
-                      onPress={() => navigation.push("Past Events")}
-                    />
-                  )}
-              </>
-            }
+            ListHeaderComponent={<></>}
           />
         </View>
       </View>
@@ -152,9 +155,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginLeft: 30,
     marginBottom: 20,
+    marginTop: 13,
   },
   empty: {
-    width: 200,
+    width: 215,
     height: 200,
   },
   emptyEvent: {
@@ -165,6 +169,22 @@ const styles = StyleSheet.create({
   },
   noEvent: {
     fontSize: 20,
+  },
+  pastEvent: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  pastEventText: { color: colors.lightgray },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingRight: 10,
   },
 });
 
