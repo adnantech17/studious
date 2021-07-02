@@ -78,43 +78,6 @@ const NewMaterialScreen = ({
         submitButtonLabel={mat ? "EDIT" : "ADD"}
         cancelButtonLabel={mat ? "CANCEL" : "DISCARD"}
       />
-      {/* <TextInput placeholder="Title" value={title} onChangeText={setTitle} />
-      <TextInput
-        multiline={true}
-        numberOfLines={8}
-        placeholder="Description"
-        value={description}
-        onChangeText={setDescription}
-      />
-      <TagInputBox tag={tags} setTag={setTags} />
-
-      <Text>Course: </Text>
-      <Picker
-        mode="dropdown"
-        selectedValue={courseId}
-        enabled={selectedCourse ? false : true}
-        onValueChange={(value) => {
-          console.log(value);
-          setCourseId(value);
-        }}
-      >
-        <Picker.Item label="-------" value={-1} key={-1} />
-        {courses.map((course) => {
-          return (
-            <Picker.Item
-              label={course.title}
-              value={course.id}
-              key={course.id}
-            />
-          );
-        })}
-      </Picker>
-      <Attachment attachment={attachment} setAttachment={setAttachment} />
-      {mat ? (
-        <Button onPress={updateGivenMaterial} title="Edit" />
-      ) : (
-        <Button onPress={addNewMaterial} title="Add" />
-      )} */}
     </View>
   );
 };

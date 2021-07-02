@@ -13,12 +13,9 @@ import FormikAttachment from "../Form/Formik/FormikAttachment";
 import AppButton from "../reusable/Appbutton";
 
 const materialSchema = Yup.object().shape({
-  id : Yup.string().required(),
-  title: Yup
-            .string()
-            .trim()
-            .required("Please enter a title."),
-  description: Yup.string(), 
+  id: Yup.string().required(),
+  title: Yup.string().trim().required("Please enter a title."),
+  description: Yup.string(),
   tags: Yup.array().of(Yup.string()),
   datetime: Yup.date(),
   course: Yup.object().nullable().required("Please select a course."),
@@ -34,26 +31,28 @@ const inputFields = () => {
   };
 };
 
-const MaterialForm = ({ 
-    item, 
-    courses,
-    handleSubmit,
-    submitButtonLabel = "ADD",
-    handleCancel,
-    cancelButtonLabel = "DISCARD",
-    courseEditDisabled
+const MaterialForm = ({
+  item,
+  courses,
+  handleSubmit,
+  submitButtonLabel = "ADD",
+  handleCancel,
+  cancelButtonLabel = "DISCARD",
+  courseEditDisabled,
 }) => {
   const fields = inputFields();
 
-  const initialValues = item ? item : {
-    id: "mat-" + new Date().getTime(),
-    title: "",
-    description: "",
-    attachment: null,
-    tags: [],
-    datetime: new Date(),
-    course: null,
-  };
+  const initialValues = item
+    ? item
+    : {
+        id: "mat-" + new Date().getTime(),
+        title: "",
+        description: "",
+        attachment: null,
+        tags: [],
+        datetime: new Date(),
+        course: null,
+      };
 
   return (
     <FormikForm
@@ -62,46 +61,42 @@ const MaterialForm = ({
       onSubmit={handleSubmit}
     >
       <FormikFormField
-        ref ={fields.title}
-        onSubmitEditing = {() => fields.description?.current.focus()}
-        name = "title"
-        placeholder = "Title"
+        ref={fields.title}
+        onSubmitEditing={() => fields.description?.current.focus()}
+        name="title"
+        placeholder="Title"
         autoCapitalize="words"
         autoCorrect={false}
         keyboardType="default"
       />
       <FormikFormField
-        ref = {fields.description}
-        name = "description"
-        placeholder = "Description"
-        keyboardType = "default"
-        multiline = {true}
-        numberOfLines = {5}
+        ref={fields.description}
+        name="description"
+        placeholder="Description"
+        keyboardType="default"
+        multiline={true}
+        numberOfLines={5}
       />
-      <FormikTagInput
-        name = "tags"
-      />
+      <FormikTagInput name="tags" />
       <FormikFormPicker
-        placeholder = "Course"
-        items = {courses}
-        name = "course"
-        keyExtractor = {(course) => course.id.toString()}
-        labelProperty = "title"
-        disabled = {courseEditDisabled}
+        placeholder="Course"
+        items={courses}
+        name="course"
+        keyExtractor={(course) => course.id.toString()}
+        labelProperty="title"
+        disabled={courseEditDisabled}
       />
-      <FormikAttachment
-        name = "attachment"
-      />
+      <FormikAttachment name="attachment" />
       <AppButton
-        title = {cancelButtonLabel}
-        buttonStyle= {styles.buttonStyle}
-        textStyle = {styles.textStyle}
-        onPress = {handleCancel}
+        title={cancelButtonLabel}
+        buttonStyle={styles.buttonStyle}
+        textStyle={styles.textStyle}
+        onPress={handleCancel}
       />
       <FormikSubmitButton
         buttonStyle={styles.buttonStyle}
         textStyle={styles.buttonTextStyle}
-        title= {submitButtonLabel}
+        title={submitButtonLabel}
       />
     </FormikForm>
   );

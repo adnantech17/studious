@@ -6,7 +6,7 @@ export const firebaseNewTodoUpload = async (todo, setTodos) => {
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.data().Todos) {
+      if (doc.exists && doc.data().Todos) {
         setTodos([...doc.data().Todos, todo]);
         firestore
           .collection("todos")
@@ -28,7 +28,7 @@ export const firebaseTodoUpdate = async (todo, setTodos) => {
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().Todos) {
         var todos = doc.data().Todos;
         todos = todos.map((item) => (todo.id === item.id ? todo : item));
         setTodos([...todos]);
@@ -49,7 +49,7 @@ export const firebaseTodoDelete = async (todo_id, setTodos) => {
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().Todos) {
         var todos = doc.data().Todos;
         todos = todos.filter((item) => todo_id !== item.id);
         // setTodos([...todos]);
@@ -70,7 +70,7 @@ export const firebaseTodoDownload = async (setRefreshing, setTodos) => {
     .doc(auth.currentUser.uid)
     .get()
     .then((doc) => {
-      if (doc.exists) {
+      if (doc.exists && doc.data().Todos) {
         setTodos(doc.data().Todos);
         if (setRefreshing) setRefreshing(false);
       } else {

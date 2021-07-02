@@ -65,6 +65,11 @@ const Attachment = ({ attachment, setAttachment, user }) => {
         setCanceled={setCanceled}
       />
       <Text>Attachment: </Text>
+      {attachment !== null && (
+        <TouchableOpacity onPress={() => setAttachment(null)}>
+          <Text>X</Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity onPress={pickDocument}>
         <Text>{attachment ? attachment.name : "Add attachment"}</Text>
       </TouchableOpacity>

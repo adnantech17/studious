@@ -22,7 +22,7 @@ function FormikPicker({
   placeholder,
   selectedItem,
   width = "100%",
-  keyExtractor = ((item) => item.value.toString()),
+  keyExtractor = (item) => item.value.toString(),
   labelProperty = "label",
   disabled = false,
 }) {
@@ -30,7 +30,10 @@ function FormikPicker({
 
   return (
     <>
-      <TouchableWithoutFeedback disabled = {disabled} onPress={() => setModalVisible(true)}>
+      <TouchableWithoutFeedback
+        disabled={disabled}
+        onPress={() => setModalVisible(true)}
+      >
         <View style={[styles.container]}>
           {icon && (
             <MaterialCommunityIcons

@@ -10,20 +10,20 @@ import {
 
 const INITIAL_STATE = {
   courses: [
-    {
-      id: "id0",
-      title: "CSE 1101",
-      materials: [
-        {
-          id: "mat-0",
-          title: "Recommended Book",
-          description: "This book is recommended for this course",
-          attachment: null,
-          datetime: new Date(),
-          tags: ["books", "cs", "cse"],
-        },
-      ],
-    },
+    // {
+    //   id: "id0",
+    //   title: "CSE 1101",
+    //   materials: [
+    //     {
+    //       id: "mat-0",
+    //       title: "Recommended Book",
+    //       description: "This book is recommended for this course",
+    //       attachment: null,
+    //       datetime: new Date(),
+    //       tags: ["books", "cs", "cse"],
+    //     },
+    //   ],
+    // },
   ],
   matMenuBox: false,
   selectedCourse: null,

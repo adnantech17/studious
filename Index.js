@@ -48,25 +48,6 @@ class Index extends React.Component {
               console.log("Data found");
               this.props.setTodos(doc.data().Todos);
             } else {
-              this.props.setTodos([
-                {
-                  id: 0,
-                  name: "Hello World",
-                  date: new Date(),
-                  time: new Date(),
-                  completed: false,
-                },
-              ]);
-              firebaseNewTodoUpload(
-                {
-                  id: 0,
-                  name: "Hello World",
-                  date: new Date(),
-                  time: new Date(),
-                  completed: false,
-                },
-                this.props.setTodos
-              );
               console.log("No such document!");
             }
           });
