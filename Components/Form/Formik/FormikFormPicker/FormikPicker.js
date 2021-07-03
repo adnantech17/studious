@@ -20,6 +20,7 @@ function FormikPicker({
   onSelectItem,
   PickerItemComponent = FormikPickerItem,
   placeholder,
+  placeholderTextColor,
   selectedItem,
   width = "100%",
   keyExtractor = (item) => item.value.toString(),
@@ -104,6 +105,8 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     flex: 1,
+    color: "red",
+    fontSize: 100,
   },
   modalContainer: {
     backgroundColor: "white",

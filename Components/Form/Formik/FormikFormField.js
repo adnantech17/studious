@@ -35,7 +35,7 @@ const FormikFormField = (
           onBlur={() => setFieldTouched(name)}
           onFocus={() => setFieldTouched(name, false)}
           onChangeText={(text) => setFieldValue(name, text)}
-          placeholderTextColor={colors.lightgray}
+          placeholderTextColor="grey"
           value={values[name]}
           style={styles.field}
           {...otherProps}
@@ -46,10 +46,7 @@ const FormikFormField = (
           </TouchableOpacity>
         )}
       </View>
-      <FormikErrorMessage
-        error={errors[name]}
-        visible={touched[name]}
-      />
+      <FormikErrorMessage error={errors[name]} visible={touched[name]} />
     </View>
   );
 };

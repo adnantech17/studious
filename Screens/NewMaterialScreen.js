@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, Button } from "react-native";
+import React from "react";
+import { Text, StyleSheet, ImageBackground } from "react-native";
 import { connect } from "react-redux";
-import { Picker } from "@react-native-community/picker";
 
 import {
   addMaterial,
@@ -11,8 +10,6 @@ import {
   setCourses,
   updateMaterial,
 } from "../Redux/material/material.action";
-import TagInputBox from "../Components/Input/TagInputBox";
-import Attachment from "../Components/Materials/Attachment";
 import {
   firebaseMaterialChangeCourse,
   firebaseMaterialDelete,
@@ -82,8 +79,11 @@ const NewMaterialScreen = ({
     navigation.goBack();
   };
   return (
-    <View>
-      <Text>{mat ? "Edit Material" : "Add Material"}</Text>
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/pics/bg.png")}
+    >
+      <Text style={styles.title}>{mat ? "Edit Material" : "Add Material"}</Text>
       <MaterialForm
         item={
           mat
@@ -99,7 +99,7 @@ const NewMaterialScreen = ({
         submitButtonLabel={mat ? "EDIT" : "ADD"}
         cancelButtonLabel={mat ? "CANCEL" : "DISCARD"}
       />
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -124,3 +124,18 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewMaterialScreen);
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  title: {
+    fontSize: 30,
+    marginTop: 85,
+    alignSelf: "flex-start",
+    marginLeft: 50,
+    marginBottom: 30,
+  },
+});

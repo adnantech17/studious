@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 
 import * as Yup from "yup";
 
@@ -44,9 +44,9 @@ const MaterialForm = ({
 
   const initialValues = item
     ? {
-      ...item,
-      datetime: formatDate(item.datetime),
-    }
+        ...item,
+        datetime: formatDate(item.datetime),
+      }
     : {
         id: "mat-" + new Date().getTime(),
         title: "",
@@ -80,7 +80,19 @@ const MaterialForm = ({
         multiline={true}
         numberOfLines={5}
       />
-      <FormikTagInput name="tags" />
+      <View
+        style={{
+          borderWidth: 1,
+          marginVertical: 10,
+          borderRadius: 60,
+          paddingHorizontal: 25,
+          paddingVertical: 5,
+          height: 50,
+          width: "80%",
+        }}
+      >
+        <FormikTagInput name="tags" />
+      </View>
       <FormikFormPicker
         placeholder="Course"
         items={courses}
@@ -89,17 +101,19 @@ const MaterialForm = ({
         labelProperty="title"
       />
       <FormikAttachment name="attachment" />
-      <AppButton
-        title={cancelButtonLabel}
-        buttonStyle={styles.buttonStyle}
-        textStyle={styles.textStyle}
-        onPress={handleCancel}
-      />
-      <FormikSubmitButton
-        buttonStyle={styles.buttonStyle}
-        textStyle={styles.buttonTextStyle}
-        title={submitButtonLabel}
-      />
+      <View style={styles.buttons}>
+        <AppButton
+          title={cancelButtonLabel}
+          buttonStyle={styles.buttonStyle}
+          textStyle={styles.textStyle}
+          onPress={handleCancel}
+        />
+        <FormikSubmitButton
+          buttonStyle={styles.buttonStyle}
+          textStyle={styles.buttonTextStyle}
+          title="SAVE"
+        />
+      </View>
     </FormikForm>
   );
 };
@@ -108,16 +122,22 @@ const styles = StyleSheet.create({
   buttonStyle: {
     backgroundColor: colors.backgroundColor,
     paddingVertical: 12,
-    paddingHorizontal: "32%",
+    paddingHorizontal: "11.5%",
     borderRadius: 100,
     marginTop: 40,
     marginBottom: 10,
+    marginHorizontal: 10,
   },
   buttonTextStyle: {
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 2,
     color: colors.darkgray,
+  },
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
 

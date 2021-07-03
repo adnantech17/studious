@@ -4,6 +4,7 @@ import { StyleSheet, TextInput, View } from "react-native";
 
 import Modal from "react-native-modal";
 import { connect } from "react-redux";
+import colors from "../../assets/colors";
 import {
   addCourse,
   setCourses,
@@ -79,8 +80,8 @@ const CourseInputBox = ({
         <Ionicons
           style={styles.send}
           name="send"
-          size={32}
-          color="green"
+          size={28}
+          color={colors.backgroundColor2}
           onPress={addNewCourse}
         />
       </View>
@@ -95,9 +96,13 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: "#ffffff",
-    paddingTop: 10,
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    padding: 20,
   },
 });
 

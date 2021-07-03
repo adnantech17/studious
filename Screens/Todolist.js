@@ -48,87 +48,102 @@ const TodoList = ({
 
   return (
     <>
-    <ImageBackground
-      style={styles.backgroundView}
-      source={require("../assets/pics/bg.png")}
-    />
-    <View style = {styles.container}>
-      <View  style = {styles.childContainer}>
-        <Text style={styles.title}>My Tasks</Text>
-        <FlatList
-          data={todos
-            .filter((todo) => !todo.completed)
-            .sort((a, b) => getDateTime(formatDate(a.date), formatDate(a.time))
-                     - getDateTime(formatDate(b.date), formatDate(b.time)))}
-          onRefresh={onRefresh}
-          refreshing={refreshing}
-          renderItem={({ item }) => <Todo key={item.id} todo={item} />}
-          keyExtractor={(item) => item.id.toString()}
-          ListFooterComponent={
-            <>
-              <FlatList
-                data={
-                  showCompleted
-                    ? todos
-                        .filter((todo) => todo.completed)
-                        .sort((a, b) => getDateTime(formatDate(b.date), formatDate(b.time))
-                          - getDateTime(formatDate(a.date), formatDate(a.time)))
-                    : null
-                }
-                renderItem={({ item }) => <Todo key={item.id} todo={item} />}
-                keyExtractor={(item) => item.id.toString()}
-                ListHeaderComponent={
-                  <>
-                    {todos.filter((todo) => todo.completed).length > 0 && (
-                      <TouchableOpacity
-                        style={styles.completedHeadline}
-                        onPress={() => setShowCompleted(!showCompleted)}
-                      >
-                        <Text style={styles.completedHeadlineText}>
-                          Completed ({todos.filter((todo) => todo.completed).length})
-                        </Text>
-                        <Ionicons
-                          style={styles.completedHeadlineIcon}
-                          size={20}
-                          name={showCompleted ? "chevron-down" : "chevron-back"}
-                          color="gray"
-                        />
-                      </TouchableOpacity>
-                    )}
-                  </>
-                }
-              />
-            </>
-          }
-          ListEmptyComponent={
-            <>
-              {todos.length == 0 && (
-                <View style={styles.emptyTodo}>
-                  <Image
-                    style={styles.empty}
-                    source={require("../assets/pics/empty.png")}
-                  />
-                  <Text style={styles.noTask}>No Task</Text>
-                </View>
+      <ImageBackground
+        style={styles.backgroundView}
+        source={require("../assets/pics/bg.png")}
+      />
+      <View style={styles.container}>
+        <View style={styles.childContainer}>
+          <Text style={styles.title}>My Tasks</Text>
+          <FlatList
+            data={todos
+              .filter((todo) => !todo.completed)
+              .sort(
+                (a, b) =>
+                  getDateTime(formatDate(a.date), formatDate(a.time)) -
+                  getDateTime(formatDate(b.date), formatDate(b.time))
               )}
-            </>
-          }
-        />
-      </View>
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            renderItem={({ item }) => <Todo key={item.id} todo={item} />}
+            keyExtractor={(item) => item.id.toString()}
+            ListFooterComponent={
+              <>
+                <FlatList
+                  data={
+                    showCompleted
+                      ? todos
+                          .filter((todo) => todo.completed)
+                          .sort(
+                            (a, b) =>
+                              getDateTime(
+                                formatDate(b.date),
+                                formatDate(b.time)
+                              ) -
+                              getDateTime(
+                                formatDate(a.date),
+                                formatDate(a.time)
+                              )
+                          )
+                      : null
+                  }
+                  renderItem={({ item }) => <Todo key={item.id} todo={item} />}
+                  keyExtractor={(item) => item.id.toString()}
+                  ListHeaderComponent={
+                    <>
+                      {todos.filter((todo) => todo.completed).length > 0 && (
+                        <TouchableOpacity
+                          style={styles.completedHeadline}
+                          onPress={() => setShowCompleted(!showCompleted)}
+                        >
+                          <Text style={styles.completedHeadlineText}>
+                            Completed (
+                            {todos.filter((todo) => todo.completed).length})
+                          </Text>
+                          <Ionicons
+                            style={styles.completedHeadlineIcon}
+                            size={20}
+                            name={
+                              showCompleted ? "chevron-down" : "chevron-back"
+                            }
+                            color="gray"
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </>
+                  }
+                />
+              </>
+            }
+            ListEmptyComponent={
+              <>
+                {todos.length == 0 && (
+                  <View style={styles.emptyTodo}>
+                    <Image
+                      style={styles.empty}
+                      source={require("../assets/pics/empty.png")}
+                    />
+                    <Text style={styles.noTask}>No Task</Text>
+                  </View>
+                )}
+              </>
+            }
+          />
+        </View>
 
-      {inputBox && <TodoInputBox />}
-      {menuBox && <TodoMenu />}
-      {!inputBox && (
-        <AddButton
-          onPress={() => {
-            toggleTodoInput();
-            selectTodo(null);
-          }}
-        />
+        {inputBox && <TodoInputBox />}
+        {menuBox && <TodoMenu />}
+        {!inputBox && (
+          <AddButton
+            onPress={() => {
+              toggleTodoInput();
+              selectTodo(null);
+            }}
+          />
         )}
-    </View>
+      </View>
     </>
-  )
+  );
 };
 
 const mapStateToProps = (state) => ({
@@ -154,10 +169,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    paddingTop: 70,
+    paddingTop: 85,
     alignItems: "center",
   },
-  childContainer:{
+  childContainer: {
     width: "100%",
     flex: 1,
   },

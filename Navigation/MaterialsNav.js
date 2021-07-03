@@ -8,7 +8,11 @@ const MaterialsStack = createStackNavigator();
 
 const MaterialsNav = () => {
   return (
-    <MaterialsStack.Navigator>
+    <MaterialsStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <MaterialsStack.Screen
         name="Materials"
         component={MaterialList}

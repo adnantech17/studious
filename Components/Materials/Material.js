@@ -37,7 +37,7 @@ function Material({
       }}
     >
       <Text>{material.title}</Text>
-      <Text>
+      <Text style={styles.time}>
         {material.datetime.toDate
           ? getDateTimeText(material.datetime.toDate())
           : getDateTimeText(material.datetime)}
@@ -48,9 +48,16 @@ function Material({
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 2,
-    padding: 5,
-    margin: 5,
+    padding: 10,
+    marginHorizontal: 10,
+    marginVertical: 5,
+    borderRadius: 10,
+    backgroundColor: "white",
+    elevation: 4,
+  },
+  time: {
+    alignSelf: "flex-end",
+    fontSize: 10,
   },
 });
 

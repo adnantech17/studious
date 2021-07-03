@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { View, Text, TouchableOpacity, Button, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import ProgressDialogBox from "../DialogBox/ProgressDialogBox";
 import * as DocumentPicker from "expo-document-picker";
 import { storage } from "../../Configs/firebase.config";
 import { connect } from "react-redux";
+import { Entypo } from "@expo/vector-icons";
 
 const Attachment = ({ attachment, setAttachment, user }) => {
   const [uploading, setUploading] = useState(false);
@@ -57,22 +58,29 @@ const Attachment = ({ attachment, setAttachment, user }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <ProgressDialogBox
         visible={uploading}
         setVisible={setUploading}
         progress={progress}
         setCanceled={setCanceled}
       />
-      <Text>Attachment: </Text>
-      {attachment !== null && (
-        <TouchableOpacity onPress={() => setAttachment(null)}>
-          <Text>X</Text>
+      <View style={styles.attachment}>
+        <TouchableOpacity onPress={pickDocument}>
+          <Text>
+            {attachment ? (
+              attachment.name
+            ) : (
+              <Text style={{ color: "grey" }}>Add Attachment</Text>
+            )}
+          </Text>
         </TouchableOpacity>
-      )}
-      <TouchableOpacity onPress={pickDocument}>
-        <Text>{attachment ? attachment.name : "Add attachment"}</Text>
-      </TouchableOpacity>
+        {attachment !== null && (
+          <TouchableOpacity onPress={() => setAttachment(null)}>
+            <Entypo name="cross" size={24} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
@@ -82,3 +90,18 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Attachment);
+
+const styles = StyleSheet.create({
+  container: {
+    borderWidth: 1,
+    width: "80%",
+    borderRadius: 50,
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+  },
+  attachment: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+});

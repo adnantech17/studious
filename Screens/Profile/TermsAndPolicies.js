@@ -22,7 +22,6 @@ const TermsAndPolicies = ({}) => {
           marginBottom: 20,
         }}
       >
-        <FontAwesome name="hand-o-right" size={24} color="black" />
         <Text style={styles.disclaimer}>Disclaimer</Text>
       </View>
       <Text style={styles.text}>
@@ -36,7 +35,6 @@ const TermsAndPolicies = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
     justifyContent: "center",
     flex: 1,
     paddingHorizontal: 30,
@@ -44,7 +42,6 @@ const styles = StyleSheet.create({
   disclaimer: {
     fontSize: 25,
     fontWeight: "bold",
-    marginLeft: 10,
   },
   text: {
     fontSize: 15,

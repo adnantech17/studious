@@ -26,11 +26,12 @@ function FormikFormPicker({
         onSelectItem={(item) => setFieldValue(name, item)}
         PickerItemComponent={PickerItemComponent}
         placeholder={placeholder}
+        placeholderTextColor="grey"
         selectedItem={values[name]}
         width={width}
         keyExtractor={keyExtractor}
         labelProperty={labelProperty}
-        disabled = {disabled}
+        disabled={disabled}
       />
       <FormikErrorMessage error={errors[name]} visible={touched[name]} />
     </View>

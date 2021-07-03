@@ -5,6 +5,7 @@ const colors = {
   lightgray: "#393A3C",
   medium: "#bbbbbb",
   active: "dodgerblue",
+  backgroundColor2: "#6EB1F2",
 };
 
 export default colors;

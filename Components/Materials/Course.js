@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Button, TouchableOpacity, StyleSheet } from "react-native";
 import { connect } from "react-redux";
+import { AntDesign } from "@expo/vector-icons";
 import {
   selectCourse,
   selectMaterial,
@@ -9,6 +10,7 @@ import {
 import CourseMenu from "./CourseMenu";
 import Material from "./Material";
 import MaterialMenu from "./MaterialMenu";
+import colors from "../../assets/colors";
 
 function Course({
   course,
@@ -37,6 +39,7 @@ function Course({
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          paddingHorizontal: 15,
         }}
       >
         <TouchableOpacity
@@ -45,10 +48,14 @@ function Course({
             toggleMenuBox();
           }}
         >
-          <Text style={{ fontSize: 20 }}>{course.title}</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold", color: "#073572" }}>
+            {course.title}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={addNewMaterial}>
-          <Text style={{ fontSize: 24 }}>+</Text>
+          <Text style={{ fontSize: 32 }}>
+            <AntDesign name="plus" size={16} color="#073572" />
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -79,9 +86,13 @@ function Course({
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 2,
     padding: 5,
-    margin: 5,
+    paddingVertical: 10,
+    margin: 20,
+    marginVertical: 10,
+    borderRadius: 10,
+    backgroundColor: colors.backgroundColor,
+    elevation: 5,
   },
 });
 

@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  Alert,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { connect } from "react-redux";
 import * as MediaLibrary from "expo-media-library";
 import * as WebBrowser from "expo-web-browser";
 
 import { removeMaterial } from "../Redux/material/material.action";
 import { firebaseMaterialDelete } from "../Utils/FirebaseUtils";
+import { AntDesign } from "@expo/vector-icons";
 
 import TagViewBox from "../Components/Materials/TagViewBox";
+import colors from "../assets/colors";
 
 const ViewMaterialScreen = ({
   selectedCourse,
@@ -63,34 +73,60 @@ const ViewMaterialScreen = ({
   });
 
   return (
-    <View>
-      <Text>Title: {mat.title}</Text>
-      <Text>Description: {mat.description}</Text>
-      <Text>Tags: </Text>
-      <TagViewBox tags={tags} />
-
-      <Text>Course: </Text>
-      <Text>{selectedCourse.title}</Text>
-      <Text>Attachment: {mat.attachment ? mat.attachment.name : "none"}</Text>
-      {mat.attachment !== null && (
-        <View>
-          <Button
-            title="Open"
-            onPress={async () => {
-              await WebBrowser.openBrowserAsync(mat.attachment.url);
-            }}
-          />
-        </View>
-      )}
-
-      <Button
-        title="Edit"
-        onPress={() => {
-          navigation.navigate("NewMaterial");
-        }}
-      ></Button>
-      <Button title="Delete" onPress={handleDelete}></Button>
-    </View>
+    <ImageBackground
+      style={styles.container}
+      source={require("../assets/pics/bg.png")}
+    >
+      <Text style={{ fontSize: 30, marginBottom: 25, marginLeft: 10 }}>
+        Details
+      </Text>
+      <Text style={styles.info}>
+        <Text style={styles.infoName}>Title : </Text>
+        <Text>{mat.title}</Text>
+      </Text>
+      {mat.description !== "" ? (
+        <Text style={styles.info}>
+          <Text style={styles.infoName}>Description:</Text>
+          <Text>{mat.description}</Text>
+        </Text>
+      ) : null}
+      <Text style={styles.info}>
+        <Text style={styles.infoName}>Tags : </Text>
+        <TagViewBox tags={tags} />
+      </Text>
+      <Text style={styles.info}>
+        <Text style={styles.infoName}>Course : </Text>
+        <Text>{selectedCourse.title}</Text>
+      </Text>
+      <Text style={styles.info}>
+        <Text style={styles.infoName}>Attachment : </Text>
+        <Text>
+          <Text>{mat.attachment ? `${mat.attachment.name}  ` : "none"}</Text>
+          {mat.attachment !== null && (
+            <TouchableOpacity
+              onPress={async () => {
+                await WebBrowser.openBrowserAsync(mat.attachment.url);
+              }}
+            >
+              <AntDesign name="folderopen" size={20} color="black" />
+            </TouchableOpacity>
+          )}
+        </Text>
+      </Text>
+      <View style={styles.buttons}>
+        <TouchableOpacity onPress={handleDelete} style={styles.button}>
+          <Text>Delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("NewMaterial");
+          }}
+          style={styles.button}
+        >
+          <Text>Edit</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -106,3 +142,37 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewMaterialScreen);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 30,
+    justifyContent: "center",
+  },
+  info: {
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    paddingVertical: 15,
+    borderRadius: 10,
+    margin: 7,
+  },
+  infoName: {
+    fontWeight: "bold",
+    color: "#6EB7FE",
+    marginRight: 15,
+  },
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 30,
+  },
+  button: {
+    display: "flex",
+    width: "47%",
+    paddingVertical: 13,
+    alignItems: "center",
+    backgroundColor: colors.backgroundColor,
+    borderRadius: 50,
+  },
+});

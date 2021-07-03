@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import TagInput from "react-native-tag-input";
+import colors from "../../assets/colors";
 
 const inputProps = {
   keyboardType: "default",
@@ -29,11 +30,13 @@ export default function TagInputBox({ tag, setTag, enabled }) {
 
   const labelExtractor = (tag) => tag;
   return (
-    <View
+    <ScrollView
+      horizontal={true}
       style={{
         flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "lightgray",
+        borderRadius: 10,
+        width: "100%",
+        borderRadius: 50,
       }}
     >
       <TagInput
@@ -42,12 +45,13 @@ export default function TagInputBox({ tag, setTag, enabled }) {
         labelExtractor={labelExtractor}
         text={text}
         onChangeText={onChangeText}
-        tagColor="blue"
-        tagTextColor="white"
+        tagColor={colors.backgroundColor}
+        tagTextColor={colors.lightgray}
         inputProps={inputProps}
         maxHeight={75}
         editable={enabled}
+        placeholderTextColor={colors.lightgray}
       />
-    </View>
+    </ScrollView>
   );
 }
