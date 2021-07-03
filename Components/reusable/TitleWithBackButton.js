@@ -6,7 +6,7 @@ const TitleWithBackButton = ({onPress, title}) => {
     return (
         <View style = {styles.header}>
             <TouchableOpacity style={styles.backButton} onPress={onPress}>
-                <AntDesign name="arrowleft" size={30} color="black" />
+                <AntDesign name="arrowleft" size={24} color="black" />
             </TouchableOpacity>
             <View style = {styles.headerText}>
                 <Text style={styles.title}>{title}</Text>
@@ -18,6 +18,7 @@ const TitleWithBackButton = ({onPress, title}) => {
 const styles = StyleSheet.create({
     title: { 
         fontSize: 30, 
+        fontWeight: "600",
     },
     header: {
         flexDirection: "row",

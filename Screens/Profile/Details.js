@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  Text, 
 } from "react-native";
 import { connect } from "react-redux";
 import FieldItem from "../../Components/Profile/FieldItem";
@@ -94,9 +95,7 @@ const Details = ({
       />
       <View style={styles.container}>
         <View style={styles.childContainer}>
-          <Text style={styles.backbutton} onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back-sharp" size={24} color="black" />
-          </Text>
+          <TitleWithBackButton title = "Details" onPress = {() => navigation.goBack()} />
           <FlatList
             ref={list}
             refreshing={refreshing}
