@@ -207,12 +207,13 @@ export const firebaseMaterialUpdate = async (
     .then((doc) => {
       if (doc.data() && doc.data().Courses) {
         var courses = doc.data().Courses;
+
         courses = courses.map((course) =>
           course.id === courseId
             ? {
                 ...course,
                 materials: course.materials.map((mat) =>
-                  mat.id === mat.id ? material : mat
+                  mat.id === material.id ? material : mat
                 ),
               }
             : course
