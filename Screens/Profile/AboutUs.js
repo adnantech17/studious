@@ -3,13 +3,17 @@ import { StyleSheet, Text, View, ImageBackground, Image } from "react-native";
 import Constants from "expo-constants";
 import colors from "../../assets/colors";
 import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
-const AboutUs = ({}) => {
+const AboutUs = ({ navigation }) => {
   return (
     <ImageBackground
       style={styles.container}
       source={require("../../assets/pics/bg.png")}
     >
+      <Text style={styles.backbutton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back-sharp" size={24} color="black" />
+      </Text>
       <Image
         source={require("../../assets/pics/aboutus.png")}
         style={styles.image}
@@ -79,6 +83,11 @@ const styles = StyleSheet.create({
   },
   developer: {
     marginBottom: 5,
+  },
+  backbutton: {
+    position: "absolute",
+    left: 30,
+    top: 50,
   },
 });
 

@@ -11,7 +11,7 @@ import {
 import { connect } from "react-redux";
 import * as MediaLibrary from "expo-media-library";
 import * as WebBrowser from "expo-web-browser";
-
+import { Ionicons } from "@expo/vector-icons";
 import { removeMaterial } from "../Redux/material/material.action";
 import { firebaseMaterialDelete } from "../Utils/FirebaseUtils";
 import { AntDesign } from "@expo/vector-icons";
@@ -77,6 +77,9 @@ const ViewMaterialScreen = ({
       style={styles.container}
       source={require("../assets/pics/bg.png")}
     >
+      <Text style={styles.backbutton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back-sharp" size={24} color="black" />
+      </Text>
       <Text style={{ fontSize: 30, marginBottom: 25, marginLeft: 10 }}>
         Details
       </Text>
@@ -86,7 +89,7 @@ const ViewMaterialScreen = ({
       </Text>
       {mat.description !== "" ? (
         <Text style={styles.info}>
-          <Text style={styles.infoName}>Description:</Text>
+          <Text style={styles.infoName}>Description : </Text>
           <Text>{mat.description}</Text>
         </Text>
       ) : null}
@@ -100,7 +103,7 @@ const ViewMaterialScreen = ({
       </Text>
       <Text style={styles.info}>
         <Text style={styles.infoName}>Attachment : </Text>
-        <Text>
+        <Text style={styles.attach}>
           <Text>{mat.attachment ? `${mat.attachment.name}  ` : "none"}</Text>
           {mat.attachment !== null && (
             <TouchableOpacity
@@ -174,5 +177,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.backgroundColor,
     borderRadius: 50,
+  },
+  backbutton: {
+    position: "absolute",
+    left: 30,
+    top: 50,
+  },
+  attach: {
+    display: "flex",
+    width: 200,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

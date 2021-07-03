@@ -16,6 +16,7 @@ import {
 } from "../../Redux/profile/profile.action";
 import FieldInputModal from "../../Components/Profile/FieldInputModal";
 import TwoButtonModal from "../../Components/reusable/TwoButtonModal";
+import { Ionicons } from "@expo/vector-icons";
 import {
   firebaseAddField,
   firebaseEditField,
@@ -92,26 +93,27 @@ const Details = ({
         source={require("../../assets/pics/bg.png")}
       />
       <View style={styles.container}>
-        <View style = {styles.childContainer}>
-        <TitleWithBackButton title = "Details" onPress = {() => navigation.goBack()} />
-        <FlatList
-          ref={list}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          data={fieldData}
-          keyExtractor={(item) => item.id}
-          renderItem={renderField}
-          ListFooterComponent={<View style={{ height: 110 }} />}
-        />
-        {!fieldInputModalShown &&
-          !fieldDeleteModalShown && (
+        <View style={styles.childContainer}>
+          <Text style={styles.backbutton} onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back-sharp" size={24} color="black" />
+          </Text>
+          <FlatList
+            ref={list}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            data={fieldData}
+            keyExtractor={(item) => item.id}
+            renderItem={renderField}
+            ListFooterComponent={<View style={{ height: 110 }} />}
+          />
+          {!fieldInputModalShown && !fieldDeleteModalShown && (
             <AddButton
-                onPress = {() => {
-                  setFieldInputModalShown(true);
-                }}
+              onPress={() => {
+                setFieldInputModalShown(true);
+              }}
             />
           )}
-      </View>
+        </View>
       </View>
       {fieldInputModalShown && (
         <FieldInputModal
@@ -174,6 +176,11 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     fontSize: 16,
     color: "black",
+  },
+  backbutton: {
+    position: "absolute",
+    left: 30,
+    top: 50,
   },
   backButton: { zIndex: 11111, position: "absolute", top: 50, left: 25 },
 });
