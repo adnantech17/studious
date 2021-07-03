@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  Image,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 import AddButton from "../Components/Buttons/AddButton";
@@ -50,10 +52,13 @@ const MaterialList = ({
   }, []);
 
   return (
+    <>
     <ImageBackground
-      style={styles.container}
+      style={styles.backgroundView}
       source={require("../assets/pics/bg.png")}
-    >
+    />
+    <View style = {styles.container}>
+      <View style = {styles.childContainer}>
       {filterBox ? (
         <View style={styles.tag}>
           <TagInputBox tag={filterTags} setTag={setFilterTags} />
@@ -97,22 +102,22 @@ const MaterialList = ({
         keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={
           <>
-            {Course.length == 0 && (
               <View style={styles.emptyCourse}>
                 <Image
                   style={styles.empty}
                   source={require("../assets/pics/empty.png")}
                 />
-                <Text style={styles.noCourse}>No Course</Text>
+                <Text style={styles.noCourse}>No Material</Text>
               </View>
-            )}
           </>
         }
       />
       <AddButton onPress={() => toggleMenuBox()} />
       {matMenuBox && <MaterialMenu navigation={navigation} />}
       {inputBox && <CourseInputBox />}
-    </ImageBackground>
+      </View>
+    </View>
+    </>
   );
 };
 
@@ -129,10 +134,24 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    zIndex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: "space-between",
     paddingTop: 85,
+    alignItems: "center",
+    zIndex: 2,
+  },
+  childContainer: {
+    width: "100%",
+    flex: 1,
   },
   tag: {
     borderWidth: 1,

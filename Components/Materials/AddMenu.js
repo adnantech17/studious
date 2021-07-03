@@ -29,7 +29,7 @@ const MaterialMenu = ({
     >
       <View style={styles.container}>
         <MenuButton
-          title="Add new Course"
+          title="Add New Course"
           name="book"
           onPress={() => {
             toggleMenuBox();

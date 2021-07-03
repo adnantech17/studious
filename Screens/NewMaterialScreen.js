@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, ImageBackground } from "react-native";
+import { Text, StyleSheet, ImageBackground, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 
 import {
@@ -79,10 +79,12 @@ const NewMaterialScreen = ({
     navigation.goBack();
   };
   return (
+    <>
     <ImageBackground
-      style={styles.container}
+      style={styles.backgroundView}
       source={require("../assets/pics/bg.png")}
-    >
+    />
+    <View style = {styles.container}><View style = {styles.childContainer}>
       <Text style={styles.title}>{mat ? "Edit Material" : "Add Material"}</Text>
       <MaterialForm
         item={
@@ -99,7 +101,8 @@ const NewMaterialScreen = ({
         submitButtonLabel={mat ? "EDIT" : "ADD"}
         cancelButtonLabel={mat ? "CANCEL" : "DISCARD"}
       />
-    </ImageBackground>
+    </View></View>
+    </>
   );
 };
 
@@ -126,10 +129,25 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(NewMaterialScreen);
 
 const styles = StyleSheet.create({
+  backgroundView: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: Dimensions.get("window").height,
+    width: Dimensions.get("window").width,
+    zIndex: 1,
+  },
   container: {
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+    zIndex: 2,
+  },
+  childContainer: {
+    width: "100%",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 30,

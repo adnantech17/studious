@@ -47,7 +47,7 @@ function FormikPicker({
           {selectedItem ? (
             <Text style={styles.text}>{selectedItem[labelProperty]}</Text>
           ) : (
-            <Text style={styles.placeholder}>{placeholder}</Text>
+            <Text style={[styles.placeholder,{color:placeholderTextColor}]}>{placeholder}</Text>
           )}
 
           <MaterialCommunityIcons
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
+    color: "black",
   },
   placeholder: {
     flex: 1,
