@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, StyleSheet, ImageBackground, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 
@@ -96,6 +96,7 @@ const NewMaterialScreen = ({
             : null
         }
         courses={courses}
+        selectedCourse = {selectedCourse}
         handleSubmit={handleSubmit}
         handleCancel={() => navigation.goBack()}
         submitButtonLabel={mat ? "EDIT" : "ADD"}

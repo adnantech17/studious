@@ -18,6 +18,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import TagViewBox from "../Components/Materials/TagViewBox";
 import colors from "../assets/colors";
+import TwoButtonModal from "../Components/reusable/TwoButtonModal";
 
 const ViewMaterialScreen = ({
   selectedCourse,
@@ -29,6 +30,7 @@ const ViewMaterialScreen = ({
   console.log("Material", mat);
   const [downloadProgress, setDownloadProgress] = useState("0%");
   const [tags, setTags] = useState(mat ? mat.tags : []);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleDelete = () => {
     removeMaterial(selectedMaterial.course_id, selectedMaterial.material);
@@ -73,6 +75,7 @@ const ViewMaterialScreen = ({
   });
 
   return (
+    <>
     <ImageBackground
       style={styles.container}
       source={require("../assets/pics/bg.png")}
@@ -93,14 +96,17 @@ const ViewMaterialScreen = ({
           <Text>{mat.description}</Text>
         </Text>
       ) : null}
+      { tags.length > 0 && 
       <Text style={styles.info}>
         <Text style={styles.infoName}>Tags : </Text>
         <TagViewBox tags={tags} />
       </Text>
+      }
       <Text style={styles.info}>
         <Text style={styles.infoName}>Course : </Text>
         <Text>{selectedCourse.title}</Text>
       </Text>
+      { mat.attachment && 
       <Text style={styles.info}>
         <Text style={styles.infoName}>Attachment : </Text>
         <Text style={styles.attach}>
@@ -116,8 +122,9 @@ const ViewMaterialScreen = ({
           )}
         </Text>
       </Text>
+      }
       <View style={styles.buttons}>
-        <TouchableOpacity onPress={handleDelete} style={styles.button}>
+        <TouchableOpacity onPress={()=>setShowDeleteModal(true)} style={styles.button}>
           <Text>Delete</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -130,6 +137,16 @@ const ViewMaterialScreen = ({
         </TouchableOpacity>
       </View>
     </ImageBackground>
+    { showDeleteModal && <TwoButtonModal
+      isVisible = {showDeleteModal}
+      setVisibility = {setShowDeleteModal}
+      title = "Delete"
+      body = "Are you sure that you want to delete this material?"
+      rightButtonTitle = "Delete"
+      rightButtonPressed = {handleDelete}
+    />
+    }
+    </>
   );
 };
 

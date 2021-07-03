@@ -35,6 +35,7 @@ const inputFields = () => {
 const MaterialForm = ({
   item,
   courses,
+  selectedCourse,
   handleSubmit,
   submitButtonLabel = "ADD",
   handleCancel,
@@ -54,7 +55,7 @@ const MaterialForm = ({
         attachment: null,
         tags: [],
         datetime: new Date(),
-        course: null,
+        course: selectedCourse ? selectedCourse : null,
       };
 
   return (
