@@ -12,24 +12,66 @@ const firebaseUploadUserInformation = async (firstName, lastName, email) => {
     lastName,
     email,
   });
-  await firebaseAddField({
-    id: new Date().toString()+'a',
-    fieldName: "First Name",
-    value: firstName,
-    required: true,
-  });
-  await firebaseAddField({
-    id: new Date().toString()+'b',
-    fieldName: "Last Name",
-    value: lastName,
-    required: true,
-  });
-  await firebaseAddField({
-    id: new Date().toString()+'c',
-    fieldName: "Email",
-    value: email,
-    required: true,
-  });
+  await firestore
+    .collection("profile")
+    .doc(auth.currentUser.uid)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        firestore
+          .collection("profile")
+          .doc(auth.currentUser.uid)
+          .set({ 
+              ...doc.data(),
+              fieldData: [
+                {
+                  id: new Date().toString()+'a',
+                  fieldName: "First Name",
+                  value: firstName,
+                  required: true,
+                },
+                {
+                  id: new Date().toString()+'b',
+                  fieldName: "Last Name",
+                  value: lastName,
+                  required: true,
+                },
+                {
+                  id: new Date().toString()+'c',
+                  fieldName: "Email",
+                  value: email,
+                  required: true,
+                }
+              ], 
+           });
+      } else {
+        firestore
+          .collection("profile")
+          .doc(auth.currentUser.uid)
+          .set({
+              fieldData: [
+                {
+                  id: new Date().toString()+'a',
+                  fieldName: "First Name",
+                  value: firstName,
+                  required: true,
+                },
+                {
+                  id: new Date().toString()+'b',
+                  fieldName: "Last Name",
+                  value: lastName,
+                  required: true,
+                },
+                {
+                  id: new Date().toString()+'c',
+                  fieldName: "Email",
+                  value: email,
+                  required: true,
+                }
+              ],
+           });
+        }
+    });
 }
 
 export const Register = ({ navigation }) => {
